@@ -11,31 +11,31 @@
   P.PALIERS = ['+', '++', '+++', '++++'];
 
   P.FAMILLES = [
-    { cle: 'peur', nom: 'Peur', couleur: '#5b3a94', livre: true, blocs: [
+    { cle: 'peur', nom: 'Peur', couleur: '#a793c4', livre: true, blocs: [
       ['Dans l’appréhension, craintive', 'Insécurisée, méfiante', 'Nerveuse, stressée'],
       ['Inquiète, anxieuse', 'Alarmée', 'Effrayée'],
       ['Paniquée', 'Affolée'],
       ['Submergée, impuissante, désorientée', 'Terrifiée'],
     ] },
-    { cle: 'tristesse', nom: 'Tristesse', couleur: '#26418d', livre: true, blocs: [
+    { cle: 'tristesse', nom: 'Tristesse', couleur: '#6a8fc9', livre: true, blocs: [
       ['Chagrinée, peinée', 'Cafardeuse', 'Blessée, déçue'],
       ['Sentiment d’inutilité, d’abandon, d’impuissance', 'Malheureuse', 'Déprimée'],
       ['Honteuse, coupable', 'Mélancolique'],
       ['Abattue, accablée', 'Désespérée'],
     ] },
-    { cle: 'colere', nom: 'Colère', couleur: '#b0452a', livre: true, blocs: [
+    { cle: 'colere', nom: 'Colère', couleur: '#e0616b', livre: true, blocs: [
       ['Amère, mécontente', 'Irritée, frustrée', 'Agacée'],
       ['Fâchée', 'Exaspérée', 'Indignée'],
       ['Révoltée', 'Agressive, courroucée'],
       ['Furieuse, hors de moi', 'Enragée'],
     ] },
-    { cle: 'joie', nom: 'Joie', couleur: '#c2496e', livre: false, blocs: [
+    { cle: 'joie', nom: 'Joie', couleur: '#efb0c4', livre: false, blocs: [
       ['Contente, satisfaite', 'Sereine, apaisée', 'Amusée'],
       ['Joyeuse', 'Enthousiaste', 'Fière'],
       ['Heureuse', 'Excitée, exaltée'],
       ['Euphorique', 'Comblée, transportée'],
     ] },
-    { cle: 'tendresse', nom: 'Tendresse', couleur: '#1f6f6a', livre: false, blocs: [
+    { cle: 'tendresse', nom: 'Tendresse', couleur: '#56c3a4', livre: false, blocs: [
       ['Bienveillante', 'Touchée', 'Reconnaissante'],
       ['Affectueuse', 'Émue', 'Complice'],
       ['Aimante', 'Attendrie'],

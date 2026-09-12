@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <title>Gentiane</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#a793c4">
+<meta name="theme-color" content="#152c3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
@@ -10,10 +10,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Gabarito:wght@400;500;700;900&display=swap">
 <style>
 :root{
-  --fond:#a793c4; --surf:#b8a8d3; --surf2:#c6b8de; --trait:#8875ab;
-  --ink:#1b1333; --ink2:#4c3d72;
-  --action:#5b3a94; --rampe:linear-gradient(100deg,#1f6f6a,#26418d 46%,#5b3a94);
-  --sur-rampe:#f3ecf8;
+  --fond:#152c3f; --surf:#1e3b52; --surf2:#2a5069; --trait:#3f6a85;
+  --ink:#e0efeb; --ink2:#94b6bf;
+  --action:#f0b089; --rampe:linear-gradient(100deg,#56c3a4,#6a8fc9 46%,#efb0c4);
+  --sur-rampe:#12283a;
   --affiche:Archivo,'Arial Narrow',Helvetica,sans-serif;
   --texte:Gabarito,system-ui,sans-serif;
 }
@@ -455,7 +455,7 @@ function peindreStats() {
 
   s.innerHTML =
     '<div class="chiffres">'
-    + '<div class="tuile"><b>' + r.total + '</b><span>moment' + pluriel + ' note' + pluriel + '</span></div>'
+    + '<div class="tuile"><b>' + r.total + '</b><span>moment' + pluriel + ' noté' + pluriel + '</span></div>'
     + '<div class="tuile"><b>' + r.moyenne + '</b><span>intensité moyenne</span></div></div>'
 
     + '<div class="bloc-stat"><h2>Motifs</h2>' + svgMotifs() + '</div>'
