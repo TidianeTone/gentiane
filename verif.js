@@ -72,6 +72,36 @@ assert.deepStrictEqual(P.sensations(C, 'peur', 0), [], 'pas de mélange entre fa
 assert.strictEqual(P.sensations(C, 'colere', null).length, 2, 'sans palier, toute la famille');
 assert.deepStrictEqual(P.sensations([], 'colere', 0), []);
 
+// -- echos et constellation -----------------------------------------------
+const M = [
+  { id: 10, ts: J('2026-09-01'), fam: 'colere', intensite: 9, quals: ['Enragée'], quoi: 'Le voisin remet sa musique a fond', corps: 'Machoire serree' },
+  { id: 11, ts: J('2026-09-06'), fam: 'colere', intensite: 10, quals: ['Enragée'], quoi: 'Encore la musique du voisin', corps: 'Machoire serree' },
+  { id: 12, ts: J('2026-09-08'), fam: 'colere', intensite: 2, quals: ['Agacée'], quoi: 'File a la poste', corps: '' },
+  { id: 13, ts: J('2026-09-09'), fam: 'joie', intensite: 9, quals: [], quoi: 'Musique a fond dans la voiture', corps: '' },
+];
+assert.deepStrictEqual(P.motsCles('Le voisin remet sa musique a fond !'), ['voisin', 'remet', 'musique', 'fond'],
+  'mots courts et mots vides jetes, accents aplatis, doublons fondus');
+assert.deepStrictEqual(P.motsCles(null), []);
+assert.strictEqual(P.similarite(M[0], M[3]), 0, 'deux familles differentes ne se ressemblent jamais');
+assert.strictEqual(P.similarite(M[0], M[1]), 2 + 1.5 + 1 + 2, 'famille + palier + un qualificatif + quatre mots, plafonnes a 2');
+assert.strictEqual(P.similarite(M[0], M[2]), 2, 'meme famille seule = sous le seuil');
+assert.ok(P.similarite(M[0], M[2]) < P.SEUIL);
+
+const ec = P.echos(M, M[1]);
+assert.strictEqual(ec.length, 1, 'seul le moment vraiment proche fait echo');
+assert.strictEqual(ec[0].e.id, 10);
+assert.deepStrictEqual(ec[0].mots, ['musique', 'voisin', 'machoire', 'serree'], 'les mots partages sont rendus, pour dire pourquoi');
+assert.deepStrictEqual(P.echos(M, M[3]), [], 'un moment isole ne sinvente pas de passe');
+
+const cst = P.constellation(M);
+assert.deepStrictEqual(cst.points.map(p => p.e.id), [10, 11, 12, 13], 'les points sont chronologiques');
+assert.strictEqual(cst.points[0].x, 0);
+assert.strictEqual(cst.points[3].x, 1);
+assert.strictEqual(cst.points[0].y, 0.9, 'y = intensite sur 10');
+assert.deepStrictEqual(cst.liens, [{ a: 0, b: 1, s: 6.5 }], 'un seul lien, pas de doublon a<->b');
+assert.deepStrictEqual(P.constellation([]), { points: [], liens: [] });
+assert.strictEqual(P.constellation([M[0]]).points[0].x, 0, 'un point seul ne divise pas par zero');
+
 const res = P.resume(E);
 assert.strictEqual(res.total, 3);
 assert.strictEqual(res.moyenne, 6, '(8+4+6)/3');

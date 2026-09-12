@@ -16,7 +16,29 @@ et ça marche hors ligne.
 - **Vocabulaire** : les trois familles du livre (peur, tristesse, colère),
   plus joie et tendresse, marquées « hors livre ». Tout est au féminin —
   « Affolée », « Fâchée » — parce que c'est elle qui l'écrit.
+- **Échos** : pendant la saisie, dès que l'émotion et les mots sont posés,
+  l'appli remonte les moments passés qui ressemblent à celui-ci — « il y a
+  2 semaines · le voisin remet sa musique à fond · musique, voisin ».
+- **Graphe des motifs** : un point par moment (x = le temps, y = l'intensité,
+  la couleur = l'émotion), et un trait entre deux moments qui se ressemblent.
+  Toucher un point donne le moment et tous ses échos.
 - **Tendances** : 14 derniers jours, répartition, heures, mots qui reviennent.
+
+## Comment deux moments « se ressemblent »
+
+Un score volontairement lisible à la main, pour qu'on puisse toujours
+expliquer pourquoi deux points sont reliés (`P.similarite`) :
+
+| ingrédient | points |
+|---|---|
+| même famille d'émotion | 2 (sinon le score est 0, tout de suite) |
+| même palier (+ / ++ / +++ / ++++) | 1,5 |
+| par qualificatif partagé | 1 |
+| par mot partagé dans le texte ou les sensations | 0,5, plafonné à 2 |
+
+Au-dessus de `P.SEUIL` (3,5 — soit au minimum même famille **et** même
+palier), c'est un écho. Les mots vides et les mots de moins de quatre lettres
+sont jetés, les accents aplatis.
 
 ## Données
 

@@ -11,31 +11,31 @@
   P.PALIERS = ['+', '++', '+++', '++++'];
 
   P.FAMILLES = [
-    { cle: 'peur', nom: 'Peur', couleur: '#a793c4', livre: true, blocs: [
+    { cle: 'peur', nom: 'Peur', couleur: '#5b3a94', livre: true, blocs: [
       ['Dans l’appréhension, craintive', 'Insécurisée, méfiante', 'Nerveuse, stressée'],
       ['Inquiète, anxieuse', 'Alarmée', 'Effrayée'],
       ['Paniquée', 'Affolée'],
       ['Submergée, impuissante, désorientée', 'Terrifiée'],
     ] },
-    { cle: 'tristesse', nom: 'Tristesse', couleur: '#4a77c9', livre: true, blocs: [
+    { cle: 'tristesse', nom: 'Tristesse', couleur: '#26418d', livre: true, blocs: [
       ['Chagrinée, peinée', 'Cafardeuse', 'Blessée, déçue'],
       ['Sentiment d’inutilité, d’abandon, d’impuissance', 'Malheureuse', 'Déprimée'],
       ['Honteuse, coupable', 'Mélancolique'],
       ['Abattue, accablée', 'Désespérée'],
     ] },
-    { cle: 'colere', nom: 'Colère', couleur: '#e28462', livre: true, blocs: [
+    { cle: 'colere', nom: 'Colère', couleur: '#b0452a', livre: true, blocs: [
       ['Amère, mécontente', 'Irritée, frustrée', 'Agacée'],
       ['Fâchée', 'Exaspérée', 'Indignée'],
       ['Révoltée', 'Agressive, courroucée'],
       ['Furieuse, hors de moi', 'Enragée'],
     ] },
-    { cle: 'joie', nom: 'Joie', couleur: '#f2c3ce', livre: false, blocs: [
+    { cle: 'joie', nom: 'Joie', couleur: '#c2496e', livre: false, blocs: [
       ['Contente, satisfaite', 'Sereine, apaisée', 'Amusée'],
       ['Joyeuse', 'Enthousiaste', 'Fière'],
       ['Heureuse', 'Excitée, exaltée'],
       ['Euphorique', 'Comblée, transportée'],
     ] },
-    { cle: 'tendresse', nom: 'Tendresse', couleur: '#4a9b96', livre: false, blocs: [
+    { cle: 'tendresse', nom: 'Tendresse', couleur: '#1f6f6a', livre: false, blocs: [
       ['Bienveillante', 'Touchée', 'Reconnaissante'],
       ['Affectueuse', 'Émue', 'Complice'],
       ['Aimante', 'Attendrie'],
@@ -126,6 +126,59 @@
       vus.add(k); out.push(c);
     }
     return out.slice(0, 4);
+  };
+
+  // -- echos : "quand est-ce que j'ai deja vecu ca ?" -----------------------
+  // Deux moments se ressemblent d'abord par leur famille, ensuite par leur
+  // palier, puis par les mots poses dessus. Rien de savant : c'est un score
+  // lisible a la main, pour qu'on puisse expliquer pourquoi deux points sont relies.
+  P.SEUIL = 3.5;
+
+  const VIDES = new Set(('alors apres aussi avec avoir beaucoup cela cette comme dans deja depuis donc elle encore etre faire fait meme moins parce pour pourquoi quand quelque sans sont sous suis toujours tout toute tous tres vers voir etait ete cest jai').split(' '));
+
+  P.motsCles = txt => {
+    const brut = String(txt || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    return [...new Set(brut.split(/[^a-z0-9]+/).filter(m => m.length >= 4 && !VIDES.has(m)))];
+  };
+
+  P.similarite = (a, b) => {
+    if (!a || !b || a.fam !== b.fam) return 0;
+    let s = 2;
+    const ba = P.bloc(a.intensite), bb = P.bloc(b.intensite);
+    if (ba != null && ba === bb) s += 1.5;
+    const qa = new Set(a.quals || []);
+    s += (b.quals || []).filter(q => qa.has(q)).length;
+    const ma = new Set(P.motsCles((a.quoi || '') + ' ' + (a.corps || '')));
+    const communs = P.motsCles((b.quoi || '') + ' ' + (b.corps || '')).filter(m => ma.has(m));
+    return s + Math.min(2, 0.5 * communs.length);
+  };
+
+  P.echos = (entrees, cible, n = 3) => P.tri(entrees)
+    .filter(e => e.id !== cible.id)
+    .map(e => ({ e, score: P.similarite(cible, e), mots: P.motsCles((cible.quoi || '') + ' ' + (cible.corps || '')).filter(m => P.motsCles((e.quoi || '') + ' ' + (e.corps || '')).includes(m)) }))
+    .filter(x => x.score >= P.SEUIL)
+    .sort((x, y) => y.score - x.score || y.e.ts - x.e.ts)
+    .slice(0, n);
+
+  // Les points du graphe, en coordonnees 0..1, et les liens entre ceux qui se
+  // ressemblent. Deux liens par point au maximum : au-dela c'est une pelote.
+  P.constellation = (entrees, seuil = P.SEUIL) => {
+    const es = P.tri(entrees).reverse();
+    if (!es.length) return { points: [], liens: [] };
+    const t0 = es[0].ts, span = (es[es.length - 1].ts - t0) || 1;
+    const points = es.map(e => ({ e, x: (e.ts - t0) / span, y: (e.intensite || 0) / 10 }));
+    const liens = [];
+    points.forEach((_, a) => {
+      points.map((__, b) => ({ b, s: a === b ? 0 : P.similarite(points[a].e, points[b].e) }))
+        .filter(x => x.s >= seuil)
+        .sort((x, y) => y.s - x.s)
+        .slice(0, 2)
+        .forEach(({ b, s }) => {
+          const i = Math.min(a, b), j = Math.max(a, b);
+          if (!liens.some(l => l.a === i && l.b === j)) liens.push({ a: i, b: j, s });
+        });
+    });
+    return { points, liens };
   };
 
   P.resume = entrees => {
