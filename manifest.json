@@ -1,0 +1,16 @@
+{
+  "name": "Gentiane — journal des émotions",
+  "short_name": "Gentiane",
+  "description": "Identifier, graduer et relire ses émotions. Tout reste sur le téléphone.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141d3a",
+  "theme_color": "#141d3a",
+  "lang": "fr",
+  "icons": [
+    { "src": "icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,383 @@
+<meta charset="utf-8">
+<title>Gentiane</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141d3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icone.svg">
+<link rel="apple-touch-icon" href="icone.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Gabarito:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --fond:#141d3a; --surf:#1e2a4d; --surf2:#2a3860; --trait:#3b4b7a;
+  --ink:#eef1fa; --ink2:#9fb0d4;
+  --action:#f2c3ce; --rampe:linear-gradient(100deg,#4a9b96,#a793c4 46%,#f2c3ce);
+  --affiche:Archivo,'Arial Narrow',Helvetica,sans-serif;
+  --texte:Gabarito,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--fond);color:var(--ink);font-family:var(--texte);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+#app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+button,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+:focus-visible{outline:2px solid var(--action);outline-offset:2px}
+h2{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink2);margin:0 0 10px}
+
+/* -- ossature ------------------------------------------------------------ */
+.vue{display:none;flex:1;flex-direction:column;min-height:0}
+.vue.on{display:flex}
+.entete{display:flex;align-items:center;gap:12px;padding:18px 18px 12px;position:sticky;top:0;z-index:4;
+  background:linear-gradient(var(--fond) 72%,transparent)}
+.titre{flex:1;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+.rond{width:42px;height:42px;flex:none;border-radius:999px;background:var(--surf);border:1px solid var(--trait);
+  display:flex;align-items:center;justify-content:center}
+.rond svg{width:18px;height:18px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.corps{flex:1;padding:0 18px 120px;min-height:0}
+.bas{position:sticky;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,var(--fond) 38%)}
+.pilule{height:62px;width:100%;border-radius:999px;background:var(--rampe);color:#141d3a;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:17px;letter-spacing:.06em;text-transform:uppercase}
+.pilule:disabled{opacity:.35}
+
+/* -- journal ------------------------------------------------------------- */
+.jour{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink2);margin:22px 0 10px}
+.carte{width:100%;display:flex;gap:14px;padding:14px 16px;border-radius:22px;background:var(--surf);
+  border:1px solid var(--trait);margin-bottom:10px;text-align:left}
+.carte .jauge{width:5px;flex:none;border-radius:99px;background:var(--c,var(--trait))}
+.carte .h{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.08em;color:var(--ink2)}
+.carte .emo{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:19px;letter-spacing:.03em;color:var(--c)}
+.carte .num{margin-left:auto;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:30px;line-height:1;color:var(--c)}
+.carte .txt{margin-top:6px;color:var(--ink);overflow-wrap:anywhere}
+.carte .sens{margin-top:4px;font-size:13.5px;color:var(--ink2);font-style:italic}
+.mots{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.mot{font-size:12.5px;padding:3px 10px;border-radius:99px;background:var(--surf2);color:var(--ink2);border:1px solid var(--trait)}
+.vide{text-align:center;color:var(--ink2);padding:56px 10px}
+.vide b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:20px;
+  letter-spacing:.04em;color:var(--ink);margin-bottom:8px;text-transform:uppercase}
+
+/* -- saisie -------------------------------------------------------------- */
+.champ{margin-bottom:24px}
+textarea,input[type=datetime-local]{width:100%;background:var(--surf);border:1px solid var(--trait);
+  border-radius:18px;padding:13px 15px;resize:none;color:var(--ink)}
+textarea::placeholder{color:#8294bb}
+input[type=datetime-local]{height:52px}
+.familles{display:flex;flex-wrap:wrap;gap:8px}
+.fam{padding:9px 15px;border-radius:99px;border:1px solid var(--trait);background:var(--surf);
+  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink2)}
+.fam[aria-pressed=true]{background:var(--c);border-color:var(--c);color:#141d3a}
+.fam small{display:block;font-family:var(--texte);font-weight:400;font-size:10px;letter-spacing:.04em;
+  text-transform:none;opacity:.7}
+
+.grad{display:flex;gap:16px;align-items:flex-start}
+.blocs{flex:1;min-width:0}
+.bloc{margin-bottom:14px;opacity:.4;transition:opacity .18s}
+.bloc.actif{opacity:1}
+.bloc .lab{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:15px;
+  letter-spacing:.1em;color:var(--c);margin-bottom:6px}
+.qual{display:block;width:100%;text-align:left;font-size:13.5px;padding:8px 13px;border-radius:14px;
+  background:var(--surf);border:1px solid var(--trait);color:var(--ink2);margin-bottom:5px}
+.qual[aria-pressed=true]{background:var(--c);border-color:var(--c);color:#141d3a;font-weight:500}
+
+/* -- thermometre --------------------------------------------------------- */
+.thermo{width:74px;flex:none;position:relative;height:326px;--c:var(--trait)}
+.thermo .lecture{height:52px;text-align:center}
+.thermo .val{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:34px;line-height:1;color:var(--c)}
+.thermo .pal{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
+.tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;
+  background:var(--surf);border:1px solid var(--trait);overflow:hidden}
+.merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);
+  transform-origin:bottom;transform:scaleY(0);transition:transform .12s}
+.bulbe{position:absolute;left:17px;bottom:0;width:40px;height:40px;border-radius:99px;
+  background:var(--surf);border:1px solid var(--trait)}
+.bulbe.plein{background:var(--c);border-color:var(--c)}
+.ticks{position:absolute;left:51px;top:52px;height:230px;width:16px;
+  display:flex;flex-direction:column-reverse;justify-content:space-between;pointer-events:none}
+.ticks i{display:block;height:1px;width:5px;background:var(--trait)}
+.ticks i:nth-child(odd){background:var(--ink2);width:9px}
+.curseur{position:absolute;left:37px;top:167px;width:230px;height:54px;
+  margin:-27px 0 0 -115px;transform:rotate(-90deg);opacity:0;cursor:ns-resize}
+
+/* -- tendances ----------------------------------------------------------- */
+.bloc-stat{margin-bottom:30px}
+.chiffres{display:flex;gap:10px;margin-bottom:26px}
+.tuile{flex:1;background:var(--surf);border:1px solid var(--trait);border-radius:20px;padding:13px 14px}
+.tuile b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:30px;line-height:1.1}
+.tuile span{font-size:12px;color:var(--ink2)}
+.graphe{display:flex;align-items:flex-end;gap:4px;height:110px}
+.graphe div{flex:1;border-radius:5px 5px 2px 2px;min-height:3px}
+.axe{display:flex;justify-content:space-between;font-size:11px;color:var(--ink2);margin-top:6px}
+.barre{margin-bottom:9px}
+.barre .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;gap:10px}
+.barre .p{height:8px;border-radius:99px;background:var(--surf2);overflow:hidden}
+.barre .p i{display:block;height:100%;border-radius:99px;background:var(--c)}
+.heures{display:flex;align-items:flex-end;gap:2px;height:60px}
+.heures div{flex:1;background:var(--surf2);border-radius:3px 3px 0 0;min-height:2px}
+.rappels{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rappel{font-size:12.5px;padding:5px 11px;border-radius:99px;background:var(--surf);border:1px dashed var(--trait);color:var(--ink2)}
+</style>
+
+<div id="app">
+
+<!-- journal -->
+<section class="vue on" id="v-journal">
+  <div class="entete">
+    <div class="titre">Gentiane</div>
+    <button class="rond" id="b-stats" aria-label="Mes tendances">
+      <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+    </button>
+  </div>
+  <div class="corps" id="liste"></div>
+  <div class="bas"><button class="pilule" id="b-nouveau">Noter un moment</button></div>
+</section>
+
+<!-- saisie -->
+<section class="vue" id="v-saisie">
+  <div class="entete">
+    <button class="rond" id="b-retour" aria-label="Retour">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="titre" id="titre-saisie">Un moment</div>
+    <button class="rond" id="b-suppr" aria-label="Supprimer" hidden>
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+    </button>
+  </div>
+  <div class="corps">
+    <div class="champ">
+      <h2>Jour et heure</h2>
+      <input type="datetime-local" id="f-quand">
+    </div>
+    <div class="champ">
+      <h2>Ce que je fais</h2>
+      <textarea id="f-quoi" rows="3"></textarea>
+    </div>
+    <div class="champ">
+      <h2>Ce que je ressens comme émotion</h2>
+      <div class="familles" id="f-familles"></div>
+    </div>
+    <div class="champ">
+      <h2>Intensité et qualificatifs</h2>
+      <div class="grad">
+        <div class="thermo" id="thermo">
+          <div class="lecture"><div class="val" id="f-val">0</div><div class="pal" id="f-pal"></div></div>
+          <div class="tube"><div class="merc" id="f-merc"></div></div>
+          <div class="ticks" id="f-ticks"></div>
+          <div class="bulbe" id="f-bulbe"></div>
+          <input type="range" class="curseur" id="f-int" min="0" max="10" step="1" value="0" aria-label="Intensité de 0 à 10">
+        </div>
+        <div class="blocs" id="f-blocs"></div>
+      </div>
+    </div>
+    <div class="champ">
+      <h2>Mes sensations physiques</h2>
+      <textarea id="f-corps" rows="2"></textarea>
+      <div class="rappels" id="f-rappels"></div>
+    </div>
+  </div>
+  <div class="bas"><button class="pilule" id="b-garder">Enregistrer</button></div>
+</section>
+
+<!-- tendances -->
+<section class="vue" id="v-stats">
+  <div class="entete">
+    <button class="rond" id="b-retour2" aria-label="Retour">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="titre">Tendances</div>
+  </div>
+  <div class="corps" id="stats"></div>
+</section>
+
+</div>
+
+<script src="gentiane.js"></script>
+<script>
+'use strict';
+const P = Gentiane, $ = s => document.querySelector(s), CLE = 'gentiane.v1';
+
+let entrees = [];
+try { entrees = JSON.parse(localStorage.getItem(CLE)) || []; } catch (e) { entrees = []; }
+const garder = () => {
+  try { localStorage.setItem(CLE, JSON.stringify(entrees)); }
+  catch (e) { alert("Impossible d'enregistrer : la mémoire du navigateur est pleine ou bloquée."); }
+};
+
+let brouillon = null;
+
+const ech = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const vue = id => { document.querySelectorAll('.vue').forEach(v => v.classList.toggle('on', v.id === id)); scrollTo(0, 0); };
+const H2 = n => String(n).padStart(2, '0');
+const local = ts => { const d = new Date(ts); return d.getFullYear() + '-' + H2(d.getMonth() + 1) + '-' + H2(d.getDate()) + 'T' + H2(d.getHours()) + ':' + H2(d.getMinutes()); };
+const heure = ts => { const d = new Date(ts); return H2(d.getHours()) + 'h' + H2(d.getMinutes()); };
+const jourLong = iso => {
+  const auj = P.iso(Date.now());
+  if (iso === auj) return "Aujourd'hui";
+  if (iso === P.addJours(auj, -1)) return 'Hier';
+  return new Date(P.minuit(iso)).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+};
+
+/* -- journal ------------------------------------------------------------- */
+function peindreJournal() {
+  const l = $('#liste');
+  if (!entrees.length) {
+    l.innerHTML = '<div class="vide"><b>Rien de noté</b>Au prochain moment qui remue quelque chose, pose-le ici. Même court.</div>';
+    return;
+  }
+  l.innerHTML = P.parJour(entrees).map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => {
+    const f = P.famille(e.fam) || { nom: '-', couleur: 'var(--ink2)' };
+    return '<button class="carte" style="--c:' + f.couleur + '" data-id="' + e.id + '">'
+      + '<div class="jauge"></div><div style="flex:1;min-width:0">'
+      + '<div style="display:flex;align-items:baseline;gap:10px">'
+      + '<span class="h">' + heure(e.ts) + '</span><span class="emo">' + ech(f.nom) + '</span>'
+      + '<span class="num">' + (e.intensite || '&ndash;') + '</span></div>'
+      + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
+      + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
+      + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(q) + '</span>').join('') + '</div>' : '')
+      + '</div></button>';
+  }).join('')).join('');
+}
+$('#liste').addEventListener('click', ev => {
+  const b = ev.target.closest('.carte');
+  if (b) ouvrir(entrees.find(e => String(e.id) === b.dataset.id));
+});
+
+/* -- saisie -------------------------------------------------------------- */
+function ouvrir(e) {
+  const neuf = !e;
+  brouillon = neuf
+    ? { id: Date.now(), ts: Date.now(), quoi: '', fam: null, intensite: 0, quals: [], corps: '' }
+    : Object.assign({}, e, { quals: (e.quals || []).slice() });
+  $('#titre-saisie').textContent = neuf ? 'Un moment' : 'Modifier';
+  $('#b-suppr').hidden = neuf;
+  $('#f-quand').value = local(brouillon.ts);
+  $('#f-quoi').value = brouillon.quoi || '';
+  $('#f-corps').value = brouillon.corps || '';
+  $('#f-int').value = brouillon.intensite || 0;
+  peindreSaisie();
+  vue('v-saisie');
+}
+
+$('#f-familles').innerHTML = P.FAMILLES.map(f =>
+  '<button class="fam" style="--c:' + f.couleur + '" data-fam="' + f.cle + '" aria-pressed="false">'
+  + f.nom + (f.livre ? '' : '<small>hors livre</small>') + '</button>').join('');
+$('#f-ticks').innerHTML = '<i></i>'.repeat(11);
+
+function peindreSaisie() {
+  const f = P.famille(brouillon.fam);
+  const c = f ? f.couleur : 'var(--trait)';
+  const i = brouillon.intensite, b = P.bloc(i);
+
+  $('#f-familles').querySelectorAll('.fam').forEach(el => el.setAttribute('aria-pressed', el.dataset.fam === brouillon.fam));
+
+  $('#thermo').style.setProperty('--c', c);
+  $('#f-val').textContent = i;
+  $('#f-pal').textContent = b == null ? '' : P.PALIERS[b];
+  $('#f-merc').style.transform = 'scaleY(' + (i / 10) + ')';
+  $('#f-bulbe').classList.toggle('plein', i > 0);
+
+  $('#f-blocs').innerHTML = !f
+    ? '<div style="color:var(--ink2);font-size:13.5px">Choisis d\'abord une emotion : le vocabulaire du livre s\'affiche ici, et le thermometre prend sa couleur.</div>'
+    : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + '">'
+        + '<div class="lab">' + P.PALIERS[k] + '</div>'
+        + mots.map(m => '<button class="qual" data-mot="' + ech(m) + '" aria-pressed="' + brouillon.quals.includes(m) + '">' + ech(m) + '</button>').join('')
+        + '</div>').join('');
+
+  const rappels = f ? P.sensations(entrees.filter(e => e.id !== brouillon.id), f.cle, b) : [];
+  $('#f-rappels').innerHTML = rappels.map(s => '<button class="rappel" data-sens="' + ech(s) + '">' + ech(s) + '</button>').join('');
+
+  $('#b-garder').disabled = !brouillon.fam;
+}
+
+$('#f-familles').addEventListener('click', ev => {
+  const b = ev.target.closest('.fam'); if (!b) return;
+  brouillon.fam = brouillon.fam === b.dataset.fam ? null : b.dataset.fam;
+  brouillon.quals = [];
+  peindreSaisie();
+});
+$('#f-int').addEventListener('input', () => { brouillon.intensite = +$('#f-int').value; peindreSaisie(); });
+$('#f-blocs').addEventListener('click', ev => {
+  const b = ev.target.closest('.qual'); if (!b) return;
+  const m = b.dataset.mot, k = brouillon.quals.indexOf(m);
+  if (k < 0) brouillon.quals.push(m); else brouillon.quals.splice(k, 1);
+  // Un mot choisi alors que le thermometre est encore a zero le pose au milieu de son palier.
+  if (k < 0 && !brouillon.intensite) {
+    brouillon.intensite = P.intensiteDuBloc(+b.closest('.bloc').dataset.bloc);
+    $('#f-int').value = brouillon.intensite;
+  }
+  peindreSaisie();
+});
+$('#f-rappels').addEventListener('click', ev => {
+  const b = ev.target.closest('.rappel'); if (!b) return;
+  $('#f-corps').value = b.dataset.sens;
+});
+
+$('#b-nouveau').onclick = () => ouvrir(null);
+$('#b-retour').onclick = () => { vue('v-journal'); peindreJournal(); };
+$('#b-retour2').onclick = () => { vue('v-journal'); peindreJournal(); };
+$('#b-stats').onclick = () => { peindreStats(); vue('v-stats'); };
+$('#b-suppr').onclick = () => {
+  if (!confirm('Supprimer ce moment ?')) return;
+  entrees = entrees.filter(e => e.id !== brouillon.id);
+  garder(); peindreJournal(); vue('v-journal');
+};
+$('#b-garder').onclick = () => {
+  brouillon.quoi = $('#f-quoi').value.trim();
+  brouillon.corps = $('#f-corps').value.trim();
+  const v = $('#f-quand').value; if (v) brouillon.ts = new Date(v).getTime();
+  const i = entrees.findIndex(e => e.id === brouillon.id);
+  if (i < 0) entrees.push(brouillon); else entrees[i] = brouillon;
+  garder(); peindreJournal(); vue('v-journal');
+};
+
+/* -- tendances ----------------------------------------------------------- */
+function peindreStats() {
+  const s = $('#stats');
+  if (!entrees.length) { s.innerHTML = '<div class="vide"><b>Pas encore de trame</b>Quelques moments notés, et les motifs apparaissent.</div>'; return; }
+  const r = P.resume(entrees), trame = P.trame(entrees, P.iso(Date.now()), 14);
+  const maxJ = Math.max(1, ...trame.map(j => j.moyenne));
+  const h = P.heures(entrees), maxH = Math.max(1, ...h);
+  const rep = P.repartition(entrees), mots = P.topQuals(entrees, 5);
+  const coul = cle => (P.famille(cle) || {}).couleur || 'var(--surf2)';
+  const pluriel = r.total > 1 ? 's' : '';
+
+  s.innerHTML =
+    '<div class="chiffres">'
+    + '<div class="tuile"><b>' + r.total + '</b><span>moment' + pluriel + ' note' + pluriel + '</span></div>'
+    + '<div class="tuile"><b>' + r.moyenne + '</b><span>intensité moyenne</span></div></div>'
+
+    + '<div class="bloc-stat"><h2>14 derniers jours</h2><div class="graphe">'
+    + trame.map(j => '<div title="' + j.date + ' &middot; ' + j.n + '" style="height:' + Math.max(3, 100 * j.moyenne / maxJ)
+      + '%;background:' + (j.n ? coul(j.dominante) : 'var(--surf2)') + '"></div>').join('')
+    + '</div><div class="axe"><span>' + trame[0].date.slice(8) + '/' + trame[0].date.slice(5, 7)
+    + '</span><span>hauteur = intensité moyenne</span><span>aujourd\'hui</span></div></div>'
+
+    + '<div class="bloc-stat"><h2>Répartition</h2>'
+    + rep.map(x => '<div class="barre" style="--c:' + x.couleur + '"><div class="t"><span>' + ech(x.nom)
+      + '</span><span style="color:var(--ink2)">' + x.n + ' &middot; ' + x.pct + '%</span></div>'
+      + '<div class="p"><i style="width:' + x.pct + '%"></i></div></div>').join('')
+    + '</div>'
+
+    + '<div class="bloc-stat"><h2>À quelles heures</h2><div class="heures">'
+    + h.map(n => '<div style="height:' + Math.max(2, 100 * n / maxH) + '%"></div>').join('')
+    + '</div><div class="axe"><span>0h</span><span>12h</span><span>23h</span></div></div>'
+
+    + (mots.length ? '<div class="bloc-stat"><h2>Mots qui reviennent</h2>'
+      + mots.map(m => '<div class="barre" style="--c:var(--action)"><div class="t"><span>' + ech(m[0])
+        + '</span><span style="color:var(--ink2)">' + m[1] + '&times;</span></div>'
+        + '<div class="p"><i style="width:' + (100 * m[1] / mots[0][1]) + '%"></i></div></div>').join('')
+      + '</div>' : '')
+
+    + '<div class="bloc-stat" style="color:var(--ink2);font-size:13px">'
+    + 'Tout est garde sur ce telephone, rien n\'est envoye nulle part.</div>';
+}
+
+peindreJournal();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>

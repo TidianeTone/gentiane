@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "Surveil/index.html"
+        ],
+        "createdAt": "2026-09-12T21:28:26.069Z",
+        "reason": "palette maison documentee: rampe ambre->rose->prune->indigo sur quasi-noir #160029, degrade exact linear-gradient(100deg,#ff8a5b,#e368a8 46%,#9b5cf0) fourni par l'utilisateur (memoire palette-rampe-chaude), deja en place sur PodClip et Kapish"
+      }
+    ]
+  }
+}
