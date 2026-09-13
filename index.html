@@ -270,6 +270,14 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 .legende span{color:var(--ink2);font-size:.8rem}
 .danger{color:var(--f-colere);border-color:var(--f-colere)}
 
+/* -- manuel ------------------------------------------------------------- */
+/* Une page qui dit ce que l'appli fait, une fois, puis attend dans les reglages. */
+.pas{display:flex;gap:14px;margin-bottom:26px}
+.pas .rond{cursor:default}
+.pas h2{margin-bottom:6px}
+.pas p{margin:0}
+.pas p+p{margin-top:8px}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
@@ -374,6 +382,59 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     </button>
     <button class="pilule" id="a-suite">Continuer</button>
   </div>
+</section>
+
+<!-- manuel : ce que l'appli fait, dit une fois, relisible depuis les reglages -->
+<section class="vue" id="v-manuel">
+  <div class="entete" id="m-entete">
+    <button class="rond" id="b-retour6" aria-label="Retour">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="titre">Gentiane</div>
+  </div>
+  <div class="corps" id="m-corps">
+    <h1 class="grand">Comment ça marche.</h1>
+    <p class="intro">Un journal des émotions. Il ne demande rien, il garde ce que tu lui confies. Voilà ce qu’il y a dedans.</p>
+
+    <div class="pas">
+      <span class="rond"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM13 8l3 3"/></svg></span>
+      <div>
+        <h2>Noter un moment</h2>
+        <p>Quand quelque chose remue, choisis l’émotion et glisse le thermomètre. Ça suffit pour enregistrer. Ce que tu faisais, ce que ton corps faisait&nbsp;: si tu veux, et aussi court que tu veux.</p>
+        <p>Les mots qui s’allument le long du thermomètre viennent d’un cahier de thérapie. Ils sont là pour t’aider à nommer, pas pour choisir à ta place.</p>
+      </div>
+    </div>
+
+    <div class="pas">
+      <span class="rond"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+      <div>
+        <h2>Ce qui apparaît avec le temps</h2>
+        <p>Dès le deuxième moment, l’appli commence à relire pour toi. Pendant que tu notes, elle remonte les fois où tu as vécu quelque chose de proche. Dans Tendances, un graphe relie les moments qui se ressemblent, et tu vois les jours, les heures, les mots qui reviennent.</p>
+        <p>Elle trie et elle compte, c’est tout. Ce que ça veut dire, c’est toi qui le sais.</p>
+      </div>
+    </div>
+
+    <div class="pas">
+      <span class="rond"><svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5zM14 3v5h5M9 13h6M9 17h4"/></svg></span>
+      <div>
+        <h2>Montrer, si tu veux</h2>
+        <p>Tout reste dans ton journal. S’il t’arrive d’avoir envie d’en montrer une partie, à un psy, à un proche, à un médecin, l’écran Montrer prépare une période&nbsp;: sept jours, trente jours, ou depuis la dernière fois. Tu relis d’abord, tu retires ce que tu veux pour cette fois, et seulement ensuite l’écran s’affiche.</p>
+        <p>Un moment peut aussi être gardé pour toi dès l’écriture. Il reste dans ton journal, jamais dans ce que tu montres, et ce qui n’est pas montré ne se compte pas.</p>
+        <p>Si tu vois un psy, tu peux le dire dans les réglages&nbsp;: les mots de l’appli parleront de séance.</p>
+      </div>
+    </div>
+
+    <div class="pas">
+      <span class="rond"><svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg></span>
+      <div>
+        <h2>Ce qu’elle ne fait pas</h2>
+        <p>Rien ne sort de ce téléphone&nbsp;: pas de compte, pas d’envoi, pas d’analyse automatique. Et rien ne te relance. Pas de notification, pas de série à tenir. Tu ouvres quand tu veux, et quand tu n’ouvres pas, il ne se passe rien.</p>
+      </div>
+    </div>
+
+    <div class="souffle" id="m-rappel">Cette page reste dans les réglages, si tu veux la relire.</div>
+  </div>
+  <div class="bas" id="m-bas"><button class="pilule" id="b-premier">Noter mon premier moment</button></div>
 </section>
 
 <!-- journal -->
@@ -558,6 +619,12 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
       </div>
     </div>
     <div class="champ">
+      <button class="sobre" id="r-manuel">
+        <svg viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>
+        Comment ça marche
+      </button>
+    </div>
+    <div class="champ">
       <h2>Le journal</h2>
       <div class="avis" style="margin-top:0">
         <b>Rien ne sort d’ici</b>
@@ -704,7 +771,6 @@ function allerVolet(n) {
   volet = n;
   document.querySelectorAll('#v-accueil .volet').forEach(v => v.classList.toggle('on', +v.dataset.volet === n));
   $('#a-retour').hidden = n === 0;
-  $('#a-suite').textContent = n === 2 ? 'Noter mon premier moment' : 'Continuer';
   scrollTo(0, 0);
 }
 
@@ -732,8 +798,21 @@ $('#a-suite').onclick = async () => {
   if (pin && !PIN_FORME.test(pin)) { alert('Le code, c’est quatre à six chiffres — ou rien du tout.'); return; }
   if (pin && PIN_OK) prefs.pin = await hacher(pin);
   prefs.vu = true; garderPrefs();
-  peindreJournal(); ouvrir(null);
+  peindreJournal(); manuel(true);
 };
+
+/* == manuel ===============================================================
+   Une fois apres l'accueil, puis depuis les reglages. Le meme ecran : seule
+   change la sortie — vers le premier moment, ou retour aux reglages. */
+function manuel(premiere) {
+  $('#m-entete').hidden = premiere;
+  $('#m-bas').hidden = !premiere;
+  $('#m-rappel').hidden = !premiere;
+  $('#m-corps').style.paddingTop = premiere ? '64px' : '';
+  vue('v-manuel');
+}
+$('#b-premier').onclick = () => ouvrir(null);
+$('#b-retour6').onclick = () => { peindreReglages(); vue('v-reglages'); };
 $('#a-pin-champ').hidden = !PIN_OK;
 
 /* == journal ============================================================== */
@@ -1085,6 +1164,7 @@ $('#r-mondes').addEventListener('click', ev => {
     vignettes($('#r-mondes'), prefs.theme);
   });
 });
+$('#r-manuel').onclick = () => manuel(false);
 $('#r-psy').onclick = () => { prefs.psy = !prefs.psy; garderPrefs(); peindreReglages(); $('#b-seance').setAttribute('aria-label', MOTS().bouton); };
 $('#r-pin-poser').onclick = async () => {
   const pin = $('#r-pin').value.trim();
@@ -1217,6 +1297,7 @@ const ECRANS = {
   '#tendances': () => { peindreStats(); vue('v-stats'); },
   '#seance': () => { seanceMode = 'montrer'; retires = new Set(); peindreSeance(); vue('v-seance'); },
   '#reglages': () => { peindreReglages(); vue('v-reglages'); },
+  '#manuel': () => manuel(true),
   '#saisie': () => {
     ouvrir(null);
     brouillon.fam = 'colere'; brouillon.intensite = 7;
