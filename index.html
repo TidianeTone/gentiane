@@ -271,15 +271,53 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 .danger{color:var(--f-colere);border-color:var(--f-colere)}
 
 /* -- manuel ------------------------------------------------------------- */
-/* Une page qui dit ce que l'appli fait, une fois, puis attend dans les reglages. */
-.pas{display:flex;gap:14px;margin-bottom:26px}
-.pas .rond{cursor:default}
-.pas h2{margin-bottom:6px}
-.pas p{margin:0}
-.pas p+p{margin-top:8px}
+/* Une page qui montre ce que l'appli fait, une fois, puis attend dans les
+   reglages. Chaque bloc est une petite scene qui rejoue le geste en boucle ;
+   l'etat de repos de chaque element est la fin de la scene, pour que sans
+   animation (mouvement reduit) l'image reste juste. */
+.pas{margin-bottom:30px}
+.pas h2{margin:12px 0 4px}
+.pas p{margin:0;color:var(--ink2);font-size:.9rem}
+.illu{display:block;width:100%;height:auto;border-radius:var(--r);background:var(--surf);border:1px solid var(--trait)}
+.illu text{font-family:var(--texte);font-size:11px;fill:var(--ink2)}
+.illu .aff{font-family:var(--affiche);font-weight:700}
+.illu .t{stroke:var(--trait);fill:none}
+.illu .l{stroke:var(--ink2);stroke-width:3;stroke-linecap:round;opacity:.45}
+/* noter : la famille s'allume, le mercure monte, le chiffre suit */
+.illu .puce{fill:var(--surf2);stroke:var(--trait)}
+.illu .puce.on{fill:var(--f-colere-p);stroke:var(--f-colere-p);animation:puce-on 6s var(--ease) infinite}
+@keyframes puce-on{0%,18%{fill:var(--surf2);stroke:var(--trait)}30%,100%{fill:var(--f-colere-p);stroke:var(--f-colere-p)}}
+.illu .puce-txt{fill:var(--sur-plein);animation:puce-txt 6s var(--ease) infinite}
+@keyframes puce-txt{0%,18%{fill:var(--ink2)}30%,100%{fill:var(--sur-plein)}}
+.illu .merc{fill:var(--f-colere);transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.7);animation:merc 6s var(--ease) infinite}
+@keyframes merc{0%,34%{transform:scaleY(0)}60%,100%{transform:scaleY(.7)}}
+.illu .bulbe{fill:var(--f-colere);animation:bulbe 6s var(--ease) infinite}
+@keyframes bulbe{0%,34%{fill:var(--surf2)}44%,100%{fill:var(--f-colere)}}
+.illu .val{fill:var(--f-colere);animation:val 6s var(--ease) infinite}
+@keyframes val{0%,55%{opacity:0}70%,100%{opacity:1}}
+/* motifs : les points arrivent un a un, puis les traits entre ceux qui se ressemblent */
+.illu .pt{animation:pt 7s var(--ease) infinite}
+.illu .pt:nth-child(2){animation-delay:.5s}.illu .pt:nth-child(3){animation-delay:1s}
+.illu .pt:nth-child(4){animation-delay:1.5s}.illu .pt:nth-child(5){animation-delay:2s}.illu .pt:nth-child(6){animation-delay:2.5s}
+@keyframes pt{0%{opacity:0;transform:translateY(6px)}5%,100%{opacity:1;transform:none}}
+.illu .lien{fill:none;stroke-width:2.5;stroke-linecap:round;opacity:.55;stroke-dasharray:200;animation:lien 7s var(--ease) infinite}
+.illu .lien+.lien{animation-delay:.6s}
+@keyframes lien{0%,45%{stroke-dashoffset:200}70%,100%{stroke-dashoffset:0}}
+/* montrer : trois fiches, on en retire une, le cadre se referme sur les autres */
+.illu .fiche2{opacity:.18;animation:fiche2 7s var(--ease) infinite}
+@keyframes fiche2{0%,30%{opacity:1}42%,100%{opacity:.18}}
+.illu .fiche3{transform:translateY(-34px);animation:fiche3 7s var(--ease) infinite}
+@keyframes fiche3{0%,50%{transform:none}64%,100%{transform:translateY(-34px)}}
+.illu .cadre{fill:none;stroke:var(--action);stroke-width:2;stroke-dasharray:6 5;animation:cadre 7s var(--ease) infinite}
+@keyframes cadre{0%,66%{opacity:0}80%,100%{opacity:1}}
+/* rien ne sort : un point essaie de quitter le telephone, et revient */
+.illu .sort{fill:var(--f-tendresse);animation:sort 5s var(--ease) infinite}
+@keyframes sort{0%,20%{transform:none}55%{transform:translateX(42px)}80%,100%{transform:none}}
+.illu .cloche{stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .illu *{animation:none!important}  /* les scenes du manuel restent sur leur image finale */
 }
 </style>
 <style id="theme"></style>
@@ -395,41 +433,75 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
   <div class="corps" id="m-corps">
     <h1 class="grand">Comment ça marche.</h1>
     <p class="intro">Un journal des émotions. Il ne demande rien, il garde ce que tu lui confies. Voilà ce qu’il y a dedans.</p>
+    <div class="souffle" style="margin:-18px 0 22px">Si tu vois un psy, tu peux le dire dans les réglages&nbsp;: les mots de l’appli parleront de séance.</div>
 
     <div class="pas">
-      <span class="rond"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM13 8l3 3"/></svg></span>
-      <div>
-        <h2>Noter un moment</h2>
-        <p>Quand quelque chose remue, choisis l’émotion et glisse le thermomètre. Ça suffit pour enregistrer. Ce que tu faisais, ce que ton corps faisait&nbsp;: si tu veux, et aussi court que tu veux.</p>
-        <p>Les mots qui s’allument le long du thermomètre viennent d’un cahier de thérapie. Ils sont là pour t’aider à nommer, pas pour choisir à ta place.</p>
-      </div>
+      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+        <rect class="puce" x="18" y="24" width="60" height="30" rx="15"/>
+        <text x="48" y="43" text-anchor="middle">Peur</text>
+        <rect class="puce on" x="86" y="24" width="72" height="30" rx="15"/>
+        <text class="puce-txt" x="122" y="43" text-anchor="middle">Colère</text>
+        <rect class="puce" x="166" y="24" width="56" height="30" rx="15"/>
+        <text x="194" y="43" text-anchor="middle">Joie</text>
+        <rect x="18" y="66" width="140" height="10" rx="5" fill="var(--surf2)"/>
+        <rect x="18" y="86" width="96" height="10" rx="5" fill="var(--surf2)"/>
+        <rect class="t" x="262" y="14" width="16" height="74" rx="8"/>
+        <rect class="merc" x="264" y="16" width="12" height="70" rx="6"/>
+        <circle class="bulbe" cx="270" cy="96" r="12"/>
+        <text class="val aff" x="248" y="52" text-anchor="end" font-size="30">7</text>
+      </svg>
+      <h2>Noter un moment</h2>
+      <p>Une émotion, un thermomètre, et c’est enregistré. Le reste, si tu veux, et aussi court que tu veux.</p>
     </div>
 
     <div class="pas">
-      <span class="rond"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
-      <div>
-        <h2>Ce qui apparaît avec le temps</h2>
-        <p>Dès le deuxième moment, l’appli commence à relire pour toi. Pendant que tu notes, elle remonte les fois où tu as vécu quelque chose de proche. Dans Tendances, un graphe relie les moments qui se ressemblent, et tu vois les jours, les heures, les mots qui reviennent.</p>
-        <p>Elle trie et elle compte, c’est tout. Ce que ça veut dire, c’est toi qui le sais.</p>
-      </div>
+      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+        <line class="t" x1="24" y1="100" x2="300" y2="100"/>
+        <path class="lien" d="M48 74 L128 42" stroke="var(--f-colere)"/>
+        <path class="lien" d="M128 42 L262 52" stroke="var(--f-colere)"/>
+        <g>
+          <circle class="pt" cx="48" cy="74" r="6" fill="var(--f-colere)"/>
+          <circle class="pt" cx="88" cy="88" r="6" fill="var(--f-tristesse)"/>
+          <circle class="pt" cx="128" cy="42" r="6" fill="var(--f-colere)"/>
+          <circle class="pt" cx="176" cy="66" r="6" fill="var(--f-joie)"/>
+          <circle class="pt" cx="218" cy="82" r="6" fill="var(--f-peur)"/>
+          <circle class="pt" cx="262" cy="52" r="6" fill="var(--f-colere)"/>
+        </g>
+      </svg>
+      <h2>Ce qui apparaît avec le temps</h2>
+      <p>Dès le deuxième moment, des traits relient ceux qui se ressemblent. L’appli trie et compte, c’est tout&nbsp;: ce que ça veut dire, c’est toi qui le sais.</p>
     </div>
 
     <div class="pas">
-      <span class="rond"><svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5zM14 3v5h5M9 13h6M9 17h4"/></svg></span>
-      <div>
-        <h2>Montrer, si tu veux</h2>
-        <p>Tout reste dans ton journal. S’il t’arrive d’avoir envie d’en montrer une partie, à un psy, à un proche, à un médecin, l’écran Montrer prépare une période&nbsp;: sept jours, trente jours, ou depuis la dernière fois. Tu relis d’abord, tu retires ce que tu veux pour cette fois, et seulement ensuite l’écran s’affiche.</p>
-        <p>Un moment peut aussi être gardé pour toi dès l’écriture. Il reste dans ton journal, jamais dans ce que tu montres, et ce qui n’est pas montré ne se compte pas.</p>
-        <p>Si tu vois un psy, tu peux le dire dans les réglages&nbsp;: les mots de l’appli parleront de séance.</p>
-      </div>
+      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+        <rect class="cadre" x="42" y="8" width="236" height="72" rx="14"/>
+        <g class="fiche1">
+          <circle cx="62" cy="24" r="5" fill="var(--f-tristesse)"/><line class="l" x1="76" y1="24" x2="200" y2="24"/>
+        </g>
+        <g class="fiche2">
+          <circle cx="62" cy="58" r="5" fill="var(--f-colere)"/><line class="l" x1="76" y1="58" x2="236" y2="58"/>
+        </g>
+        <g class="fiche3">
+          <circle cx="62" cy="92" r="5" fill="var(--f-joie)"/><line class="l" x1="76" y1="92" x2="170" y2="92"/>
+        </g>
+      </svg>
+      <h2>Montrer, si tu veux</h2>
+      <p>À un psy, à un proche, à un médecin. Tu relis, tu retires ce que tu veux, et seulement ensuite l’écran s’affiche. Ce qui n’est pas montré ne se compte pas.</p>
     </div>
 
     <div class="pas">
-      <span class="rond"><svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg></span>
-      <div>
-        <h2>Ce qu’elle ne fait pas</h2>
-        <p>Rien ne sort de ce téléphone&nbsp;: pas de compte, pas d’envoi, pas d’analyse automatique. Et rien ne te relance. Pas de notification, pas de série à tenir. Tu ouvres quand tu veux, et quand tu n’ouvres pas, il ne se passe rien.</p>
-      </div>
+      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+        <rect class="t" x="110" y="10" width="100" height="100" rx="14" stroke-width="2"/>
+        <line class="l" x1="130" y1="34" x2="190" y2="34"/>
+        <line class="l" x1="130" y1="54" x2="176" y2="54"/>
+        <line class="l" x1="130" y1="74" x2="184" y2="74"/>
+        <circle class="sort" cx="160" cy="94" r="6"/>
+        <g class="cloche" transform="translate(252 44)">
+          <path d="M-8 6a8 8 0 0 1 16 0v6l3 4H-11l3-4zM-3 18h6"/><line x1="-13" y1="-6" x2="13" y2="22"/>
+        </g>
+      </svg>
+      <h2>Ce qu’elle ne fait pas</h2>
+      <p>Rien ne sort de ce téléphone, et rien ne te relance. Tu ouvres quand tu veux, et quand tu n’ouvres pas, il ne se passe rien.</p>
     </div>
 
     <div class="souffle" id="m-rappel">Cette page reste dans les réglages, si tu veux la relire.</div>
