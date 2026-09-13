@@ -16,6 +16,17 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 - **Gardé pour moi** : un moment marqué reste dans le journal et n'apparaît
   jamais en mode séance. L'écran séance dit que la règle existe, jamais
   combien de moments sont concernés.
+- **Relecture avant de montrer** : l'écran séance s'ouvre d'abord en
+  relecture, où chaque fiche peut être retirée pour cette fois (rien n'est
+  enregistré), puis « Montrer » rend la version propre. À l'écriture, rien
+  n'est jamais en jeu.
+- **Code d'ouverture facultatif**, proposé au premier lancement et dans les
+  réglages. Haché en SHA-256 avant d'être rangé ; le journal, lui, reste en
+  clair — c'est une porte, pas un coffre, et l'interface le dit avec ces mots.
+  Sans le code, la seule issue est d'effacer le journal.
+- **Sur iOS dans un onglet**, l'appli dit une fois d'être ajoutée à l'écran
+  d'accueil : Safari efface le stockage d'un site après sept jours sans visite,
+  sauf s'il est installé.
 - **Le thermomètre est le curseur** : on le glisse de 0 à 10, il prend la
   couleur de l'émotion, et le palier (+ / ++ / +++ / ++++) qu'il atteint
   allume le bloc de vocabulaire correspondant. L'inverse marche aussi :

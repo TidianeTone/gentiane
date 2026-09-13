@@ -107,9 +107,15 @@ h2,.etiq{font-family:var(--texte);font-weight:700;font-size:.76rem;letter-spacin
 
 /* -- saisie -------------------------------------------------------------- */
 .champ{margin-bottom:24px}
-textarea,input[type=datetime-local],input[type=text]{width:100%;background:var(--surf);border:1px solid var(--trait);
+textarea,input[type=datetime-local],input[type=text],input[type=password]{width:100%;background:var(--surf);border:1px solid var(--trait);
   border-radius:18px;padding:13px 15px;resize:none;color:var(--ink);font-size:.95rem}
-input[type=datetime-local],input[type=text]{min-height:52px}
+input[type=datetime-local],input[type=text],input[type=password]{min-height:52px}
+input[type=password]{text-align:center;font-size:1.5rem;letter-spacing:.35em}
+/* Avant de montrer : une fiche retiree reste lisible, mais s'efface. */
+.fiche.retire .ligne,.fiche.retire .txt,.fiche.retire .mots,.fiche.retire .sens{opacity:.32}
+.retire-b{display:inline-flex;align-items:center;min-height:36px;margin-top:8px;font-size:.78rem;font-weight:700;
+  color:var(--ink2);text-decoration:underline;text-decoration-color:var(--trait);text-underline-offset:3px}
+.retire-b:hover{text-decoration-color:var(--action)}
 .familles{display:flex;flex-wrap:wrap;gap:8px}
 .fam{min-height:46px;padding:9px 16px;border-radius:99px;border:1px solid var(--trait);background:var(--surf);
   font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
@@ -272,6 +278,20 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 
 <div id="app">
 
+<!-- verrou : une porte, pas un coffre -->
+<section class="vue" id="v-verrou">
+  <div class="corps" style="padding-top:64px">
+    <h1 class="grand">Ton code.</h1>
+    <p class="intro">Quelques chiffres, et le journal s’ouvre.</p>
+    <div class="champ">
+      <input type="password" id="v-code" inputmode="numeric" autocomplete="off" maxlength="6" aria-label="Code d’ouverture">
+      <div class="souffle" id="v-dit"></div>
+    </div>
+    <button class="sobre" id="v-oubli" style="margin-top:24px">J’ai oublié mon code</button>
+  </div>
+  <div class="bas"><button class="pilule" id="v-ouvrir">Ouvrir</button></div>
+</section>
+
 <!-- accueil : le premier lancement, une fois -->
 <section class="vue" id="v-accueil">
   <div class="corps" style="padding-bottom:120px">
@@ -329,7 +349,13 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
       <h1 class="grand" id="a-fin">C’est prêt.</h1>
       <p class="intro">Cinq familles d’émotion, chacune avec sa couleur. Elles ne changent jamais, quel que soit le monde choisi&nbsp;: c’est le seul code à retenir.</p>
       <div class="legende" id="a-legende"></div>
-      <div class="avis" style="margin-top:28px">
+      <div class="champ" id="a-pin-champ" style="margin-top:30px">
+        <h2>Un code pour ouvrir l’appli&nbsp;?</h2>
+        <input type="password" id="a-pin" inputmode="numeric" autocomplete="new-password" maxlength="6" aria-label="Code d’ouverture, facultatif">
+        <div class="souffle">Facultatif, quatre à six chiffres. C’est une porte, pas un coffre&nbsp;: le journal n’est pas
+          chiffré, mais personne ne l’ouvre en passant. Si tu l’oublies, la seule issue sera d’effacer le journal.</div>
+      </div>
+      <div class="avis" style="margin-top:22px">
         <b>Où vont ces notes</b>
         Nulle part. Tout est écrit dans la mémoire de ce téléphone, il n’y a ni compte, ni serveur, ni envoi.
         En contrepartie&nbsp;: vider les données du navigateur ou changer d’appareil efface le journal.
@@ -360,6 +386,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     </button>
   </div>
   <div class="salut" id="salut"></div>
+  <div id="avert" hidden style="padding:0 18px 18px"></div>
   <div class="corps" id="liste"></div>
   <div class="bas"><button class="pilule" id="b-nouveau">Noter un moment</button></div>
 </section>
@@ -462,7 +489,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     <div class="segments" id="s-periodes" style="margin-top:4px"></div>
     <div id="s-corps"></div>
   </div>
-  <div class="bas"><button class="sobre" id="b-ancre">J’ai vu mon psy aujourd’hui</button></div>
+  <div class="bas"><button class="pilule" id="b-montrer">Montrer</button></div>
 </section>
 
 <!-- reglages -->
@@ -508,6 +535,15 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
       <div class="reglette">
         <label for="r-contraste"><span>Contraste</span><span id="r-contraste-v">milieu</span></label>
         <input type="range" class="jauge-h" id="r-contraste" min="0" max="100" step="5" value="50">
+      </div>
+    </div>
+    <div class="champ" id="r-pin-champ">
+      <h2>Code d’ouverture</h2>
+      <input type="password" id="r-pin" inputmode="numeric" autocomplete="new-password" maxlength="6" aria-label="Nouveau code">
+      <div class="souffle" id="r-pin-dit"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="sobre" id="r-pin-poser">Poser ce code</button>
+        <button class="sobre" id="r-pin-retirer" hidden>Retirer le code</button>
       </div>
     </div>
     <div class="champ">
@@ -581,6 +617,16 @@ const depuis = ts => {
 
 // Le qualificatif tel qu'il doit se lire pour l'accord choisi.
 const affiche = cle => P.motAffiche(cle, prefs.accord);
+
+/* Le code d'ouverture. Hache avant d'etre range, pour qu'un coup d'oeil dans
+   le stockage ne le lise pas — mais le journal, lui, reste en clair. C'est
+   une porte, pas un coffre, et l'interface le dit avec ces mots-la. */
+const PIN_OK = !!(window.crypto && crypto.subtle && !DEMO);
+const hacher = async pin => {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('gentiane:' + pin));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+};
+const PIN_FORME = /^[0-9]{4,6}$/;
 
 const CADENAS = '<svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>';
 
@@ -659,11 +705,15 @@ $('#a-mondes').addEventListener('click', ev => {
   prefs[k] = +ev.target.value / 100; peindreTheme(); peindreAccueil();
 }));
 $('#a-retour').onclick = () => allerVolet(volet - 1);
-$('#a-suite').onclick = () => {
+$('#a-suite').onclick = async () => {
   if (volet < 2) { prefs.prenom = $('#a-prenom').value.trim(); garderPrefs(); peindreAccueil(); return allerVolet(volet + 1); }
+  const pin = $('#a-pin').value.trim();
+  if (pin && !PIN_FORME.test(pin)) { alert('Le code, c’est quatre à six chiffres — ou rien du tout.'); return; }
+  if (pin && PIN_OK) prefs.pin = await hacher(pin);
   prefs.vu = true; garderPrefs();
   peindreJournal(); ouvrir(null);
 };
+$('#a-pin-champ').hidden = !PIN_OK;
 
 /* == journal ============================================================== */
 function peindreSalut() {
@@ -687,8 +737,28 @@ function carteMoment(e) {
     + '</div></button>';
 }
 
+// Safari efface le stockage d'un site apres sept jours sans visite, sauf s'il
+// est installe sur l'ecran d'accueil. Personne ne le dira a la place de
+// l'appli : elle le dit elle-meme, une fois, et seulement la ou c'est vrai.
+function peindreAvert() {
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent);
+  const installe = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+  const a = $('#avert');
+  a.hidden = DEMO || !ios || installe || !!prefs.avertiInstall;
+  if (a.hidden) return;
+  a.innerHTML = '<div class="avis" style="margin-top:0"><b>À faire une fois</b>'
+    + 'Ajoute Gentiane à l’écran d’accueil : bouton Partager, puis « Sur l’écran d’accueil ». '
+    + 'Sans ça, Safari peut effacer ce journal après sept jours sans l’ouvrir.'
+    + '<button class="sobre" id="b-averti" style="margin-top:12px;min-height:44px">C’est fait</button></div>';
+}
+$('#avert').addEventListener('click', ev => {
+  if (!ev.target.closest('#b-averti')) return;
+  prefs.avertiInstall = true; garderPrefs(); $('#avert').hidden = true;
+});
+
 function peindreJournal() {
   peindreSalut();
+  peindreAvert();
   const l = $('#liste');
   if (!entrees.length) {
     l.innerHTML = '<div class="vide"><b>Rien de noté</b>Au prochain moment qui remue quelque chose, pose-le ici. Même court.</div>';
@@ -833,7 +903,7 @@ $('#b-retour3').onclick = auJournal;
 $('#b-retour4').onclick = auJournal;
 $('#b-retour5').onclick = () => { peindreStats(); vue('v-stats'); };
 $('#b-stats').onclick = () => { peindreStats(); vue('v-stats'); };
-$('#b-seance').onclick = () => { peindreSeance(); vue('v-seance'); };
+$('#b-seance').onclick = () => { seanceMode = 'preparer'; retires = new Set(); peindreSeance(); vue('v-seance'); };
 $('#b-reglages').onclick = () => { peindreReglages(); vue('v-reglages'); };
 $('#b-suppr').onclick = () => {
   if (!confirm('Supprimer ce moment ?')) return;
@@ -866,55 +936,72 @@ function peindreMot(cle) {
    Une periode bornee, rendue pour etre lue par quelqu'un d'autre. Aucun
    commentaire, aucune interpretation : le psy est la pour ca. */
 let periode = 'semaine';
+let seanceMode = 'preparer';   // 'preparer' : on relit et on retire ; 'montrer' : on tend l'ecran
+let retires = new Set();       // ce qu'on retire pour cette fois-ci seulement, jamais enregistre
+
+function ficheSeance(e, preparer) {
+  const f = P.famille(e.fam) || { nom: '—', couleur: 'var(--ink2)' };
+  const dehors = retires.has(e.id);
+  return '<div class="fiche' + (dehors ? ' retire' : '') + '" style="--c:' + f.couleur + '">'
+    + '<div class="ligne"><span class="h">' + heure(e.ts) + '</span><span class="emo">' + ech(f.nom)
+    + '</span><span class="num chiffre">' + (e.intensite || '–') + '</span></div>'
+    + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
+    + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(affiche(q)) + '</span>').join('') + '</div>' : '')
+    + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
+    + (preparer ? '<button class="retire-b" data-id="' + e.id + '">' + (dehors ? 'Remettre' : 'Retirer de ce que je montre') + '</button>' : '')
+    + '</div>';
+}
 
 function peindreSeance() {
+  const preparer = seanceMode === 'preparer';
   $('#s-periodes').innerHTML = P.PERIODES.map(p => '<button type="button" data-p="' + p.cle + '" aria-pressed="'
     + (p.cle === periode) + '"' + (p.cle === 'seance' && !prefs.ancre ? ' disabled style="opacity:.4"' : '')
     + '>' + ech(p.nom) + '</button>').join('');
+  $('#s-periodes').hidden = !preparer;
 
   const pe = P.periode(entrees, periode, Date.now(), prefs.ancre);
   const nom = (prefs.prenom || '').trim();
   const s = $('#s-corps');
+  const pil = $('#b-montrer');
 
-  // Le rappel de la regle, jamais le compte : le psy sait qu'il existe des
-  // moments gardes, il n'a pas a savoir combien.
+  if (preparer) {
+    // La relecture : rien n'est en jeu a l'ecriture, parce qu'on repasse ici avant que quiconque voie quoi que ce soit.
+    pil.textContent = 'Montrer';
+    pil.disabled = !pe.liste.some(e => !retires.has(e.id));
+    s.innerHTML = '<div class="seance-tete"><b>Avant de montrer</b><span>Relis, et retire ce que tu veux. Ça reste dans ton journal, ça ne sera juste pas montré cette fois.</span></div>'
+      + (pe.liste.length
+        ? pe.jours.map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => ficheSeance(e, true)).join('')).join('')
+        : '<div class="vide"><b>Rien sur cette période</b>Aucun moment noté entre le ' + ech(jourCourt(pe.debut)) + ' et aujourd’hui.</div>')
+      + '<button class="sobre" id="b-ancre" style="margin-top:28px">J’ai vu mon psy aujourd’hui</button>'
+      + '<div class="souffle" style="margin-top:8px">Pose un repère : la prochaine fois, « Depuis ma séance » commencera aujourd’hui.</div>';
+    return;
+  }
+
+  pil.textContent = 'Terminer';
+  pil.disabled = false;
+  const liste = pe.liste.filter(e => !retires.has(e.id));
+  const jours = P.parJour(liste), resume = P.resume(liste), repartition = P.repartition(liste);
+  const pluriel = liste.length > 1 ? 's' : '';
+
+  // Le rappel de la regle, jamais le compte : qui lit sait qu'il existe des
+  // moments gardes, pas combien. Ce qu'on ne voit pas n'est pas une information.
   const garde = '<div class="avis"><b>Ce que cette page n’est pas</b>'
     + 'Tout ce qui est écrit ici a été saisi ' + (nom ? 'par ' + ech(nom) : 'à la main') + '. '
     + 'L’application ne fait que trier et compter&nbsp;: aucune analyse automatique, aucune interprétation, '
     + 'aucun score clinique, et rien n’a été envoyé nulle part. '
-    + 'Les moments marqués « gardé pour moi » ne sont pas affichés ici.</div>';
+    + 'Les moments gardés pour soi ne sont pas affichés ici.</div>';
 
-  if (!pe.liste.length) {
-    s.innerHTML = '<div class="vide"><b>Rien à montrer sur cette période</b>Aucun moment noté entre le '
-      + ech(jourCourt(pe.debut)) + ' et aujourd’hui.</div>' + garde;
-    return;
-  }
-
-  const pluriel = pe.liste.length > 1 ? 's' : '';
   s.innerHTML = '<div class="seance-tete"><b>' + ech(pe.titre) + '</b><span>Du ' + ech(jourCourt(pe.debut))
-    + ' à aujourd’hui &middot; ' + pe.liste.length + ' moment' + pluriel + ' noté' + pluriel + '</span></div>'
-
+    + ' à aujourd’hui &middot; ' + liste.length + ' moment' + pluriel + ' noté' + pluriel + '</span></div>'
     + '<div class="chiffres">'
-    + '<div class="tuile"><b>' + pe.liste.length + '</b><span>moment' + pluriel + '</span></div>'
-    + '<div class="tuile"><b>' + pe.resume.moyenne + '</b><span>intensité moyenne</span></div></div>'
-
+    + '<div class="tuile"><b>' + liste.length + '</b><span>moment' + pluriel + '</span></div>'
+    + '<div class="tuile"><b>' + resume.moyenne + '</b><span>intensité moyenne</span></div></div>'
     + '<div class="bloc-stat"><h2>Répartition</h2>'
-    + pe.repartition.map(x => '<div class="barre" style="--c:' + x.couleur + '"><div class="t"><span>' + ech(x.nom)
+    + repartition.map(x => '<div class="barre" style="--c:' + x.couleur + '"><div class="t"><span>' + ech(x.nom)
       + '</span><span style="color:var(--ink2)">' + x.n + ' &middot; ' + x.pct + '%</span></div>'
       + '<div class="p"><i style="width:' + x.pct + '%"></i></div></div>').join('')
     + '</div>'
-
-    + pe.jours.map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => {
-      const f = P.famille(e.fam) || { nom: '—', couleur: 'var(--ink2)' };
-      return '<div class="fiche" style="--c:' + f.couleur + '">'
-        + '<div class="ligne"><span class="h">' + heure(e.ts) + '</span><span class="emo">' + ech(f.nom)
-        + '</span><span class="num chiffre">' + (e.intensite || '–') + '</span></div>'
-        + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
-        + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(affiche(q)) + '</span>').join('') + '</div>' : '')
-        + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
-        + '</div>';
-    }).join('')).join('')
-
+    + jours.map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => ficheSeance(e, false)).join('')).join('')
     + garde;
 }
 
@@ -922,8 +1009,14 @@ $('#s-periodes').addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b || b.disabled) return;
   periode = b.dataset.p; peindreSeance();
 });
-$('#b-ancre').onclick = () => {
-  prefs.ancre = Date.now(); garderPrefs(); periode = 'seance'; peindreSeance();
+$('#s-corps').addEventListener('click', ev => {
+  const r = ev.target.closest('.retire-b');
+  if (r) { const id = +r.dataset.id; retires.has(id) ? retires.delete(id) : retires.add(id); return peindreSeance(); }
+  if (ev.target.closest('#b-ancre')) { prefs.ancre = Date.now(); garderPrefs(); periode = 'seance'; peindreSeance(); }
+});
+$('#b-montrer').onclick = () => {
+  if (seanceMode === 'preparer') { seanceMode = 'montrer'; peindreSeance(); scrollTo(0, 0); }
+  else auJournal();
 };
 
 /* == reglages ============================================================= */
@@ -937,6 +1030,13 @@ function peindreReglages() {
     $('#r-' + k).value = Math.round(prefs[k] * 100);
     $('#r-' + k + '-v').textContent = mot(prefs[k] * 100);
   });
+  $('#r-pin-champ').hidden = !PIN_OK;
+  $('#r-pin').value = '';
+  $('#r-pin-retirer').hidden = !prefs.pin;
+  $('#r-pin-poser').textContent = prefs.pin ? 'Changer le code' : 'Poser ce code';
+  $('#r-pin-dit').textContent = prefs.pin
+    ? 'Un code est posé. C’est une porte, pas un coffre : le journal n’est pas chiffré.'
+    : 'Facultatif, quatre à six chiffres. Personne n’ouvre le journal en passant ; mais si tu l’oublies, la seule issue sera d’effacer le journal.';
   $('#r-compte').textContent = entrees.length
     ? (entrees.length === 1 ? 'Un moment est enregistré.' : entrees.length + ' moments sont enregistrés.')
     : 'Aucun moment n’est enregistré pour l’instant.';
@@ -962,6 +1062,15 @@ $('#r-mondes').addEventListener('click', ev => {
     vignettes($('#r-mondes'), prefs.theme);
   });
 });
+$('#r-pin-poser').onclick = async () => {
+  const pin = $('#r-pin').value.trim();
+  if (!PIN_FORME.test(pin)) return alert('Le code, c’est quatre à six chiffres.');
+  prefs.pin = await hacher(pin); garderPrefs(); peindreReglages();
+};
+$('#r-pin-retirer').onclick = () => {
+  if (!confirm('Retirer le code ? Le journal s’ouvrira directement.')) return;
+  prefs.pin = null; garderPrefs(); peindreReglages();
+};
 $('#r-vider').onclick = () => {
   if (!entrees.length) return alert('Le journal est déjà vide.');
   if (!confirm('Effacer les ' + entrees.length + ' moments notés ? C’est définitif, il n’y a pas de sauvegarde.')) return;
@@ -1082,7 +1191,7 @@ peindreTheme();
 const ECRANS = {
   '#journal': () => { peindreJournal(); vue('v-journal'); },
   '#tendances': () => { peindreStats(); vue('v-stats'); },
-  '#seance': () => { peindreSeance(); vue('v-seance'); },
+  '#seance': () => { seanceMode = 'montrer'; retires = new Set(); peindreSeance(); vue('v-seance'); },
   '#reglages': () => { peindreReglages(); vue('v-reglages'); },
   '#saisie': () => {
     ouvrir(null);
@@ -1098,9 +1207,30 @@ const ECRANS = {
 };
 const DEPART = ECRANS[location.hash];
 
-if (DEPART) DEPART();
-else if (prefs.vu) { peindreJournal(); vue('v-journal'); }
-else { peindreAccueil(); allerVolet(0); vue('v-accueil'); }
+function demarrer() {
+  if (DEPART) DEPART();
+  else if (prefs.vu) { peindreJournal(); vue('v-journal'); }
+  else { peindreAccueil(); allerVolet(0); vue('v-accueil'); }
+}
+
+// La porte : si un code a ete pose, rien ne s'affiche avant qu'il soit donne.
+if (!DEMO && prefs.pin && PIN_OK) {
+  vue('v-verrou');
+  const essayer = async () => {
+    const pin = $('#v-code').value.trim();
+    if (!pin) return;
+    if (await hacher(pin) === prefs.pin) { $('#v-code').value = ''; demarrer(); }
+    else { $('#v-dit').textContent = 'Ce n’est pas le code.'; $('#v-code').select(); }
+  };
+  $('#v-ouvrir').onclick = essayer;
+  $('#v-code').addEventListener('keydown', ev => { if (ev.key === 'Enter') essayer(); });
+  $('#v-oubli').onclick = () => {
+    if (!confirm('Sans le code, il n’y a pas d’autre issue que d’effacer le journal — il n’existe aucune copie. Effacer tout et recommencer ?')) return;
+    if (!confirm('Vraiment ? Rien ne pourra être récupéré.')) return;
+    localStorage.removeItem(CLE); localStorage.removeItem(CLE_P); location.reload();
+  };
+  setTimeout(() => $('#v-code').focus(), 60);
+} else demarrer();
 
 // Un seul service worker : les ecrans embarques n'en enregistrent pas.
 if (!DEMO && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');

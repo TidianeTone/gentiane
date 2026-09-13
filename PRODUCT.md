@@ -82,6 +82,12 @@ vectorielle.
   et n'apparaît jamais en mode séance. L'écran séance énonce la règle, jamais
   le nombre de moments concernés — le psy sait que le mécanisme existe, le
   compte appartient au patient.
+- **Relecture avant de montrer** : l'écran séance s'ouvre en relecture, où
+  l'on retire ce qu'on veut pour cette fois ; rien de ce choix n'est
+  enregistré. C'est ce qui rend l'autocensure inutile à l'écriture.
+- **Code d'ouverture facultatif**, haché, présenté honnêtement comme une porte
+  et pas un coffre (le journal n'est pas chiffré). Sans le code : effacer.
+- Le salut ne rappelle jamais depuis combien de temps on n'a pas noté.
 - La saisie s'ouvre sur l'émotion et le thermomètre : un moment se note en
   trois gestes sans faire défiler. Le contexte, les sensations, l'heure et le
   marqueur privé sont en dessous et restent facultatifs.

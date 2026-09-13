@@ -197,7 +197,7 @@ eq(P.salut('', [], matin).titre, 'Bonjour', 'sans prenom');
 eq(P.salut('Julie', [], new Date(2026, 8, 13, 21, 0).getTime()).titre, 'Bonsoir Julie', 'bonsoir le soir');
 eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonsoir Julie', 'la nuit aussi c est bonsoir : bonne nuit est un au revoir');
 eq(P.salut('Julie', j, T).souffle, 'Un moment noté aujourd’hui.', 'compte du jour');
-eq(P.salut('Julie', [j[1]], T).souffle, 'Ton dernier moment date d’hier.', 'dernier moment hier');
+vrai(!/dernier moment|il y a/.test(P.salut('Julie', [j[1]], T).souffle), 'aucun rappel du temps passe depuis la derniere note : ca marcherait comme un reproche');
 vrai(!/f[ée]licit|bravo|continue comme/i.test(P.salut('Julie', j, T).souffle), 'aucune felicitation');
 
 console.log(ok + ' verifications passees, dont ' + paires + ' paires de couleur.');

@@ -276,9 +276,9 @@
     const auj = P.iso(maintenant);
     const n = entrees.filter(e => P.iso(e.ts) === auj).length;
     if (n) return { titre, souffle: n === 1 ? 'Un moment noté aujourd’hui.' : n + ' moments notés aujourd’hui.' };
-    const dernier = P.tri(entrees)[0];
-    const j = Math.round((P.minuit(auj) - P.minuit(P.iso(dernier.ts))) / 864e5);
-    return { titre, souffle: j === 1 ? 'Ton dernier moment date d’hier.' : 'Ton dernier moment date d’il y a ' + j + ' jours.' };
+    // Surtout pas « ton dernier moment date d'il y a six jours » : c'est un
+    // fait, et ca marche comme un reproche. Rien ici ne relance.
+    return { titre, souffle: 'Rien n’est jugé ici, et rien ne sort de ce téléphone.' };
   };
 
   P.iso = ts => { const d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
