@@ -100,6 +100,14 @@ vectorielle.
 - Voix : tutoiement, phrases courtes, jamais de ton clinique, jamais de
   félicitations ni de gamification.
 
+## Demonstration
+
+`?demo` sert l'application avec un journal fictif, sans jamais toucher au
+stockage de l'appareil. La page destinée aux psychologues s'en sert pour
+montrer cinq écrans réels et manipulables plutôt que des captures. Le journal
+fictif doit rester plausible et cohérent avec le vocabulaire ; il n'est pas
+une promesse d'usage et ne doit jamais être présenté comme des données réelles.
+
 ## Evidence on Hand
 
 Les deux exercices du cahier de thérapie (p.102 et p.103) sont la source réelle

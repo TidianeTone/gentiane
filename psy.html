@@ -31,13 +31,13 @@ a:hover{color:var(--action)}
 .mesure{max-width:66ch}
 h1,h2{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 55,'WONK' 1;
   font-weight:700;letter-spacing:-.014em;text-wrap:balance;margin:0}
-h1{font-size:clamp(42px,6.6vw,80px);line-height:1.0}
+h1{font-size:clamp(38px,6.6vw,80px);line-height:1.0;max-width:16ch}
 h2{font-size:clamp(28px,3.6vw,44px);line-height:1.07;margin:0 0 22px;max-width:21ch}
 p{margin:0 0 18px}
 em{font-style:italic}
 section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .pied{color:var(--ink2);font-size:15px}
-.etiq{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.aide{color:var(--ink2);font-size:15px;margin-top:16px}
 
 /* -- barre --------------------------------------------------------------- */
 .barre{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:14px;
@@ -62,43 +62,28 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .ancres a.creuse{border:1px solid var(--trait);background:var(--surf);color:var(--ink)}
 .ancres a.creuse:hover{background:var(--surf2)}
 
-/* -- demo du thermometre ------------------------------------------------- */
-.demo{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(28px,4vw,52px);align-items:start}
-@media(min-width:900px){.demo{grid-template-columns:minmax(0,1fr) minmax(360px,440px)}}
-.appareil{background:var(--surf);border-radius:30px;padding:26px;box-shadow:0 24px 60px -28px rgba(0,0,0,.55)}
-.grad{display:flex;gap:18px;align-items:flex-start}
-.familles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-.fam{min-height:46px;padding:9px 16px;border-radius:99px;border:1px solid var(--trait);background:var(--fond);
-  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
-  font-weight:700;font-size:16px;color:var(--ink2);transition:background-color .2s var(--ease),color .2s var(--ease)}
-.fam[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein)}
-.blocs{flex:1;min-width:0}
-.bloc{margin-bottom:13px;opacity:.42;transition:opacity .22s var(--ease)}
-.bloc.actif{opacity:1}
-.bloc .lab{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
-  font-weight:700;font-size:16px;letter-spacing:.06em;color:var(--c);margin-bottom:5px}
-.qual{display:block;width:100%;min-height:42px;text-align:left;font-size:14px;padding:9px 13px;border-radius:14px;
-  background:var(--fond);border:1px solid var(--trait);color:var(--ink2);margin-bottom:5px}
-.qual[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein);font-weight:700}
-.thermo{width:74px;flex:none;position:relative;height:326px;--c:var(--trait)}
-.thermo .lecture{height:52px;text-align:center}
-.thermo .val{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
-  font-weight:700;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:var(--c)}
-.thermo .pal{font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
-.tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;background:var(--fond);
-  border:1px solid var(--trait);overflow:hidden}
-.merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);transform-origin:bottom;
-  transform:scaleY(0);transition:transform .22s var(--ease)}
-.bulbe{position:absolute;left:17px;bottom:0;width:40px;height:40px;border-radius:99px;background:var(--fond);
-  border:1px solid var(--trait);transition:background-color .22s var(--ease)}
-.bulbe.plein{background:var(--c);border-color:var(--c)}
-.ticks{position:absolute;left:51px;top:52px;height:230px;width:16px;display:flex;flex-direction:column-reverse;
-  justify-content:space-between;pointer-events:none}
-.ticks i{display:block;height:1px;width:5px;background:var(--trait)}
-.ticks i:nth-child(odd){background:var(--ink2);width:9px}
-.curseur{position:absolute;left:37px;top:167px;width:230px;height:56px;margin:-28px 0 0 -115px;
-  transform:rotate(-90deg);opacity:0;cursor:ns-resize}
-.aide{color:var(--ink2);font-size:15px;margin-top:16px}
+/* -- les ecrans ----------------------------------------------------------
+   Ce ne sont pas des captures : c'est l'application elle-meme, servie en
+   mode demonstration avec un journal fictif, et manipulable. */
+.duo{display:grid;gap:clamp(30px,4vw,56px);align-items:start}
+@media(min-width:940px){.duo{grid-template-columns:minmax(0,1fr) auto}}
+.paire{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,34px)}
+figure.ecran{margin:0;width:350px;max-width:100%}
+/* Une lunette, pas un lisere : l ecran est un objet pose sur la page, et il
+   se detache par son cadre plutot que par un halo. */
+.ecran .cadre{--e:.846;width:350px;max-width:100%;height:calc(var(--h) * var(--e) + 20px);
+  border:10px solid var(--surf);outline:1px solid var(--trait);outline-offset:0;
+  border-radius:34px;overflow:hidden;background:var(--fond);
+  box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
+.ecran iframe{display:block;width:390px;height:var(--h);border:0;transform:scale(var(--e));transform-origin:0 0}
+/* Un ecran de 390px reduit : sur un tres petit telephone, on reduit davantage
+   plutot que de laisser le cadre depasser sa colonne. */
+@media(max-width:420px){
+  figure.ecran,.ecran .cadre{width:288px}
+  .ecran .cadre{--e:.687}
+}
+.ecran figcaption{margin-top:16px;color:var(--ink2);font-size:15px;line-height:1.5}
+.ecran figcaption b{display:block;color:var(--ink);font-weight:700;font-size:16px;margin-bottom:2px}
 
 /* -- les refus, en tableau ----------------------------------------------- */
 .refus{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:8px}
@@ -134,13 +119,6 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
   background:var(--surf);border:1px solid var(--trait);font-size:15px}
 .emotions i{width:12px;height:12px;border-radius:99px;background:var(--c)}
 
-/* -- bareme -------------------------------------------------------------- */
-.bareme{width:100%;border-collapse:collapse;max-width:66ch;margin-top:8px}
-.bareme th,.bareme td{text-align:left;padding:13px 0;border-bottom:1px solid var(--trait);vertical-align:baseline}
-.bareme th{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
-.bareme td:last-child,.bareme th:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:20px}
-.bareme tr:last-child td{border-bottom:0;font-weight:700}
-
 /* -- proposer ------------------------------------------------------------ */
 .proposer{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 @media(min-width:900px){.proposer{grid-template-columns:minmax(0,1fr) 264px}}
@@ -173,7 +151,7 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 </header>
 
 <div class="ouverture">
-  <h1>Le tableau des<br>émotions, mais sur<br>son téléphone.</h1>
+  <h1>Le tableau des émotions, mais sur son téléphone.</h1>
   <p class="lede">Gentiane tient les deux exercices du cahier — <b>« Identifiez vos émotions »</b> et
     <b>« Graduez vos émotions »</b> — dans une application que vous pouvez donner à un patient en fin de séance.
     Rien à installer de votre côté. Rien qui quitte son appareil.</p>
@@ -185,31 +163,64 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 
 <section id="exercice">
   <h2>Le thermomètre n’illustre pas l’intensité. Il l’enregistre.</h2>
-  <div class="demo">
+  <div class="duo">
     <div class="mesure">
       <p>Sur le papier, le patient coche une case d’intensité, puis cherche le qualificatif dans la colonne
         correspondante. Les deux gestes sont séparés, et le second est souvent abandonné.</p>
       <p>Ici, c’est le même geste. On glisse le mercure, le palier atteint allume son bloc de vocabulaire.
         L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier —
         utile pour quelqu’un qui sait nommer ce qu’il ressent mais pas le chiffrer.</p>
-      <p>C’est le premier écran de la saisie, avant tout le reste&nbsp;: un moment peut se noter en trois
-        gestes, dans la rue, sans rien avoir à écrire. Le contexte et les sensations physiques attendent
-        en dessous, et peuvent être complétés plus tard.</p>
-      <p class="aide">Essayez&nbsp;: choisissez une émotion, puis faites glisser le mercure de haut en bas.</p>
+      <p class="aide">L’écran ci-contre est l’application elle-même, avec un journal fictif.
+        Vous pouvez y toucher&nbsp;: choisissez une émotion, faites glisser le mercure.</p>
     </div>
-    <div class="appareil">
-      <div class="familles" id="d-familles"></div>
-      <div class="grad">
-        <div class="thermo" id="d-thermo">
-          <div class="lecture"><div class="val" id="d-val">0</div><div class="pal" id="d-pal"></div></div>
-          <div class="tube"><div class="merc" id="d-merc"></div></div>
-          <div class="ticks" id="d-ticks"></div>
-          <div class="bulbe" id="d-bulbe"></div>
-          <input type="range" class="curseur" id="d-int" min="0" max="10" step="1" value="0" aria-label="Intensité de 0 à 10">
-        </div>
-        <div class="blocs" id="d-blocs"></div>
-      </div>
+    <figure class="ecran">
+      <div class="cadre" style="--h:900px"><iframe data-ecran="saisie" title="L’écran de saisie de Gentiane"></iframe></div>
+      <figcaption><b>Noter un moment</b>L’émotion, puis le thermomètre. Le palier atteint allume son bloc de mots.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="journal">
+  <h2>Trois gestes, debout dans la rue.</h2>
+  <div class="duo">
+    <div class="mesure">
+      <p>La saisie s’ouvre sur l’émotion et le thermomètre, pas sur un formulaire. Choisir, glisser,
+        enregistrer&nbsp;: le moment est noté sans avoir rien eu à écrire, et sans avoir fait défiler l’écran.</p>
+      <p>Le contexte, les sensations physiques et l’heure sont en dessous, et peuvent attendre — le soir,
+        ou la séance. C’est délibéré&nbsp;: le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
+        et c’est exactement celui où personne n’a envie de remplir cinq champs.</p>
+      <p>Le journal se relit comme une suite de fiches, la plus récente en haut. La couleur est l’émotion,
+        le chiffre l’intensité, et la barre verticale à gauche de chaque fiche a la hauteur de cette
+        intensité — l’allure d’une semaine se lit sans lire un mot.</p>
     </div>
+    <figure class="ecran">
+      <div class="cadre" style="--h:880px"><iframe data-ecran="journal" loading="lazy" title="Le journal de Gentiane"></iframe></div>
+      <figcaption><b>Le journal</b>Un moment marqué « gardé pour moi » reste ici et n’apparaît jamais en séance.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="liens">
+  <h2>Pendant qu’elle écrit, elle voit quand c’est déjà arrivé.</h2>
+  <div class="mesure">
+    <p>Dès que l’émotion et l’intensité sont posées, l’application remonte les moments passés qui
+      ressemblent à celui en cours, et dit pourquoi&nbsp;: même émotion, même palier, les mots partagés.
+      C’est le rapprochement le plus utile au moment le plus utile — pendant la saisie, pas trois semaines après.</p>
+    <p>Les mêmes liens sont dessinés dans Tendances&nbsp;: un point par moment, la hauteur est l’intensité,
+      la couleur l’émotion, et un trait relie deux moments proches. Toucher un point donne le moment et
+      tous ses échos. C’est une addition de points, pas un modèle&nbsp;: à la question
+      <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une phrase, et le patient peut
+      ne pas être d’accord avec elle.</p>
+  </div>
+  <div class="paire">
+    <figure class="ecran">
+      <div class="cadre" style="--h:640px"><iframe data-ecran="echo" loading="lazy" title="Les échos pendant la saisie"></iframe></div>
+      <figcaption><b>Déjà vécu</b>Pendant la saisie, sous le vocabulaire.</figcaption>
+    </figure>
+    <figure class="ecran">
+      <div class="cadre" style="--h:1000px"><iframe data-ecran="tendances" loading="lazy" title="L’écran Tendances de Gentiane"></iframe></div>
+      <figcaption><b>Tendances</b>Le graphe des motifs, la répartition, les heures, les mots qui reviennent.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -218,14 +229,8 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
   <div class="mesure">
     <p>Une feuille blanche et un tableau sans couleur, c’est déjà une demande&nbsp;: remplis les cases.
       Pour certains patients — enfants, adolescents, personnes autistes, personnes très anxieuses —
-      cette demande est le premier obstacle, avant même la question des émotions.</p>
-    <p>Alors la première chose que Gentiane demande n’est pas une émotion. C’est&nbsp;:
-      <em>comment veux-tu qu’on t’appelle, et de quelle couleur tu veux que ce soit.</em>
-      Sept mondes, en clair comme en sombre, plus la taille du texte, la chaleur et le contraste.
-      Le patient choisit avant d’écrire la moindre ligne.</p>
-    <p>Au même écran, il choisit l’accord de toute l’application&nbsp;: féminin, masculin, ou sans accord
-      avec des tournures nominales. Le vocabulaire du livre est donné au féminin — personne n’a à lire
-      un accord qui n’est pas le sien, et il n’y a pas de point médian à déchiffrer.</p>
+      cette demande est le premier obstacle, avant même la question des émotions. Alors la première chose
+      que l’application demande n’est pas une émotion, mais un prénom et des couleurs.</p>
   </div>
   <div class="mondes" id="mondes"></div>
   <p class="aide" id="souffle-monde" style="margin-bottom:34px"></p>
@@ -253,48 +258,27 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
     </tr></tbody>
   </table>
   <p class="fait"><b>Ce qu’elle fait</b>Elle enregistre, trie, compte, et rapproche les moments qui se
-    ressemblent selon un barème publié ci-dessous. Rien d’autre.</p>
-</section>
-
-<section id="echos">
-  <h2>Pourquoi ces deux moments-là sont reliés.</h2>
-  <div class="mesure">
-    <p>Pendant la saisie, l’application remonte les moments passés qui ressemblent à celui en cours.
-      Les mêmes liens sont dessinés dans l’écran Tendances&nbsp;: un point par moment, la hauteur est
-      l’intensité, un trait relie deux moments proches.</p>
-    <p>Le rapprochement est une addition, et le barème est ci-dessous. Ça veut dire que la question
-      <em>pourquoi ces deux-là&nbsp;?</em> a toujours une réponse en une phrase — même émotion, même palier,
-      et le mot « voisin » dans les deux. Vous pouvez la donner au patient, et il peut ne pas être d’accord&nbsp;:
-      le lien devient une question à poser, pas un résultat à accepter.</p>
-    <p>Rien n’est pondéré par un modèle, rien n’apprend du patient, et le barème ne changera pas dans son dos.</p>
-  </div>
-  <table class="bareme">
-    <thead><tr><th>Ce qui rapproche deux moments</th><th>Points</th></tr></thead>
-    <tbody>
-      <tr><td>La même famille d’émotion <span style="color:var(--ink2)">— sinon le score tombe à zéro immédiatement</span></td><td>2</td></tr>
-      <tr><td>Le même palier d’intensité (+ / ++ / +++ / ++++)</td><td>1,5</td></tr>
-      <tr><td>Par qualificatif partagé</td><td>1</td></tr>
-      <tr><td>Par mot partagé dans le texte ou les sensations physiques</td><td>0,5 <span style="color:var(--ink2)">(max 2)</span></td></tr>
-      <tr><td>Seuil à partir duquel deux moments sont reliés</td><td id="seuil">3,5</td></tr>
-    </tbody>
-  </table>
-  <p class="aide">Le seuil impose donc au minimum la même famille <em>et</em> le même palier.
-    Les mots de moins de quatre lettres et les mots outils sont écartés, les accents aplatis.</p>
+    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Rien d’autre.</p>
 </section>
 
 <section id="seance">
   <h2>Le patient vous tend son téléphone.</h2>
-  <div class="mesure">
-    <p>Un écran « Séance » restitue une période bornée — sept jours, trente jours, ou depuis la dernière
-      séance si le patient a posé le repère — en plus grand et plus aéré que le reste de l’application,
-      parce que c’est le seul écran destiné à être lu par quelqu’un d’autre&nbsp;: le compte des moments,
-      l’intensité moyenne, la répartition par famille, puis chaque fiche dans l’ordre.</p>
-    <p>Un moment peut être marqué <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal du patient et
-      n’apparaît jamais dans cet écran. L’application vous dit que la règle existe, jamais combien de
-      moments sont concernés. C’est la condition pour qu’il ose noter ce qu’il n’a pas encore envie de dire —
-      et ce qu’il finit par en dire reste une décision qui lui appartient.</p>
-    <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. La lecture se fait devant vous,
-      sur son appareil, et s’arrête quand il range son téléphone.</p>
+  <div class="duo">
+    <div class="mesure">
+      <p>Un écran « Séance » restitue une période bornée — sept jours, trente jours, ou depuis la dernière
+        séance si le patient a posé le repère — en plus grand et plus aéré que le reste de l’application,
+        parce que c’est le seul écran destiné à être lu par quelqu’un d’autre.</p>
+      <p>Un moment peut être marqué <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal du patient et
+        n’apparaît jamais dans cet écran. L’application vous dit que la règle existe, jamais combien de
+        moments sont concernés. C’est la condition pour qu’il ose noter ce qu’il n’a pas encore envie de dire —
+        et ce qu’il finit par en dire reste une décision qui lui appartient.</p>
+      <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. La lecture se fait devant vous,
+        sur son appareil, et s’arrête quand il range son téléphone.</p>
+    </div>
+    <figure class="ecran">
+      <div class="cadre" style="--h:980px"><iframe data-ecran="seance" loading="lazy" title="L’écran Séance de Gentiane"></iframe></div>
+      <figcaption><b>Séance</b>Les trois fenêtres, le compte, la répartition, puis chaque fiche dans l’ordre.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -322,8 +306,10 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
     <p><b>La contrepartie est réelle et doit être dite au patient&nbsp;:</b> changer de téléphone,
       désinstaller l’application ou vider les données du navigateur efface le journal, définitivement.
       Il n’y a pas de sauvegarde, parce qu’une sauvegarde voudrait dire une copie quelque part.</p>
-    <p class="pied">Gentiane est gratuit, sans compte et sans publicité. C’est un outil de journal
-      personnel, pas un dispositif médical, et il ne remplace aucun suivi.</p>
+    <p class="pied">Les écrans de cette page sont l’application servie avec un journal fictif&nbsp;;
+      ce mode ne lit ni n’écrit rien sur votre appareil. Gentiane est gratuit, sans compte et sans
+      publicité. C’est un outil de journal personnel, pas un dispositif médical, et il ne remplace
+      aucun suivi.</p>
   </div>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>
@@ -340,6 +326,14 @@ const ech = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 
 let theme = 'jardin';
 let sombre = !matchMedia('(prefers-color-scheme: light)').matches;
+
+// Les ecrans embarques suivent le theme de la page : basculer en clair
+// rehabille aussi les telephones, c'est la demonstration la plus directe.
+function peindreEcrans() {
+  document.querySelectorAll('.ecran iframe').forEach(f => {
+    f.src = './?demo&theme=' + theme + '&sombre=' + (sombre ? 1 : 0) + '#' + f.dataset.ecran;
+  });
+}
 
 function peindreTheme() {
   const p = P.palette(theme, sombre, 0.5, 0.5);
@@ -362,57 +356,15 @@ function peindreMondes() {
 
 $('#mode').addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b) return;
-  sombre = b.dataset.sombre === '1'; peindreTheme(); peindreMondes();
+  sombre = b.dataset.sombre === '1'; peindreTheme(); peindreMondes(); peindreEcrans();
 });
 $('#mondes').addEventListener('click', ev => {
   const b = ev.target.closest('.monde'); if (!b) return;
-  theme = b.dataset.theme; peindreTheme(); peindreMondes();
+  theme = b.dataset.theme; peindreTheme(); peindreMondes(); peindreEcrans();
 });
-
-/* -- la demo : le meme mecanisme que dans l'application ------------------- */
-const d = { fam: null, i: 0, quals: [] };
-
-$('#d-familles').innerHTML = P.FAMILLES.map(f =>
-  '<button class="fam" style="--c:' + f.couleur + ';--cp:' + f.plein + '" data-fam="' + f.cle + '" aria-pressed="false">'
-  + f.nom + '</button>').join('');
-$('#d-ticks').innerHTML = '<i></i>'.repeat(11);
 
 $('#emotions').innerHTML = P.FAMILLES.map(f =>
   '<span style="--c:' + f.couleur + '"><i></i>' + ech(f.nom) + '</span>').join('');
 
-$('#seuil').textContent = String(P.SEUIL).replace('.', ',');
-
-function peindreDemo() {
-  const f = P.famille(d.fam);
-  const c = f ? f.couleur : 'var(--trait)', cp = f ? f.plein : 'var(--trait)';
-  const b = P.bloc(d.i);
-  $('#d-familles').querySelectorAll('.fam').forEach(el => el.setAttribute('aria-pressed', el.dataset.fam === d.fam));
-  $('#d-thermo').style.setProperty('--c', c);
-  $('#d-val').textContent = d.i;
-  $('#d-pal').textContent = b == null ? '' : P.PALIERS[b];
-  $('#d-merc').style.transform = 'scaleY(' + (d.i / 10) + ')';
-  $('#d-bulbe').classList.toggle('plein', d.i > 0);
-  $('#d-blocs').innerHTML = !f
-    ? '<div style="color:var(--ink2);font-size:15px">Choisissez une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
-    : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + ';--cp:' + cp + '">'
-        + '<div class="lab">' + P.PALIERS[k] + '</div>'
-        + mots.map(m => '<button class="qual" data-mot="' + ech(P.cle(m)) + '" aria-pressed="' + d.quals.includes(P.cle(m)) + '">'
-          + ech(P.mot(m, 'f')) + '</button>').join('')
-        + '</div>').join('');
-}
-
-$('#d-familles').addEventListener('click', ev => {
-  const b = ev.target.closest('.fam'); if (!b) return;
-  d.fam = d.fam === b.dataset.fam ? null : b.dataset.fam; d.quals = []; peindreDemo();
-});
-$('#d-int').addEventListener('input', () => { d.i = +$('#d-int').value; peindreDemo(); });
-$('#d-blocs').addEventListener('click', ev => {
-  const b = ev.target.closest('.qual'); if (!b) return;
-  const m = b.dataset.mot, k = d.quals.indexOf(m);
-  if (k < 0) d.quals.push(m); else d.quals.splice(k, 1);
-  if (k < 0 && !d.i) { d.i = P.intensiteDuBloc(+b.closest('.bloc').dataset.bloc); $('#d-int').value = d.i; }
-  peindreDemo();
-});
-
-peindreTheme(); peindreMondes(); peindreDemo();
+peindreTheme(); peindreMondes(); peindreEcrans();
 </script>

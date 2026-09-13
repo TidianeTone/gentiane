@@ -99,6 +99,21 @@ rien ne sort de l'appareil. **Contrepartie assumée** : vider les données du
 navigateur ou changer de téléphone efface le journal. Il n'y a pas d'export,
 parce qu'un export voudrait dire une copie quelque part.
 
+## Le mode démonstration
+
+`index.html?demo` sert l'application avec un journal fictif (`P.DEMO`), et
+**ne lit ni n'écrit jamais le `localStorage`** : feuilleter `psy.html` sur le
+téléphone de quelqu'un qui utilise vraiment l'application ne doit rien
+écraser. `verif.js` vérifie que le journal fictif n'utilise que des
+qualificatifs qui existent, contient un moment privé, et produit au moins un
+écho et un trait dans le graphe.
+
+Une ancre choisit l'écran d'ouverture : `#journal`, `#saisie`, `#echo`,
+`#tendances`, `#seance`, `#reglages`. `?theme=` et `?sombre=` habillent la
+démonstration. C'est ainsi que `psy.html` embarque cinq écrans vivants et
+manipulables dans des `iframe` de 390px réduites — le praticien voit
+l'application, pas une capture qui vieillira.
+
 ## Installer
 
 Ouvrir l'URL, puis :

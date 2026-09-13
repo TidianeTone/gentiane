@@ -163,6 +163,25 @@ eq(P.momentsDuMot(j, 'jamais pose'), [], 'un mot jamais pose ne rend rien');
 // On cherche par cle, pas par forme affichee : sinon changer d'accord viderait l'ecran.
 eq(P.momentsDuMot(j, P.motAffiche('Révoltée', 'm')), [], 'la recherche se fait sur la cle');
 
+/* -- journal de demonstration --------------------------------------------
+   Il sert les ecrans embarques dans psy.html : s il derive du vocabulaire,
+   la page destinee aux psychologues montre des mots qui n existent pas. */
+const demo = P.DEMO(T);
+vrai(demo.length >= 8, 'le journal de demonstration est fourni');
+eq(demo.filter(e => e.prive).length, 1, 'un moment prive, pour que la regle se voie');
+const clesConnues = new Set([].concat(...P.FAMILLES.map(f => [].concat(...f.blocs))).map(P.cle));
+demo.forEach(e => {
+  vrai(P.famille(e.fam), 'famille connue : ' + e.fam);
+  vrai(e.intensite >= 1 && e.intensite <= 10, 'intensite dans les bornes');
+  (e.quals || []).forEach(q => vrai(clesConnues.has(q), 'qualificatif existant : ' + q));
+});
+eq(new Set(demo.map(e => e.id)).size, demo.length, 'aucun identifiant en double');
+vrai(P.echos(demo, demo[0]).length >= 1, 'le moment le plus recent a au moins un echo a montrer');
+vrai(P.constellation(demo).liens.length >= 1, 'le graphe des motifs a au moins un trait');
+vrai(P.periode(demo, 'semaine', T).liste.length >= 3, 'la seance de sept jours n est pas vide');
+vrai(!P.periode(demo, 'mois', T).liste.some(e => e.prive), 'le prive de demonstration sort bien de la seance');
+vrai(P.topQuals(demo, 3).length >= 3, 'assez de mots qui reviennent pour la vue Tendances');
+
 /* -- echelle du texte ----------------------------------------------------- */
 eq(P.echelleTexte(0.5), 1, 'le milieu est la taille dessinee');
 vrai(P.echelleTexte(0) < 1 && P.echelleTexte(0) >= 0.85, 'le plus petit reste lisible');

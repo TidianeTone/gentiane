@@ -237,6 +237,31 @@
     + ';--rampe:linear-gradient(100deg,' + p.rampe[0] + ',' + p.rampe[1] + ' 46%,' + p.rampe[2] + ')'
     + p.familles.map(f => ';--f-' + f.cle + ':' + f.a + ';--f-' + f.cle + '-p:' + f.p).join('');
 
+  /* == demonstration =======================================================
+     Un journal fictif mais plausible, pose par rapport a l'instant present :
+     il alimente les ecrans embarques dans la page destinee aux psychologues.
+     Il ne touche jamais au localStorage — voir le mode demo de index.html. */
+
+  P.DEMO = maintenant => {
+    const J = 864e5, T = maintenant;
+    return [
+      [0, 'colere', 8, 'le voisin remet sa musique à fond', ['Révoltée'], 'mâchoire serrée', 0],
+      [0.2, 'tendresse', 6, 'appel de ma sœur, elle a pensé à moi', ['Émue'], 'chaleur dans la poitrine', 0],
+      [1, 'peur', 7, 'mail du travail ouvert à 22h', ['Paniquée'], 'ventre noué', 0],
+      [1.4, 'tristesse', 4, 'ce que je n’ai pas encore envie de dire', ['Malheureuse'], '', 1],
+      [2.6, 'colere', 7, 'musique du voisin, encore', ['Révoltée'], 'mâchoire serrée', 0],
+      [3.2, 'joie', 5, 'balade au parc, il faisait doux', ['Sereine, apaisée'], '', 0],
+      [4.5, 'peur', 9, 'rendez-vous médical demain', ['Terrifiée'], 'ventre noué', 0],
+      [6, 'tristesse', 6, 'rangé les affaires du grenier', ['Déprimée'], 'fatiguée partout', 0],
+      [8, 'tendresse', 7, 'le chat est venu dormir contre moi', ['Attendrie'], 'chaleur dans la poitrine', 0],
+      [11, 'colere', 3, 'file d’attente à la poste', ['Agacée'], '', 0],
+      [13, 'joie', 8, 'fini le dessin commencé en mai', ['Heureuse'], '', 0],
+    ].map((x, i) => ({
+      id: T - i * 1000, ts: T - x[0] * J - 3 * 36e5, fam: x[1], intensite: x[2],
+      quoi: x[3], quals: x[4], corps: x[5], prive: !!x[6],
+    }));
+  };
+
   /* == accueil ============================================================= */
 
   // Ce que l'appli dit en ouvrant le journal. Des faits et un prénom, jamais

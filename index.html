@@ -529,17 +529,31 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 'use strict';
 const P = Gentiane, $ = s => document.querySelector(s), CLE = 'gentiane.v1', CLE_P = 'gentiane.prefs';
 
+/* Le mode demonstration : ?demo sert les ecrans embarques dans psy.html avec
+   un journal fictif. Il ne LIT ni n'ECRIT jamais le localStorage — sans quoi
+   feuilleter la page destinee aux psychologues ecraserait le journal de
+   quelqu'un qui utilise vraiment l'application sur le meme appareil. */
+const REQ = new URLSearchParams(location.search);
+const DEMO = REQ.has('demo');
+
 let entrees = [];
-try { entrees = JSON.parse(localStorage.getItem(CLE)) || []; } catch (e) { entrees = []; }
-
 let prefs = Object.assign({ prenom: '', accord: 'f', ancre: null, vu: false }, P.DEFAUTS);
-try { Object.assign(prefs, JSON.parse(localStorage.getItem(CLE_P)) || {}); } catch (e) {}
 
-const garder = () => {
+if (DEMO) {
+  entrees = P.DEMO(Date.now());
+  Object.assign(prefs, { prenom: 'Julie', vu: true, ancre: Date.now() - 9 * 864e5 });
+  if (REQ.get('theme')) prefs.theme = REQ.get('theme');
+  if (REQ.get('sombre')) prefs.sombre = REQ.get('sombre') === '1';
+} else {
+  try { entrees = JSON.parse(localStorage.getItem(CLE)) || []; } catch (e) { entrees = []; }
+  try { Object.assign(prefs, JSON.parse(localStorage.getItem(CLE_P)) || {}); } catch (e) {}
+}
+
+const garder = DEMO ? () => {} : () => {
   try { localStorage.setItem(CLE, JSON.stringify(entrees)); }
   catch (e) { alert("Impossible d'enregistrer : la mémoire du navigateur est pleine ou bloquée."); }
 };
-const garderPrefs = () => { try { localStorage.setItem(CLE_P, JSON.stringify(prefs)); } catch (e) {} };
+const garderPrefs = DEMO ? () => {} : () => { try { localStorage.setItem(CLE_P, JSON.stringify(prefs)); } catch (e) {} };
 
 let brouillon = null;
 
@@ -1057,13 +1071,37 @@ function peindreStats() {
 
 /* == demarrage ============================================================ */
 // Premiere ouverture : on ne presume ni du prenom, ni du genre, ni du gout.
-if (!prefs.vu && !localStorage.getItem(CLE_P)) {
+if (!DEMO && !prefs.vu && !localStorage.getItem(CLE_P)) {
   const nuit = matchMedia('(prefers-color-scheme: dark)');
   prefs.sombre = nuit.matches !== false;
 }
 peindreTheme();
-if (prefs.vu) { peindreJournal(); vue('v-journal'); }
+
+// L'ancre choisit l'ecran d'ouverture : c'est ainsi que psy.html montre
+// l'application en fonctionnement plutot que de la decrire.
+const ECRANS = {
+  '#journal': () => { peindreJournal(); vue('v-journal'); },
+  '#tendances': () => { peindreStats(); vue('v-stats'); },
+  '#seance': () => { peindreSeance(); vue('v-seance'); },
+  '#reglages': () => { peindreReglages(); vue('v-reglages'); },
+  '#saisie': () => {
+    ouvrir(null);
+    brouillon.fam = 'colere'; brouillon.intensite = 7;
+    brouillon.quoi = 'musique du voisin, encore';
+    $('#f-quoi').value = brouillon.quoi; $('#f-int').value = 7;
+    peindreSaisie();
+  },
+  '#echo': () => {
+    ECRANS['#saisie']();
+    requestAnimationFrame(() => { const c = $('#champ-echos'); if (!c.hidden) c.scrollIntoView({ block: 'start' }); });
+  },
+};
+const DEPART = ECRANS[location.hash];
+
+if (DEPART) DEPART();
+else if (prefs.vu) { peindreJournal(); vue('v-journal'); }
 else { peindreAccueil(); allerVolet(0); vue('v-accueil'); }
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+// Un seul service worker : les ecrans embarques n'en enregistrent pas.
+if (!DEMO && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
