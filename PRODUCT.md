@@ -74,7 +74,9 @@ vectorielle.
 - Saisie en fiche, jamais en tableau : le tableau du livre est le modèle
   mental, jamais la mise en page mobile.
 - Familles : les trois du livre (peur, tristesse, colère) plus joie et
-  tendresse, marquées « hors livre ».
+  tendresse. La provenance reste dans le code (`livre:`), plus dans
+  l'interface : rien n'indique à quelqu'un qui note de la joie qu'il sort
+  du cadre.
 - Aucun exemple pré-rempli dans les champs libres.
 - Les sensations physiques déjà notées pour une famille à un palier sont
   reproposées en pastilles.

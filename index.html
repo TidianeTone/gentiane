@@ -122,8 +122,6 @@ input[type=password]{text-align:center;font-size:1.5rem;letter-spacing:.35em}
   font-weight:700;font-size:1rem;color:var(--ink2);
   transition:background-color .18s var(--ease),color .18s var(--ease)}
 .fam[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein)}
-.fam small{display:block;font-family:var(--texte);font-weight:400;font-size:.6rem;letter-spacing:.04em;
-  text-transform:uppercase;opacity:.75}
 
 .grad{display:flex;gap:16px;align-items:flex-start}
 .blocs{flex:1;min-width:0}
@@ -161,6 +159,16 @@ input[type=password]{text-align:center;font-size:1.5rem;letter-spacing:.35em}
 .thermo .pal{font-family:var(--texte);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
 .tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;
   background:var(--surf);border:1px solid var(--trait);overflow:hidden}
+/* L'habillage de verre. Le verre n'a pas de couleur a lui : il ne montre que
+   sa lumiere, et prend celle du mercure qui est dedans et du monde qui est
+   derriere. Les deux images sont donc des cartes de lumiere en gris, et le
+   gris 128 est l'identite de soft-light — leur fond disparait de lui-meme,
+   et le meme habillage tient sur les sept mondes, en clair comme en sombre.
+   Fabriquees par verre.py. */
+.tube::after,.bulbe::after{content:'';position:absolute;inset:0;border-radius:inherit;
+  background-size:100% 100%;mix-blend-mode:soft-light;pointer-events:none}
+.tube::after{background-image:url(verre-tube.png)}
+.bulbe::after{background-image:url(verre-bulbe.png)}
 .merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);
   transform-origin:bottom;transform:scaleY(0);transition:transform .22s var(--ease)}
 .bulbe{position:absolute;left:17px;bottom:0;width:40px;height:40px;border-radius:99px;
@@ -836,7 +844,7 @@ function peindreAccueil() {
   const nom = (prefs.prenom || '').trim();
   $('#a-fin').textContent = nom ? 'C’est prêt, ' + nom + '.' : 'C’est prêt.';
   $('#a-legende').innerHTML = P.FAMILLES.map(f => '<div style="--c:' + f.couleur + '"><i></i><b>' + ech(f.nom)
-    + '</b><span>' + (f.livre ? 'du livre' : 'hors livre') + '</span></div>').join('');
+    + '</b></div>').join('');
 }
 
 function allerVolet(n) {
@@ -981,7 +989,7 @@ function ouvrir(e) {
 
 $('#f-familles').innerHTML = P.FAMILLES.map(f =>
   '<button class="fam" style="--c:' + f.couleur + ';--cp:' + f.plein + '" data-fam="' + f.cle + '" aria-pressed="false">'
-  + f.nom + (f.livre ? '' : '<small>hors livre</small>') + '</button>').join('');
+  + f.nom + '</button>').join('');
 $('#f-ticks').innerHTML = '<i></i>'.repeat(11);
 
 function peindreSaisie() {

@@ -38,6 +38,15 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
   couleur de l'émotion, et le palier (+ / ++ / +++ / ++++) qu'il atteint
   allume le bloc de vocabulaire correspondant. L'inverse marche aussi :
   choisir un mot pose le thermomètre au milieu de son palier.
+- **L'habillage de verre** : le tube et le bulbe portent une carte de lumière
+  en niveaux de gris (`verre-tube.png`, `verre-bulbe.png`), posée en
+  `mix-blend-mode: soft-light`. Le verre n'a pas de couleur à lui : il ne
+  montre que sa lumière et prend celle du mercure qui est dedans et du monde
+  qui est derrière. Comme le gris 128 est l'identité de `soft-light`, le fond
+  des images disparaît tout seul — pas de détourage, pas de canal alpha, et le
+  même habillage tient sur les sept mondes en clair comme en sombre.
+  `python verre.py` les refabrique depuis le rendu source (non versionné,
+  4 Mo ; le brief qui l'a produit est en tête du script).
 - **Les sensations physiques se rappellent** : ce qui a déjà été noté pour
   cette émotion à ce palier est reproposé en pastilles — c'est le thermomètre
   de la p.103 qui se remplit tout seul au fil des entrées.
@@ -145,6 +154,9 @@ node verif.js     # casse si le vocabulaire, les themes ou les calculs cassent
 ```
 ```
 python qr.py      # regenere qr.svg, et refuse d'ecrire s'il ne se relit plus
+```
+```
+python verre.py   # refabrique l'habillage du thermometre depuis rendu/
 ```
 Serveur local : config `gentiane` (port 8546). `gentiane.js` tient le
 vocabulaire, les thèmes et les calculs purs ; `index.html` et `psy.html` ne
