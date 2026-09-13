@@ -132,6 +132,14 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .bareme tr:last-child td{border-bottom:0;font-weight:500}
 
 /* -- etapes -------------------------------------------------------------- */
+.proposer{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
+@media(min-width:900px){.proposer{grid-template-columns:minmax(0,1fr) 264px}}
+.plaque{margin:0}
+@media(min-width:900px){.plaque{position:sticky;top:104px}}
+.plaque img{display:block;width:100%;max-width:264px;height:auto}
+.plaque figcaption{margin-top:14px;color:var(--ink2);font-size:14px;max-width:264px}
+.plaque b{display:block;color:var(--ink);font-family:var(--affiche);font-weight:900;font-stretch:62%;
+  font-size:15px;letter-spacing:.06em;margin-bottom:3px}
 .etapes{counter-reset:e;max-width:68ch}
 .etapes>div{counter-increment:e;padding:22px 0;border-top:1px solid var(--trait);display:flex;gap:22px;align-items:baseline}
 .etapes>div::before{content:counter(e);font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:30px;
@@ -272,10 +280,16 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 
 <section id="proposer">
   <h2>Trois minutes, en fin de séance.</h2>
+  <div class="proposer">
   <div class="etapes">
-    <div><div><b>Donnez l’adresse</b><span>gentiane.vercel.app — il n’y a rien à créer, rien à valider, aucun code à recevoir.</span></div></div>
+    <div><div><b>Faites scanner le QR code</b><span>Il ouvre l’application, rien d’autre. Pas de compte à créer, pas de mail à valider, aucun code à recevoir.</span></div></div>
     <div><div><b>Faites-le installer devant vous</b><span>Sur iPhone&nbsp;: Partager, puis « Sur l’écran d’accueil ». Sur Android&nbsp;: menu ⋮, puis « Installer l’application ». Ensuite ça s’ouvre comme n’importe quelle application, même sans réseau.</span></div></div>
     <div><div><b>Laissez-le choisir ses couleurs</b><span>C’est le premier écran, et c’est le moment où l’outil devient le sien. Deux minutes bien employées.</span></div></div>
+  </div>
+  <figure class="plaque">
+    <img src="qr.svg" alt="QR code ouvrant gentiane.vercel.app" width="264" height="264">
+    <figcaption><b>gentiane.vercel.app</b>L’adresse est écrite ici aussi, pour qui préfère la taper.</figcaption>
+  </figure>
   </div>
 </section>
 
