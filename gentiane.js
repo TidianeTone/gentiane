@@ -181,7 +181,14 @@
     { cle: 'tendresse', h: 168, k: 1.00 },
   ];
 
-  P.DEFAUTS = { theme: 'jardin', sombre: true, chaleur: 0.5, contraste: 0.5 };
+  P.DEFAUTS = { theme: 'jardin', sombre: true, chaleur: 0.5, contraste: 0.5, texte: 0.5 };
+
+  // L'echelle du texte : 0.5 est la taille dessinee, en dessous on resserre un
+  // peu, au-dessus on va franchement plus loin — c'est le cote qui sert.
+  P.echelleTexte = t => {
+    const v = (typeof t === 'number' && t >= 0 && t <= 1) ? t : 0.5;
+    return Math.round(100 * (v <= 0.5 ? 0.90 + 0.20 * v : 1 + 0.70 * (v - 0.5))) / 100;
+  };
 
   const borne = (v, d) => (typeof v === 'number' && v >= 0 && v <= 1) ? v : d;
 
@@ -285,7 +292,9 @@
       cle = 'semaine';
       debut = P.minuit(P.addJours(P.iso(maintenant), -6)); titre = 'Les 7 derniers jours';
     }
-    const liste = P.tri(entrees.filter(e => e.ts >= debut && e.ts <= maintenant));
+    // Un moment marque prive n'est jamais rendu ici : c'est la condition pour
+    // que le patient ose ecrire ce qu'il n'a pas encore envie de dire.
+    const liste = P.tri(entrees.filter(e => e.ts >= debut && e.ts <= maintenant && !e.prive));
     return { cle, debut, titre, liste, jours: P.parJour(liste), resume: P.resume(liste), repartition: P.repartition(liste) };
   };
 
@@ -328,6 +337,9 @@
     for (const e of entrees) h[new Date(e.ts).getHours()]++;
     return h;
   };
+
+  // « Les onze fois ou j'ai note ca. » Le compagnon de topQuals.
+  P.momentsDuMot = (entrees, cle) => P.tri(entrees.filter(e => (e.quals || []).includes(cle)));
 
   P.topQuals = (entrees, n = 5) => {
     const c = {};

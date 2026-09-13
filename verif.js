@@ -145,6 +145,32 @@ eq(P.periode(j, 'seance', T, null).cle, 'semaine', 'sans ancre, on retombe sur s
 eq(P.periode(j, 'semaine', T).resume.moyenne, 6.7, 'la periode porte son propre resume');
 eq(P.periode([], 'semaine', T).liste, [], 'periode vide');
 
+/* -- moments gardes pour soi ---------------------------------------------
+   Un moment prive reste dans le journal et disparait du mode seance. Sans ca,
+   le patient s'autocensure a la saisie, et c'est la donnee la plus utile
+   qu'on perd. */
+const jp = j.concat([J(5, T - 2 * JOUR, 'peur', 6, 'ce que je ne dis pas encore', ['Effrayée'], '')]);
+jp[jp.length - 1].prive = true;
+eq(P.periode(jp, 'semaine', T).liste.length, 3, 'le moment prive sort du mode seance');
+eq(P.parJour(jp).length, 5, 'mais il reste dans le journal');
+vrai(!P.periode(jp, 'mois', T).liste.some(e => e.prive), 'aucun moment prive sur trente jours non plus');
+eq(P.periode(jp, 'semaine', T).resume.total, 3, 'les chiffres de la seance l ignorent aussi');
+
+/* -- un mot, tous ses moments -------------------------------------------- */
+eq(P.momentsDuMot(j, 'Révoltée').map(e => e.id), [1, 2], 'les deux moments du mot, du plus recent au plus ancien');
+eq(P.momentsDuMot(j, 'Terrifiée').map(e => e.id), [4], 'un seul moment');
+eq(P.momentsDuMot(j, 'jamais pose'), [], 'un mot jamais pose ne rend rien');
+// On cherche par cle, pas par forme affichee : sinon changer d'accord viderait l'ecran.
+eq(P.momentsDuMot(j, P.motAffiche('Révoltée', 'm')), [], 'la recherche se fait sur la cle');
+
+/* -- echelle du texte ----------------------------------------------------- */
+eq(P.echelleTexte(0.5), 1, 'le milieu est la taille dessinee');
+vrai(P.echelleTexte(0) < 1 && P.echelleTexte(0) >= 0.85, 'le plus petit reste lisible');
+vrai(P.echelleTexte(1) >= 1.3, 'le plus grand va franchement plus loin');
+vrai(P.echelleTexte(0.2) < P.echelleTexte(0.4) && P.echelleTexte(0.6) < P.echelleTexte(0.8), 'l echelle est croissante');
+eq(P.echelleTexte(undefined), 1, 'une valeur absente retombe au milieu');
+eq(P.echelleTexte(9), 1, 'une valeur hors bornes aussi');
+
 /* -- accueil ------------------------------------------------------------- */
 const matin = new Date(2026, 8, 13, 9, 0).getTime();
 eq(P.salut('Julie', [], matin).titre, 'Bonjour Julie', 'bonjour le matin');

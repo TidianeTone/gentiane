@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <title>Gentiane</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111f2d" id="meta-couleur">
+<meta name="theme-color" content="#1a2c3c" id="meta-couleur">
 <meta name="description" content="Journal des émotions. Tout reste sur le téléphone.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -9,20 +9,23 @@
 <link rel="icon" href="icone.svg">
 <link rel="apple-touch-icon" href="icone.svg">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Gabarito:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&display=swap">
 <style>
 /* Les couleurs ne sont jamais ecrites ici : elles sont calculees par
-   P.palette() et injectees dans #theme. Ce fichier ne connait que des noms. */
+   P.palette() et injectees dans #theme. Ce fichier ne connait que des noms.
+   Les tailles de texte sont en rem, et --t est l'echelle choisie par la
+   personne : seul le texte grandit, les instruments dessines restent en px. */
+html{font-size:calc(16px * var(--t,1))}
 :root{
-  --affiche:Archivo,'Arial Narrow',Helvetica,sans-serif;
-  --texte:Gabarito,system-ui,sans-serif;
+  --affiche:Fraunces,Georgia,'Times New Roman',serif;
+  --texte:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,sans-serif;
   --r:22px;
   --ease:cubic-bezier(.16,1,.3,1);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--fond);color:var(--ink);font-family:var(--texte);font-size:15px;line-height:1.5;
+body{margin:0;background:var(--fond);color:var(--ink);font-family:var(--texte);font-size:.95rem;line-height:1.55;
   -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;
   transition:background-color .34s var(--ease),color .34s var(--ease)}
 #app{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
@@ -35,16 +38,22 @@ input,textarea{caret-color:var(--action)}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background:var(--trait);border-radius:99px;border:3px solid var(--fond)}
 ::-webkit-scrollbar-track{background:transparent}
-h2{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.16em;
+
+/* La voix d'affiche : un caractere de livre, adouci. L'appli vient d'un cahier. */
+.aff{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;font-weight:700}
+/* Les etiquettes : trop petites pour un serif, elles restent en Atkinson. */
+h2,.etiq{font-family:var(--texte);font-weight:700;font-size:.76rem;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink2);margin:0 0 10px}
-.chiffre{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-variant-numeric:tabular-nums}
+.chiffre{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
+  font-weight:700;font-variant-numeric:tabular-nums}
 
 /* -- ossature ------------------------------------------------------------ */
 .vue{display:none;flex:1;flex-direction:column;min-height:0}
 .vue.on{display:flex}
 .entete{display:flex;align-items:center;gap:8px;padding:18px 18px 10px;position:sticky;top:0;z-index:4;
   background:linear-gradient(var(--fond) 72%,transparent)}
-.titre{flex:1;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+.titre{flex:1;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:1.25rem;letter-spacing:.01em;min-width:0;overflow-wrap:anywhere}
 .rond{width:44px;height:44px;flex:none;border-radius:999px;background:var(--surf);border:1px solid var(--trait);
   display:flex;align-items:center;justify-content:center;transition:background-color .18s var(--ease)}
 .rond:hover{background:var(--surf2)}
@@ -52,74 +61,98 @@ h2{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;le
 .corps{flex:1;padding:0 18px 124px;min-height:0}
 .bas{position:sticky;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));
   background:linear-gradient(transparent,var(--fond) 38%)}
-.pilule{height:62px;width:100%;border-radius:999px;background:var(--rampe);color:var(--sur-rampe);
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:17px;letter-spacing:.06em;text-transform:uppercase;
-  transition:transform .2s var(--ease)}
+.pilule{min-height:62px;width:100%;border-radius:999px;background:var(--rampe);color:var(--sur-rampe);
+  display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 20px;
+  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:1.12rem;transition:transform .2s var(--ease)}
 .pilule:active{transform:scale(.985)}
 .pilule:disabled{opacity:.4}
-.sobre{width:100%;height:54px;border-radius:999px;border:1px solid var(--trait);background:var(--surf);
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.sobre{width:100%;min-height:54px;border-radius:999px;border:1px solid var(--trait);background:var(--surf);
+  display:flex;align-items:center;justify-content:center;gap:9px;padding:9px 18px;
+  font-weight:700;font-size:.9rem}
 .sobre:hover{background:var(--surf2)}
-.souffle{font-size:12.5px;color:var(--ink2);margin-top:2px}
+.sobre svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.souffle{font-size:.8rem;color:var(--ink2);margin-top:2px}
 
 /* -- salut --------------------------------------------------------------- */
 .salut{padding:2px 18px 20px}
-.salut b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:70%;font-size:32px;line-height:1.05;
-  letter-spacing:-.005em;text-wrap:balance}
-.salut span{display:block;color:var(--ink2);font-size:14px;margin-top:5px}
+.salut b{display:block;font-family:var(--affiche);font-optical-sizing:auto;
+  font-variation-settings:'SOFT' 55,'WONK' 1;font-weight:700;font-size:2.1rem;line-height:1.08;
+  letter-spacing:-.012em;text-wrap:balance}
+.salut span{display:block;color:var(--ink2);font-size:.88rem;margin-top:5px}
 
 /* -- journal ------------------------------------------------------------- */
-.jour{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:12px;letter-spacing:.16em;
+.jour{font-family:var(--texte);font-weight:700;font-size:.74rem;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink2);margin:22px 0 10px}
 .carte{width:100%;display:flex;gap:14px;padding:14px 16px;border-radius:var(--r);background:var(--surf);
   border:1px solid var(--trait);margin-bottom:10px;text-align:left;transition:background-color .18s var(--ease)}
 .carte:hover{background:var(--surf2)}
-/* la jauge n'est pas un liseré : sa hauteur est l'intensité du moment. */
+/* la jauge n'est pas un lisere : sa hauteur est l'intensite du moment. */
 .jauge{width:5px;flex:none;border-radius:99px;background:var(--surf2);position:relative;overflow:hidden}
 .jauge i{position:absolute;left:0;right:0;bottom:0;border-radius:99px;background:var(--c)}
-.carte .h{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.08em;color:var(--ink2);
-  font-variant-numeric:tabular-nums}
-.carte .emo{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:19px;letter-spacing:.03em;color:var(--c)}
-.carte .num{margin-left:auto;font-size:30px;line-height:1;color:var(--c)}
+.carte .h{font-weight:700;font-size:.8rem;color:var(--ink2);font-variant-numeric:tabular-nums}
+.carte .emo{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:1.2rem;color:var(--c)}
+.carte .num{margin-left:auto;font-size:1.9rem;line-height:1;color:var(--c)}
 .carte .txt{margin-top:6px;overflow-wrap:anywhere}
-.carte .sens{margin-top:4px;font-size:13.5px;color:var(--ink2);font-style:italic}
+.carte .sens{margin-top:4px;font-size:.85rem;color:var(--ink2);font-style:italic}
 .mots{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.mot{font-size:12.5px;padding:3px 10px;border-radius:99px;color:var(--ink2);border:1px solid var(--trait)}
+.mot{font-size:.78rem;padding:3px 10px;border-radius:99px;color:var(--ink2);border:1px solid var(--trait)}
+.cadenas{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:700;color:var(--ink2);margin-top:8px}
+.cadenas svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .vide{text-align:center;color:var(--ink2);padding:48px 10px}
-.vide b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:20px;
-  letter-spacing:.04em;color:var(--ink);margin-bottom:8px;text-transform:uppercase}
+.vide b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 55,'WONK' 1;
+  font-weight:700;font-size:1.4rem;color:var(--ink);margin-bottom:8px}
 
 /* -- saisie -------------------------------------------------------------- */
 .champ{margin-bottom:24px}
 textarea,input[type=datetime-local],input[type=text]{width:100%;background:var(--surf);border:1px solid var(--trait);
-  border-radius:18px;padding:13px 15px;resize:none;color:var(--ink)}
-input[type=datetime-local],input[type=text]{height:52px}
+  border-radius:18px;padding:13px 15px;resize:none;color:var(--ink);font-size:.95rem}
+input[type=datetime-local],input[type=text]{min-height:52px}
 .familles{display:flex;flex-wrap:wrap;gap:8px}
-.fam{min-height:44px;padding:9px 15px;border-radius:99px;border:1px solid var(--trait);background:var(--surf);
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink2);transition:background-color .18s var(--ease),color .18s var(--ease)}
+.fam{min-height:46px;padding:9px 16px;border-radius:99px;border:1px solid var(--trait);background:var(--surf);
+  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:1rem;color:var(--ink2);
+  transition:background-color .18s var(--ease),color .18s var(--ease)}
 .fam[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein)}
-.fam small{display:block;font-family:var(--texte);font-weight:400;font-size:10px;letter-spacing:.04em;
-  text-transform:none;opacity:.75}
+.fam small{display:block;font-family:var(--texte);font-weight:400;font-size:.6rem;letter-spacing:.04em;
+  text-transform:uppercase;opacity:.75}
 
 .grad{display:flex;gap:16px;align-items:flex-start}
 .blocs{flex:1;min-width:0}
 .bloc{margin-bottom:14px;opacity:.42;transition:opacity .22s var(--ease)}
 .bloc.actif{opacity:1}
-.bloc .lab{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:15px;
-  letter-spacing:.1em;color:var(--c);margin-bottom:6px}
-.qual{display:block;width:100%;min-height:44px;text-align:left;font-size:13.5px;padding:9px 13px;border-radius:14px;
+.bloc .lab{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
+  font-weight:700;font-size:1rem;letter-spacing:.06em;color:var(--c);margin-bottom:6px}
+.qual{display:block;width:100%;min-height:44px;text-align:left;font-size:.85rem;padding:9px 13px;border-radius:14px;
   background:var(--surf);border:1px solid var(--trait);color:var(--ink2);margin-bottom:5px;
   transition:background-color .18s var(--ease),color .18s var(--ease)}
-.qual[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein);font-weight:500}
+.qual[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein);font-weight:700}
 
-/* -- thermometre --------------------------------------------------------- */
+/* Le quand est deja rempli : il ne prend la place d'un champ que si on le demande. */
+.repli{display:flex;align-items:center;gap:9px;min-height:44px;color:var(--ink2);font-size:.85rem}
+.repli b{font-weight:700;color:var(--ink)}
+.repli u{text-decoration-color:var(--trait);text-underline-offset:3px;margin-left:auto;white-space:nowrap}
+.repli svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Le moment qu'on garde pour soi. */
+.garde{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r);
+  background:var(--surf);border:1px solid var(--trait);text-align:left;
+  transition:background-color .18s var(--ease),border-color .18s var(--ease)}
+.garde svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.garde b{display:block;font-weight:700;font-size:.9rem}
+.garde span{display:block;font-size:.78rem;color:var(--ink2);margin-top:2px}
+.garde[aria-pressed=true]{background:var(--surf2);border-color:var(--ink2)}
+.garde[aria-pressed=true] b{color:var(--ink)}
+
+/* -- thermometre ---------------------------------------------------------
+   Un instrument dessine : il reste en pixels, l'echelle du texte ne le
+   deforme pas. Seule sa lecture chiffree suit un peu. */
 .thermo{width:74px;flex:none;position:relative;height:326px;--c:var(--trait)}
 .thermo .lecture{height:52px;text-align:center}
 .thermo .val{font-size:34px;line-height:1;color:var(--c)}
-.thermo .pal{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
+.thermo .pal{font-family:var(--texte);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
 .tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;
   background:var(--surf);border:1px solid var(--trait);overflow:hidden}
 .merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);
@@ -137,11 +170,11 @@ input[type=datetime-local],input[type=text]{height:52px}
 /* -- echos --------------------------------------------------------------- */
 .echo{display:block;width:100%;text-align:left;border-radius:18px;background:var(--surf);
   border:1px solid var(--trait);padding:11px 14px;margin-bottom:8px}
-.echo .quand{display:flex;align-items:center;gap:7px;font-family:var(--affiche);font-weight:900;font-stretch:62%;
-  font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.echo .quand{display:flex;align-items:center;gap:7px;font-weight:700;font-size:.78rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--c)}
 .echo .quand::before{content:'';width:8px;height:8px;flex:none;border-radius:99px;background:var(--c)}
-.echo .extrait{font-size:13.5px;margin-top:4px;overflow-wrap:anywhere}
-.echo .pourquoi{font-size:12px;color:var(--ink2);margin-top:5px}
+.echo .extrait{font-size:.85rem;margin-top:4px;overflow-wrap:anywhere}
+.echo .pourquoi{font-size:.76rem;color:var(--ink2);margin-top:5px}
 
 /* -- tendances ----------------------------------------------------------- */
 .motifs{width:100%;height:auto;display:block;touch-action:manipulation}
@@ -153,58 +186,60 @@ input[type=datetime-local],input[type=text]{height:52px}
 .bloc-stat{margin-bottom:30px}
 .chiffres{display:flex;gap:10px;margin-bottom:26px}
 .tuile{flex:1;background:var(--surf);border:1px solid var(--trait);border-radius:20px;padding:13px 14px}
-.tuile b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:30px;line-height:1.1;
-  font-variant-numeric:tabular-nums}
-.tuile span{font-size:12px;color:var(--ink2)}
+.tuile b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
+  font-weight:700;font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.tuile span{font-size:.76rem;color:var(--ink2)}
 .graphe{display:flex;align-items:flex-end;gap:4px;height:110px}
 .graphe div{flex:1;border-radius:5px 5px 2px 2px;min-height:3px}
-.axe{display:flex;justify-content:space-between;font-size:11px;color:var(--ink2);margin-top:6px}
-.barre{margin-bottom:9px}
-.barre .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;gap:10px}
+.axe{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink2);margin-top:6px}
+.barre{display:block;width:100%;text-align:left;margin-bottom:9px}
+.barre .t{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px;gap:10px}
 .barre .p{height:8px;border-radius:99px;background:var(--surf2);overflow:hidden}
 .barre .p i{display:block;height:100%;border-radius:99px;background:var(--c)}
+button.barre .t span:first-child{text-decoration:underline;text-decoration-color:var(--trait);text-underline-offset:3px}
+button.barre:hover .t span:first-child{text-decoration-color:var(--action)}
 .heures{display:flex;align-items:flex-end;gap:2px;height:60px}
 .heures div{flex:1;background:var(--surf2);border-radius:3px 3px 0 0;min-height:2px}
 .rappels{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.rappel{min-height:34px;font-size:12.5px;padding:6px 12px;border-radius:99px;background:var(--surf);
+.rappel{min-height:36px;font-size:.78rem;padding:6px 12px;border-radius:99px;background:var(--surf);
   border:1px dashed var(--trait);color:var(--ink2)}
 
-/* -- segments (periodes, clair/sombre, accord) --------------------------- */
+/* -- segments ------------------------------------------------------------ */
 .segments{display:flex;gap:6px;background:var(--surf);border:1px solid var(--trait);border-radius:99px;padding:4px}
-.segments button{flex:1;min-height:40px;border-radius:99px;text-align:center;color:var(--ink2);
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;
+.segments button{flex:1;min-height:42px;border-radius:99px;text-align:center;color:var(--ink2);
+  font-weight:700;font-size:.78rem;padding:4px 6px;line-height:1.2;
   transition:background-color .2s var(--ease),color .2s var(--ease)}
 .segments button[aria-pressed=true]{background:var(--ink);color:var(--fond)}
 
 /* -- seance -------------------------------------------------------------- */
-/* Cette vue est la seule qui sera lue par quelqu'un d'autre : plus grande,
-   plus aeree, sans rien a toucher. */
-#v-seance .corps{font-size:16px}
+/* La seule vue qui sera lue par quelqu'un d'autre : plus grande, plus aeree. */
+#v-seance .corps{font-size:1.05rem}
 .seance-tete{margin:16px 0 22px}
-.seance-tete b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:70%;font-size:27px;line-height:1.1}
-.seance-tete span{display:block;color:var(--ink2);font-size:13.5px;margin-top:4px}
+.seance-tete b{display:block;font-family:var(--affiche);font-optical-sizing:auto;
+  font-variation-settings:'SOFT' 55,'WONK' 1;font-weight:700;font-size:1.8rem;line-height:1.12}
+.seance-tete span{display:block;color:var(--ink2);font-size:.85rem;margin-top:4px}
 .fiche{border-top:1px solid var(--trait);padding:16px 0 4px}
 .fiche .ligne{display:flex;align-items:baseline;gap:10px}
-.fiche .emo{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:18px;letter-spacing:.04em;color:var(--c)}
-.fiche .h{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.08em;color:var(--ink2);
-  font-variant-numeric:tabular-nums}
-.fiche .num{margin-left:auto;font-size:26px;line-height:1;color:var(--c)}
+.fiche .emo{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:1.2rem;color:var(--c)}
+.fiche .h{font-weight:700;font-size:.8rem;color:var(--ink2);font-variant-numeric:tabular-nums}
+.fiche .num{margin-left:auto;font-size:1.7rem;line-height:1;color:var(--c)}
 .fiche .txt{margin-top:7px;overflow-wrap:anywhere}
-.fiche .sens{margin-top:5px;color:var(--ink2);font-size:14.5px;font-style:italic}
-.avis{border:1px solid var(--trait);border-radius:var(--r);padding:15px 17px;color:var(--ink2);font-size:13.5px;margin-top:26px}
-.avis b{color:var(--ink);display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;
-  font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.fiche .sens{margin-top:5px;color:var(--ink2);font-size:.95rem;font-style:italic}
+.avis{border:1px solid var(--trait);border-radius:var(--r);padding:15px 17px;color:var(--ink2);font-size:.85rem;margin-top:26px}
+.avis b{color:var(--ink);display:block;font-weight:700;font-size:.76rem;letter-spacing:.13em;
+  text-transform:uppercase;margin-bottom:6px}
 
 /* -- accueil et reglages ------------------------------------------------- */
 .volet{display:none}
 .volet.on{display:block;animation:monte .5s var(--ease) both}
 @keyframes monte{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.grand{font-family:var(--affiche);font-weight:900;font-stretch:70%;font-size:38px;line-height:1.02;
-  letter-spacing:-.01em;margin:26px 0 12px;text-wrap:balance}
-.intro{color:var(--ink2);font-size:15px;margin-bottom:30px;max-width:34ch}
+.grand{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 60,'WONK' 1;
+  font-weight:700;font-size:2.5rem;line-height:1.02;letter-spacing:-.015em;margin:26px 0 12px;text-wrap:balance}
+.intro{color:var(--ink2);font-size:.95rem;margin-bottom:30px;max-width:34ch}
 .exemple{margin-top:12px;padding:13px 16px;border-radius:18px;background:var(--surf);border:1px solid var(--trait);
-  font-size:15px;color:var(--ink2)}
-.exemple i{font-style:normal;color:var(--f-peur);font-weight:500}
+  font-size:.95rem;color:var(--ink2)}
+.exemple i{font-style:normal;color:var(--f-peur);font-weight:700}
 .mondes{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .monde{border-radius:20px;border:1px solid var(--trait);background:var(--surf);padding:0;overflow:hidden;
   transition:transform .2s var(--ease)}
@@ -213,10 +248,9 @@ input[type=datetime-local],input[type=text]{height:52px}
 .monde .ciel{display:block;height:62px;background:var(--fond);position:relative;border-bottom:1px solid var(--trait)}
 .monde .ciel i{position:absolute;left:12px;right:12px;bottom:12px;height:9px;border-radius:99px;background:var(--rampe)}
 .monde .ciel u{position:absolute;left:12px;top:13px;width:26px;height:9px;border-radius:99px;background:var(--ink2)}
-.monde .nom{display:block;padding:9px 12px 11px;font-family:var(--affiche);font-weight:900;font-stretch:62%;
-  font-size:13px;letter-spacing:.09em;text-transform:uppercase}
+.monde .nom{display:block;padding:9px 12px 11px;font-weight:700;font-size:.8rem;letter-spacing:.04em}
 .reglette{margin-bottom:18px}
-.reglette label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin-bottom:8px}
+.reglette label{display:flex;justify-content:space-between;gap:12px;font-size:.82rem;color:var(--ink2);margin-bottom:8px}
 input[type=range].jauge-h{-webkit-appearance:none;appearance:none;display:block;width:100%;height:26px;margin:0;background:none}
 input[type=range].jauge-h::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:var(--surf2);border:1px solid var(--trait)}
 input[type=range].jauge-h::-moz-range-track{height:8px;border-radius:99px;background:var(--surf2);border:1px solid var(--trait)}
@@ -224,9 +258,10 @@ input[type=range].jauge-h::-webkit-slider-thumb{-webkit-appearance:none;width:26
   background:var(--ink);border:0;margin-top:-10px}
 input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius:99px;background:var(--ink);border:0}
 .legende{display:flex;flex-direction:column;gap:9px;margin:8px 0 4px}
-.legende div{display:flex;align-items:center;gap:11px;font-size:14px}
+.legende div{display:flex;align-items:center;gap:11px;font-size:.9rem}
 .legende i{width:13px;height:13px;border-radius:99px;flex:none;background:var(--c)}
-.legende span{color:var(--ink2);font-size:13px}
+.legende b{font-weight:700}
+.legende span{color:var(--ink2);font-size:.8rem}
 .danger{color:var(--f-colere);border-color:var(--f-colere)}
 
 @media (prefers-reduced-motion:reduce){
@@ -275,6 +310,10 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 
       <div class="champ">
         <h2>Réglage fin</h2>
+        <div class="reglette">
+          <label for="a-texte"><span>Taille du texte</span><span id="a-texte-v">normale</span></label>
+          <input type="range" class="jauge-h" id="a-texte" min="0" max="100" step="5" value="50">
+        </div>
         <div class="reglette">
           <label for="a-chaleur"><span>Chaleur</span><span id="a-chaleur-v">milieu</span></label>
           <input type="range" class="jauge-h" id="a-chaleur" min="0" max="100" step="5" value="50">
@@ -325,7 +364,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
   <div class="bas"><button class="pilule" id="b-nouveau">Noter un moment</button></div>
 </section>
 
-<!-- saisie -->
+<!-- saisie : l'emotion et le thermometre d'abord, le reste si on veut -->
 <section class="vue" id="v-saisie">
   <div class="entete">
     <button class="rond" id="b-retour" aria-label="Retour">
@@ -337,14 +376,6 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     </button>
   </div>
   <div class="corps">
-    <div class="champ">
-      <h2>Jour et heure</h2>
-      <input type="datetime-local" id="f-quand">
-    </div>
-    <div class="champ">
-      <h2>Ce que je fais</h2>
-      <textarea id="f-quoi" rows="3"></textarea>
-    </div>
     <div class="champ">
       <h2>Ce que je ressens comme émotion</h2>
       <div class="familles" id="f-familles"></div>
@@ -362,14 +393,36 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <div class="blocs" id="f-blocs"></div>
       </div>
     </div>
-    <div class="champ" id="champ-echos" hidden>
-      <h2>Déjà vécu</h2>
-      <div id="f-echos"></div>
+    <div class="champ">
+      <h2>Ce que je fais</h2>
+      <textarea id="f-quoi" rows="3"></textarea>
     </div>
     <div class="champ">
       <h2>Mes sensations physiques</h2>
       <textarea id="f-corps" rows="2"></textarea>
       <div class="rappels" id="f-rappels"></div>
+    </div>
+    <div class="champ" id="champ-echos" hidden>
+      <h2>Déjà vécu</h2>
+      <div id="f-echos"></div>
+    </div>
+    <div class="champ">
+      <button class="repli" id="b-quand" aria-expanded="false" aria-controls="champ-quand">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="quand-lu"></span><u>changer</u>
+      </button>
+      <div id="champ-quand" hidden style="margin-top:10px">
+        <input type="datetime-local" id="f-quand">
+      </div>
+    </div>
+    <div class="champ">
+      <button class="garde" id="b-prive" aria-pressed="false">
+        <svg id="icone-garde" viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>
+        <span style="flex:1">
+          <b id="prive-titre">Je garde ce moment pour moi</b>
+          <span id="prive-dit">Il restera dans mon journal, mais pas dans ce que je montre en séance.</span>
+        </span>
+      </button>
     </div>
   </div>
   <div class="bas"><button class="pilule" id="b-garder">Enregistrer</button></div>
@@ -384,6 +437,17 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     <div class="titre">Tendances</div>
   </div>
   <div class="corps" id="stats"></div>
+</section>
+
+<!-- un mot, et tous les moments qui le portent -->
+<section class="vue" id="v-mot">
+  <div class="entete">
+    <button class="rond" id="b-retour5" aria-label="Retour">
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="titre" id="titre-mot"></div>
+  </div>
+  <div class="corps" id="corps-mot"></div>
 </section>
 
 <!-- seance : ce qu'on tend a son psy -->
@@ -433,6 +497,10 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     </div>
     <div class="champ">
       <h2>Réglage fin</h2>
+      <div class="reglette">
+        <label for="r-texte"><span>Taille du texte</span><span id="r-texte-v">normale</span></label>
+        <input type="range" class="jauge-h" id="r-texte" min="0" max="100" step="5" value="50">
+      </div>
       <div class="reglette">
         <label for="r-chaleur"><span>Chaleur</span><span id="r-chaleur-v">milieu</span></label>
         <input type="range" class="jauge-h" id="r-chaleur" min="0" max="100" step="5" value="50">
@@ -500,12 +568,14 @@ const depuis = ts => {
 // Le qualificatif tel qu'il doit se lire pour l'accord choisi.
 const affiche = cle => P.motAffiche(cle, prefs.accord);
 
+const CADENAS = '<svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>';
+
 /* == theme ================================================================
    Un seul endroit peint l'application : la palette est calculee puis posee en
-   variables CSS. Rien d'autre dans ce fichier ne nomme une couleur. */
+   variables CSS, et l'echelle du texte avec elle. */
 function peindreTheme() {
   const p = P.palette(prefs.theme, prefs.sombre, prefs.chaleur, prefs.contraste);
-  $('#theme').textContent = ':root{' + P.cssTheme(p) + '}';
+  $('#theme').textContent = ':root{' + P.cssTheme(p) + ';--t:' + P.echelleTexte(prefs.texte) + '}';
   $('#meta-couleur').setAttribute('content', p.fond);
   document.documentElement.style.colorScheme = prefs.sombre ? 'dark' : 'light';
 }
@@ -522,6 +592,7 @@ function vignettes(cible, actif) {
 }
 
 const NIVEAU = v => v <= 20 ? 'au plus bas' : v <= 40 ? 'bas' : v < 60 ? 'milieu' : v <= 80 ? 'haut' : 'au plus haut';
+const TAILLE = v => v <= 20 ? 'la plus petite' : v <= 40 ? 'petite' : v < 60 ? 'normale' : v <= 80 ? 'grande' : 'la plus grande';
 
 /* == accueil ============================================================== */
 let volet = 0;
@@ -539,10 +610,10 @@ function peindreAccueil() {
   $('#a-mode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.sombre === '1') === !!prefs.sombre));
   vignettes($('#a-mondes'), prefs.theme);
   $('#a-souffle').textContent = P.theme(prefs.theme).souffle;
-  $('#a-chaleur').value = Math.round(prefs.chaleur * 100);
-  $('#a-contraste').value = Math.round(prefs.contraste * 100);
-  $('#a-chaleur-v').textContent = NIVEAU(prefs.chaleur * 100);
-  $('#a-contraste-v').textContent = NIVEAU(prefs.contraste * 100);
+  [['texte', TAILLE], ['chaleur', NIVEAU], ['contraste', NIVEAU]].forEach(([k, mot]) => {
+    $('#a-' + k).value = Math.round(prefs[k] * 100);
+    $('#a-' + k + '-v').textContent = mot(prefs[k] * 100);
+  });
   const nom = (prefs.prenom || '').trim();
   $('#a-fin').textContent = nom ? 'C’est prêt, ' + nom + '.' : 'C’est prêt.';
   $('#a-legende').innerHTML = P.FAMILLES.map(f => '<div style="--c:' + f.couleur + '"><i></i><b>' + ech(f.nom)
@@ -570,8 +641,9 @@ $('#a-mondes').addEventListener('click', ev => {
   const b = ev.target.closest('.monde'); if (!b) return;
   prefs.theme = b.dataset.theme; peindreTheme(); peindreAccueil();
 });
-$('#a-chaleur').addEventListener('input', ev => { prefs.chaleur = +ev.target.value / 100; peindreTheme(); peindreAccueil(); });
-$('#a-contraste').addEventListener('input', ev => { prefs.contraste = +ev.target.value / 100; peindreTheme(); peindreAccueil(); });
+['texte', 'chaleur', 'contraste'].forEach(k => $('#a-' + k).addEventListener('input', ev => {
+  prefs[k] = +ev.target.value / 100; peindreTheme(); peindreAccueil();
+}));
 $('#a-retour').onclick = () => allerVolet(volet - 1);
 $('#a-suite').onclick = () => {
   if (volet < 2) { prefs.prenom = $('#a-prenom').value.trim(); garderPrefs(); peindreAccueil(); return allerVolet(volet + 1); }
@@ -585,6 +657,22 @@ function peindreSalut() {
   $('#salut').innerHTML = '<b>' + ech(s.titre) + '</b><span>' + ech(s.souffle) + '</span>';
 }
 
+// La carte d'un moment dans une liste : journal, ou tous les moments d'un mot.
+function carteMoment(e) {
+  const f = P.famille(e.fam) || { nom: '—', couleur: 'var(--ink2)' };
+  return '<button class="carte" style="--c:' + f.couleur + '" data-id="' + e.id + '">'
+    + '<div class="jauge"><i style="height:' + Math.max(6, 10 * (e.intensite || 0)) + '%"></i></div>'
+    + '<div style="flex:1;min-width:0">'
+    + '<div style="display:flex;align-items:baseline;gap:10px">'
+    + '<span class="h">' + heure(e.ts) + '</span><span class="emo">' + ech(f.nom) + '</span>'
+    + '<span class="num chiffre">' + (e.intensite || '–') + '</span></div>'
+    + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
+    + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
+    + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(affiche(q)) + '</span>').join('') + '</div>' : '')
+    + (e.prive ? '<span class="cadenas">' + CADENAS + 'Gardé pour moi</span>' : '')
+    + '</div></button>';
+}
+
 function peindreJournal() {
   peindreSalut();
   const l = $('#liste');
@@ -592,24 +680,15 @@ function peindreJournal() {
     l.innerHTML = '<div class="vide"><b>Rien de noté</b>Au prochain moment qui remue quelque chose, pose-le ici. Même court.</div>';
     return;
   }
-  l.innerHTML = P.parJour(entrees).map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => {
-    const f = P.famille(e.fam) || { nom: '—', couleur: 'var(--ink2)' };
-    return '<button class="carte" style="--c:' + f.couleur + '" data-id="' + e.id + '">'
-      + '<div class="jauge"><i style="height:' + Math.max(6, 10 * (e.intensite || 0)) + '%"></i></div>'
-      + '<div style="flex:1;min-width:0">'
-      + '<div style="display:flex;align-items:baseline;gap:10px">'
-      + '<span class="h">' + heure(e.ts) + '</span><span class="emo">' + ech(f.nom) + '</span>'
-      + '<span class="num chiffre">' + (e.intensite || '–') + '</span></div>'
-      + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
-      + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
-      + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(affiche(q)) + '</span>').join('') + '</div>' : '')
-      + '</div></button>';
-  }).join('')).join('');
+  l.innerHTML = P.parJour(entrees).map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>'
+    + j.liste.map(carteMoment).join('')).join('');
 }
-$('#liste').addEventListener('click', ev => {
+const ouvrirCarte = ev => {
   const b = ev.target.closest('.carte');
   if (b) ouvrir(entrees.find(e => String(e.id) === b.dataset.id));
-});
+};
+$('#liste').addEventListener('click', ouvrirCarte);
+$('#corps-mot').addEventListener('click', ouvrirCarte);
 
 // La carte d'un moment passe, telle qu'elle apparait dans un echo.
 function carteEcho(x) {
@@ -624,15 +703,19 @@ function carteEcho(x) {
     + '</div>';
 }
 
-/* == saisie =============================================================== */
+/* == saisie ===============================================================
+   L'emotion et le thermometre sont en haut : un moment peut se noter en
+   trois gestes, sans jamais faire defiler. Le reste attend en dessous. */
 function ouvrir(e) {
   const neuf = !e;
   brouillon = neuf
-    ? { id: Date.now(), ts: Date.now(), quoi: '', fam: null, intensite: 0, quals: [], corps: '' }
-    : Object.assign({}, e, { quals: (e.quals || []).slice() });
+    ? { id: Date.now(), ts: Date.now(), quoi: '', fam: null, intensite: 0, quals: [], corps: '', prive: false }
+    : Object.assign({ prive: false }, e, { quals: (e.quals || []).slice() });
   $('#titre-saisie').textContent = neuf ? 'Un moment' : 'Modifier';
   $('#b-suppr').hidden = neuf;
   $('#f-quand').value = local(brouillon.ts);
+  $('#champ-quand').hidden = true;
+  $('#b-quand').setAttribute('aria-expanded', 'false');
   $('#f-quoi').value = brouillon.quoi || '';
   $('#f-corps').value = brouillon.corps || '';
   $('#f-int').value = brouillon.intensite || 0;
@@ -659,7 +742,7 @@ function peindreSaisie() {
   $('#f-bulbe').classList.toggle('plein', i > 0);
 
   $('#f-blocs').innerHTML = !f
-    ? '<div style="color:var(--ink2);font-size:13.5px">Choisis d’abord une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
+    ? '<div style="color:var(--ink2);font-size:.85rem">Choisis d’abord une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
     : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + ';--cp:' + cp + '">'
         + '<div class="lab">' + P.PALIERS[k] + '</div>'
         + mots.map(m => '<button class="qual" data-mot="' + ech(P.cle(m)) + '" aria-pressed="' + brouillon.quals.includes(P.cle(m)) + '">'
@@ -668,6 +751,13 @@ function peindreSaisie() {
 
   const rappels = f ? P.sensations(entrees.filter(e => e.id !== brouillon.id), f.cle, b) : [];
   $('#f-rappels').innerHTML = rappels.map(s => '<button class="rappel" data-sens="' + ech(s) + '">' + ech(s) + '</button>').join('');
+
+  $('#quand-lu').innerHTML = '<b>' + ech(jourLong(P.iso(brouillon.ts))) + '</b> à ' + ech(heure(brouillon.ts));
+  $('#b-prive').setAttribute('aria-pressed', String(!!brouillon.prive));
+  $('#prive-titre').textContent = brouillon.prive ? 'Ce moment est gardé pour moi' : 'Je garde ce moment pour moi';
+  $('#prive-dit').textContent = brouillon.prive
+    ? 'Il est dans mon journal, mais il n’apparaîtra pas en séance.'
+    : 'Il restera dans mon journal, mais pas dans ce que je montre en séance.';
 
   peindreEchos();
   $('#b-garder').disabled = !brouillon.fam;
@@ -709,6 +799,17 @@ $('#f-rappels').addEventListener('click', ev => {
   brouillon.corps = b.dataset.sens;
   peindreEchos();
 });
+$('#b-quand').onclick = () => {
+  const ouvert = $('#champ-quand').hidden;
+  $('#champ-quand').hidden = !ouvert;
+  $('#b-quand').setAttribute('aria-expanded', String(ouvert));
+  if (ouvert) $('#f-quand').focus();
+};
+$('#f-quand').addEventListener('input', () => {
+  const v = $('#f-quand').value;
+  if (v) { brouillon.ts = new Date(v).getTime(); peindreSaisie(); }
+});
+$('#b-prive').onclick = () => { brouillon.prive = !brouillon.prive; peindreSaisie(); };
 
 const auJournal = () => { peindreJournal(); vue('v-journal'); };
 $('#b-nouveau').onclick = () => ouvrir(null);
@@ -716,6 +817,7 @@ $('#b-retour').onclick = auJournal;
 $('#b-retour2').onclick = auJournal;
 $('#b-retour3').onclick = auJournal;
 $('#b-retour4').onclick = auJournal;
+$('#b-retour5').onclick = () => { peindreStats(); vue('v-stats'); };
 $('#b-stats').onclick = () => { peindreStats(); vue('v-stats'); };
 $('#b-seance').onclick = () => { peindreSeance(); vue('v-seance'); };
 $('#b-reglages').onclick = () => { peindreReglages(); vue('v-reglages'); };
@@ -733,6 +835,19 @@ $('#b-garder').onclick = () => {
   garder(); auJournal();
 };
 
+/* == un mot, tous ses moments ============================================= */
+function peindreMot(cle) {
+  const liste = P.momentsDuMot(entrees, cle);
+  $('#titre-mot').textContent = affiche(cle);
+  const n = liste.length;
+  $('#corps-mot').innerHTML = '<div class="souffle" style="margin:6px 0 18px">'
+    + (n === 1 ? 'Une fois, ' + ech(depuis(liste[0].ts)) + '.'
+       : n + ' fois, de ' + ech(depuis(liste[n - 1].ts)) + ' à ' + ech(depuis(liste[0].ts)) + '.') + '</div>'
+    + P.parJour(liste).map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>'
+      + j.liste.map(carteMoment).join('')).join('');
+  vue('v-mot');
+}
+
 /* == seance ===============================================================
    Une periode bornee, rendue pour etre lue par quelqu'un d'autre. Aucun
    commentaire, aucune interpretation : le psy est la pour ca. */
@@ -747,9 +862,17 @@ function peindreSeance() {
   const nom = (prefs.prenom || '').trim();
   const s = $('#s-corps');
 
+  // Le rappel de la regle, jamais le compte : le psy sait qu'il existe des
+  // moments gardes, il n'a pas a savoir combien.
+  const garde = '<div class="avis"><b>Ce que cette page n’est pas</b>'
+    + 'Tout ce qui est écrit ici a été saisi ' + (nom ? 'par ' + ech(nom) : 'à la main') + '. '
+    + 'L’application ne fait que trier et compter&nbsp;: aucune analyse automatique, aucune interprétation, '
+    + 'aucun score clinique, et rien n’a été envoyé nulle part. '
+    + 'Les moments marqués « gardé pour moi » ne sont pas affichés ici.</div>';
+
   if (!pe.liste.length) {
-    s.innerHTML = '<div class="vide"><b>Rien sur cette période</b>Aucun moment noté entre le '
-      + ech(jourCourt(pe.debut)) + ' et aujourd’hui.</div>';
+    s.innerHTML = '<div class="vide"><b>Rien à montrer sur cette période</b>Aucun moment noté entre le '
+      + ech(jourCourt(pe.debut)) + ' et aujourd’hui.</div>' + garde;
     return;
   }
 
@@ -778,10 +901,7 @@ function peindreSeance() {
         + '</div>';
     }).join('')).join('')
 
-    + '<div class="avis"><b>Ce que cette page n’est pas</b>'
-    + 'Tout ce qui est écrit ici a été saisi ' + (nom ? 'par ' + ech(nom) : 'à la main') + '. '
-    + 'L’application ne fait que trier et compter&nbsp;: aucune analyse automatique, aucune interprétation, '
-    + 'aucun score clinique, et rien n’a été envoyé nulle part.</div>';
+    + garde;
 }
 
 $('#s-periodes').addEventListener('click', ev => {
@@ -799,10 +919,10 @@ function peindreReglages() {
   $('#r-mode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.sombre === '1') === !!prefs.sombre));
   vignettes($('#r-mondes'), prefs.theme);
   $('#r-souffle').textContent = P.theme(prefs.theme).souffle;
-  $('#r-chaleur').value = Math.round(prefs.chaleur * 100);
-  $('#r-contraste').value = Math.round(prefs.contraste * 100);
-  $('#r-chaleur-v').textContent = NIVEAU(prefs.chaleur * 100);
-  $('#r-contraste-v').textContent = NIVEAU(prefs.contraste * 100);
+  [['texte', TAILLE], ['chaleur', NIVEAU], ['contraste', NIVEAU]].forEach(([k, mot]) => {
+    $('#r-' + k).value = Math.round(prefs[k] * 100);
+    $('#r-' + k + '-v').textContent = mot(prefs[k] * 100);
+  });
   $('#r-compte').textContent = entrees.length
     ? (entrees.length === 1 ? 'Un moment est enregistré.' : entrees.length + ' moments sont enregistrés.')
     : 'Aucun moment n’est enregistré pour l’instant.';
@@ -821,8 +941,13 @@ $('#r-mondes').addEventListener('click', ev => {
   const b = ev.target.closest('.monde'); if (!b) return;
   prefs.theme = b.dataset.theme; garderPrefs(); peindreTheme(); peindreReglages();
 });
-$('#r-chaleur').addEventListener('input', ev => { prefs.chaleur = +ev.target.value / 100; garderPrefs(); peindreTheme(); $('#r-chaleur-v').textContent = NIVEAU(+ev.target.value); vignettes($('#r-mondes'), prefs.theme); });
-$('#r-contraste').addEventListener('input', ev => { prefs.contraste = +ev.target.value / 100; garderPrefs(); peindreTheme(); $('#r-contraste-v').textContent = NIVEAU(+ev.target.value); vignettes($('#r-mondes'), prefs.theme); });
+[['texte', TAILLE], ['chaleur', NIVEAU], ['contraste', NIVEAU]].forEach(([k, mot]) => {
+  $('#r-' + k).addEventListener('input', ev => {
+    prefs[k] = +ev.target.value / 100; garderPrefs(); peindreTheme();
+    $('#r-' + k + '-v').textContent = mot(+ev.target.value);
+    vignettes($('#r-mondes'), prefs.theme);
+  });
+});
 $('#r-vider').onclick = () => {
   if (!entrees.length) return alert('Le journal est déjà vide.');
   if (!confirm('Effacer les ' + entrees.length + ' moments notés ? C’est définitif, il n’y a pas de sauvegarde.')) return;
@@ -872,7 +997,10 @@ function svgMotifs() {
 }
 
 // Toucher un point : le moment, et tout ce qui lui fait echo.
+// Toucher un mot : tous les moments ou il a ete pose.
 $('#stats').addEventListener('click', ev => {
+  const mot = ev.target.closest('button.barre');
+  if (mot) return peindreMot(mot.dataset.mot);
   const c = ev.target.closest('circle[data-i]');
   if (!c) return;
   const pt = motifs.points[+c.dataset.i];
@@ -918,12 +1046,12 @@ function peindreStats() {
     + '</div><div class="axe"><span>0h</span><span>12h</span><span>23h</span></div></div>'
 
     + (mots.length ? '<div class="bloc-stat"><h2>Mots qui reviennent</h2>'
-      + mots.map(m => '<div class="barre" style="--c:var(--action)"><div class="t"><span>' + ech(affiche(m[0]))
-        + '</span><span style="color:var(--ink2)">' + m[1] + '&times;</span></div>'
-        + '<div class="p"><i style="width:' + (100 * m[1] / mots[0][1]) + '%"></i></div></div>').join('')
-      + '</div>' : '')
+      + mots.map(m => '<button class="barre" data-mot="' + ech(m[0]) + '" style="--c:var(--action)"><div class="t"><span>'
+        + ech(affiche(m[0])) + '</span><span style="color:var(--ink2)">' + m[1] + '&times;</span></div>'
+        + '<div class="p"><i style="width:' + (100 * m[1] / mots[0][1]) + '%"></i></div></button>').join('')
+      + '<div class="souffle">Touche un mot pour revoir tous les moments où tu l’as posé.</div></div>' : '')
 
-    + '<div class="bloc-stat" style="color:var(--ink2);font-size:13px">'
+    + '<div class="bloc-stat" style="color:var(--ink2);font-size:.8rem">'
     + 'Tout est gardé sur ce téléphone, rien n’est envoyé nulle part.</div>';
 }
 

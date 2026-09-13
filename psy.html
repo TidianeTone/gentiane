@@ -1,21 +1,21 @@
 <meta charset="utf-8">
 <title>Gentiane — pour les psychologues</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#111f2d" id="meta-couleur">
+<meta name="theme-color" content="#1a2c3c" id="meta-couleur">
 <meta name="description" content="Gentiane est un journal des émotions que vous pouvez proposer à un patient : rien à installer côté cabinet, rien qui sorte de son téléphone.">
 <link rel="icon" href="icone.svg">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Gabarito:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&display=swap">
 <style>
 :root{
-  --affiche:Archivo,'Arial Narrow',Helvetica,sans-serif;
-  --texte:Gabarito,system-ui,sans-serif;
+  --affiche:Fraunces,Georgia,'Times New Roman',serif;
+  --texte:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
   --marge:clamp(20px,5vw,64px);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--fond);color:var(--ink);font-family:var(--texte);font-size:17px;line-height:1.62;
+body{margin:0;background:var(--fond);color:var(--ink);font-family:var(--texte);font-size:17px;line-height:1.6;
   -webkit-font-smoothing:antialiased;transition:background-color .34s var(--ease),color .34s var(--ease)}
 button,input{font:inherit;color:inherit}
 button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
@@ -28,32 +28,35 @@ a{color:var(--ink);text-decoration-color:var(--action);text-underline-offset:4px
 a:hover{color:var(--action)}
 
 .page{max-width:1180px;margin:0 auto;padding:0 var(--marge) 96px}
-.mesure{max-width:68ch}
-h1,h2{font-family:var(--affiche);font-weight:900;letter-spacing:-.005em;text-wrap:balance;margin:0}
-h1{font-stretch:72%;font-size:clamp(44px,7.2vw,86px);line-height:.97}
-h2{font-stretch:72%;font-size:clamp(29px,3.9vw,46px);line-height:1.05;margin:0 0 22px;max-width:20ch}
+.mesure{max-width:66ch}
+h1,h2{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 55,'WONK' 1;
+  font-weight:700;letter-spacing:-.014em;text-wrap:balance;margin:0}
+h1{font-size:clamp(42px,6.6vw,80px);line-height:1.0}
+h2{font-size:clamp(28px,3.6vw,44px);line-height:1.07;margin:0 0 22px;max-width:21ch}
 p{margin:0 0 18px}
+em{font-style:italic}
 section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .pied{color:var(--ink2);font-size:15px}
+.etiq{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
 
 /* -- barre --------------------------------------------------------------- */
 .barre{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:14px;
   padding:16px 0;background:linear-gradient(var(--fond) 78%,transparent)}
-.marque{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:16px;letter-spacing:.18em;text-transform:uppercase;flex:1}
+.marque{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:22px;letter-spacing:.01em;flex:1}
 .bascule{display:flex;gap:5px;background:var(--surf);border:1px solid var(--trait);border-radius:99px;padding:4px}
-.bascule button{min-height:36px;padding:0 16px;border-radius:99px;color:var(--ink2);
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-  transition:background-color .2s var(--ease),color .2s var(--ease)}
+.bascule button{min-height:38px;padding:0 18px;border-radius:99px;color:var(--ink2);
+  font-weight:700;font-size:13px;transition:background-color .2s var(--ease),color .2s var(--ease)}
 .bascule button[aria-pressed=true]{background:var(--ink);color:var(--fond)}
 
 /* -- ouverture ----------------------------------------------------------- */
 .ouverture{padding:clamp(40px,7vw,84px) 0 clamp(48px,7vw,88px)}
 .lede{font-size:clamp(19px,2.1vw,23px);color:var(--ink2);max-width:46ch;margin-top:28px}
-.lede b{color:var(--ink);font-weight:500}
+.lede b{color:var(--ink);font-weight:700}
 .ancres{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
-.ancres a{min-height:52px;display:inline-flex;align-items:center;padding:0 26px;border-radius:99px;
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
-  text-decoration:none;transition:transform .2s var(--ease)}
+.ancres a{min-height:54px;display:inline-flex;align-items:center;padding:0 28px;border-radius:99px;
+  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:17px;text-decoration:none;transition:transform .2s var(--ease)}
 .ancres a:active{transform:scale(.98)}
 .ancres a.pleine{background:var(--rampe);color:var(--sur-rampe)}
 .ancres a.creuse{border:1px solid var(--trait);background:var(--surf);color:var(--ink)}
@@ -62,26 +65,26 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 /* -- demo du thermometre ------------------------------------------------- */
 .demo{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(28px,4vw,52px);align-items:start}
 @media(min-width:900px){.demo{grid-template-columns:minmax(0,1fr) minmax(360px,440px)}}
-.appareil{background:var(--surf);border-radius:30px;padding:26px;
-  box-shadow:0 24px 60px -28px rgba(0,0,0,.55)}
+.appareil{background:var(--surf);border-radius:30px;padding:26px;box-shadow:0 24px 60px -28px rgba(0,0,0,.55)}
 .grad{display:flex;gap:18px;align-items:flex-start}
 .familles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-.fam{min-height:44px;padding:9px 15px;border-radius:99px;border:1px solid var(--trait);background:var(--fond);
-  font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink2);transition:background-color .2s var(--ease),color .2s var(--ease)}
+.fam{min-height:46px;padding:9px 16px;border-radius:99px;border:1px solid var(--trait);background:var(--fond);
+  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:16px;color:var(--ink2);transition:background-color .2s var(--ease),color .2s var(--ease)}
 .fam[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein)}
 .blocs{flex:1;min-width:0}
 .bloc{margin-bottom:13px;opacity:.42;transition:opacity .22s var(--ease)}
 .bloc.actif{opacity:1}
-.bloc .lab{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:15px;letter-spacing:.1em;color:var(--c);margin-bottom:5px}
-.qual{display:block;width:100%;min-height:40px;text-align:left;font-size:13.5px;padding:8px 13px;border-radius:14px;
+.bloc .lab{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
+  font-weight:700;font-size:16px;letter-spacing:.06em;color:var(--c);margin-bottom:5px}
+.qual{display:block;width:100%;min-height:42px;text-align:left;font-size:14px;padding:9px 13px;border-radius:14px;
   background:var(--fond);border:1px solid var(--trait);color:var(--ink2);margin-bottom:5px}
-.qual[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein);font-weight:500}
+.qual[aria-pressed=true]{background:var(--cp);border-color:var(--cp);color:var(--sur-plein);font-weight:700}
 .thermo{width:74px;flex:none;position:relative;height:326px;--c:var(--trait)}
 .thermo .lecture{height:52px;text-align:center}
-.thermo .val{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-variant-numeric:tabular-nums;
-  font-size:34px;line-height:1;color:var(--c)}
-.thermo .pal{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
+.thermo .val{font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45;
+  font-weight:700;font-variant-numeric:tabular-nums;font-size:34px;line-height:1;color:var(--c)}
+.thermo .pal{font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
 .tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;background:var(--fond);
   border:1px solid var(--trait);overflow:hidden}
 .merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);transform-origin:bottom;
@@ -95,17 +98,26 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .ticks i:nth-child(odd){background:var(--ink2);width:9px}
 .curseur{position:absolute;left:37px;top:167px;width:230px;height:56px;margin:-28px 0 0 -115px;
   transform:rotate(-90deg);opacity:0;cursor:ns-resize}
-.aide{color:var(--ink2);font-size:14px;margin-top:16px}
+.aide{color:var(--ink2);font-size:15px;margin-top:16px}
 
-/* -- listes editoriales -------------------------------------------------- */
-.liste{max-width:68ch}
-.liste div{padding:24px 0;border-top:1px solid var(--trait);display:grid;gap:6px 26px}
-@media(min-width:720px){.liste div{grid-template-columns:220px minmax(0,1fr)}}
-.liste div:first-child{border-top:0;padding-top:0}
-.liste b{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:14px;letter-spacing:.1em;text-transform:uppercase}
-.liste span{color:var(--ink2)}
-.liste .non b{color:var(--f-colere)}
-.liste .oui b{color:var(--f-tendresse)}
+/* -- les refus, en tableau ----------------------------------------------- */
+.refus{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:8px}
+.refus th{text-align:left;vertical-align:top;padding:0 24px 14px 0;border-bottom:1px solid var(--trait);
+  font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:21px;line-height:1.15;color:var(--f-colere);letter-spacing:-.005em}
+.refus td{vertical-align:top;padding:18px 24px 0 0;color:var(--ink2);font-size:15.5px;line-height:1.55}
+.refus th:last-child,.refus td:last-child{padding-right:0}
+@media(max-width:800px){
+  .refus,.refus tbody,.refus thead,.refus tr,.refus th,.refus td{display:block;width:auto}
+  .refus thead{display:none}
+  .refus td{padding:20px 0;border-top:1px solid var(--trait)}
+  .refus td::before{content:attr(data-nom);display:block;margin-bottom:5px;
+    font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+    font-weight:700;font-size:21px;color:var(--f-colere)}
+}
+.fait{max-width:66ch;margin-top:34px;padding-top:26px;border-top:1px solid var(--trait);color:var(--ink2)}
+.fait b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:21px;color:var(--f-tendresse);margin-bottom:5px}
 
 /* -- mondes -------------------------------------------------------------- */
 .mondes{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px;margin-top:8px}
@@ -116,35 +128,34 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .monde .ciel{display:block;height:66px;background:var(--fond);position:relative;border-bottom:1px solid var(--trait)}
 .monde .ciel i{position:absolute;left:12px;right:12px;bottom:12px;height:9px;border-radius:99px;background:var(--rampe)}
 .monde .ciel u{position:absolute;left:12px;top:14px;width:28px;height:9px;border-radius:99px;background:var(--ink2)}
-.monde .nom{display:block;padding:9px 12px 11px;font-family:var(--affiche);font-weight:900;font-stretch:62%;
-  font-size:13px;letter-spacing:.09em;text-transform:uppercase}
+.monde .nom{display:block;padding:9px 12px 11px;font-weight:700;font-size:14px;letter-spacing:.03em}
 .emotions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
 .emotions span{display:inline-flex;align-items:center;gap:9px;padding:7px 15px 7px 11px;border-radius:99px;
-  background:var(--surf);border:1px solid var(--trait);font-size:14px}
+  background:var(--surf);border:1px solid var(--trait);font-size:15px}
 .emotions i{width:12px;height:12px;border-radius:99px;background:var(--c)}
 
 /* -- bareme -------------------------------------------------------------- */
-.bareme{width:100%;border-collapse:collapse;max-width:68ch;margin-top:8px}
-.bareme th,.bareme td{text-align:left;padding:12px 0;border-bottom:1px solid var(--trait);vertical-align:baseline}
-.bareme th{font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:12px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink2)}
+.bareme{width:100%;border-collapse:collapse;max-width:66ch;margin-top:8px}
+.bareme th,.bareme td{text-align:left;padding:13px 0;border-bottom:1px solid var(--trait);vertical-align:baseline}
+.bareme th{font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
 .bareme td:last-child,.bareme th:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:20px}
-.bareme tr:last-child td{border-bottom:0;font-weight:500}
+.bareme tr:last-child td{border-bottom:0;font-weight:700}
 
-/* -- etapes -------------------------------------------------------------- */
+/* -- proposer ------------------------------------------------------------ */
 .proposer{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 @media(min-width:900px){.proposer{grid-template-columns:minmax(0,1fr) 264px}}
 .plaque{margin:0}
 @media(min-width:900px){.plaque{position:sticky;top:104px}}
 .plaque img{display:block;width:100%;max-width:264px;height:auto}
-.plaque figcaption{margin-top:14px;color:var(--ink2);font-size:14px;max-width:264px}
-.plaque b{display:block;color:var(--ink);font-family:var(--affiche);font-weight:900;font-stretch:62%;
-  font-size:15px;letter-spacing:.06em;margin-bottom:3px}
-.etapes{counter-reset:e;max-width:68ch}
-.etapes>div{counter-increment:e;padding:22px 0;border-top:1px solid var(--trait);display:flex;gap:22px;align-items:baseline}
-.etapes>div::before{content:counter(e);font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:30px;
-  line-height:1;color:var(--action);font-variant-numeric:tabular-nums;flex:none;width:30px}
-.etapes b{display:block;font-family:var(--affiche);font-weight:900;font-stretch:62%;font-size:17px;letter-spacing:.04em;margin-bottom:3px}
+.plaque figcaption{margin-top:14px;color:var(--ink2);font-size:15px;max-width:264px}
+.plaque b{display:block;color:var(--ink);font-weight:700;font-size:16px;margin-bottom:3px}
+.etapes{counter-reset:e;max-width:66ch}
+.etapes>div{counter-increment:e;padding:24px 0;border-top:1px solid var(--trait);display:flex;gap:22px;align-items:baseline}
+.etapes>div::before{content:counter(e);font-family:var(--affiche);font-optical-sizing:auto;
+  font-variation-settings:'SOFT' 45;font-weight:700;font-size:30px;line-height:1;color:var(--action);
+  font-variant-numeric:tabular-nums;flex:none;width:30px}
+.etapes b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:20px;margin-bottom:3px}
 .etapes span{color:var(--ink2)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;scroll-behavior:auto}}
@@ -181,6 +192,9 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
       <p>Ici, c’est le même geste. On glisse le mercure, le palier atteint allume son bloc de vocabulaire.
         L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier —
         utile pour quelqu’un qui sait nommer ce qu’il ressent mais pas le chiffrer.</p>
+      <p>C’est le premier écran de la saisie, avant tout le reste&nbsp;: un moment peut se noter en trois
+        gestes, dans la rue, sans rien avoir à écrire. Le contexte et les sensations physiques attendent
+        en dessous, et peuvent être complétés plus tard.</p>
       <p class="aide">Essayez&nbsp;: choisissez une émotion, puis faites glisser le mercure de haut en bas.</p>
     </div>
     <div class="appareil">
@@ -207,8 +221,11 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
       cette demande est le premier obstacle, avant même la question des émotions.</p>
     <p>Alors la première chose que Gentiane demande n’est pas une émotion. C’est&nbsp;:
       <em>comment veux-tu qu’on t’appelle, et de quelle couleur tu veux que ce soit.</em>
-      Sept mondes, en clair comme en sombre, plus deux réglages de chaleur et de contraste.
+      Sept mondes, en clair comme en sombre, plus la taille du texte, la chaleur et le contraste.
       Le patient choisit avant d’écrire la moindre ligne.</p>
+    <p>Au même écran, il choisit l’accord de toute l’application&nbsp;: féminin, masculin, ou sans accord
+      avec des tournures nominales. Le vocabulaire du livre est donné au féminin — personne n’a à lire
+      un accord qui n’est pas le sien, et il n’y a pas de point médian à déchiffrer.</p>
   </div>
   <div class="mondes" id="mondes"></div>
   <p class="aide" id="souffle-monde" style="margin-bottom:34px"></p>
@@ -219,38 +236,37 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
   <div class="emotions" id="emotions"></div>
 </section>
 
-<section id="accord">
-  <h2>Aucun patient n’a à lire un accord qui n’est pas le sien.</h2>
-  <div class="mesure">
-    <p>Le vocabulaire du livre est donné au féminin. Au premier lancement, le patient choisit
-      l’accord de toute l’application — féminin, masculin, ou sans accord, avec des tournures
-      nominales. Pas de point médian à déchiffrer, jamais de masculin par défaut.</p>
-  </div>
-  <table class="bareme">
-    <thead><tr><th>Au féminin</th><th>Au masculin</th><th>Sans accord</th></tr></thead>
-    <tbody id="accords"></tbody>
-  </table>
-</section>
-
 <section id="limites">
   <h2>Ce que Gentiane ne fait pas, et ne fera pas.</h2>
-  <div class="liste">
-    <div class="non"><b>Aucun diagnostic</b><span>Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres affichés sont des moyennes d’intensité que le patient a lui-même posées.</span></div>
-    <div class="non"><b>Aucune IA</b><span>Rien n’est interprété, résumé ou commenté automatiquement. C’est un choix de conception&nbsp;: l’interprétation vous appartient, et rien n’a besoin d’être envoyé à un service tiers.</span></div>
-    <div class="non"><b>Aucune collecte</b><span>Pas de compte, pas de serveur, pas de statistiques d’usage, pas de traceur. L’application est un fichier que le navigateur télécharge une fois et qui fonctionne ensuite hors ligne.</span></div>
-    <div class="non"><b>Aucune relance</b><span>Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations. Noter un moment ne rapporte rien.</span></div>
-    <div class="oui"><b>Ce qu’elle fait</b><span>Elle enregistre, trie, compte, et rapproche les moments qui se ressemblent selon un barème publié ci-dessous. Rien d’autre.</span></div>
-  </div>
+  <table class="refus">
+    <thead><tr>
+      <th>Aucun diagnostic</th>
+      <th>Aucune IA</th>
+      <th>Aucune collecte</th>
+      <th>Aucune relance</th>
+    </tr></thead>
+    <tbody><tr>
+      <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres affichés sont des moyennes d’intensité que le patient a lui-même posées.</td>
+      <td data-nom="Aucune IA">Rien n’est interprété, résumé ou commenté automatiquement. C’est un choix de conception&nbsp;: l’interprétation vous appartient, et rien n’a besoin d’être envoyé à un service tiers.</td>
+      <td data-nom="Aucune collecte">Pas de compte, pas de serveur, pas de statistiques d’usage, pas de traceur. L’application est un fichier que le navigateur télécharge une fois et qui fonctionne ensuite hors ligne.</td>
+      <td data-nom="Aucune relance">Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations. Noter un moment ne rapporte rien.</td>
+    </tr></tbody>
+  </table>
+  <p class="fait"><b>Ce qu’elle fait</b>Elle enregistre, trie, compte, et rapproche les moments qui se
+    ressemblent selon un barème publié ci-dessous. Rien d’autre.</p>
 </section>
 
 <section id="echos">
-  <h2>Pourquoi deux moments sont reliés, et comment le vérifier à la main.</h2>
+  <h2>Pourquoi ces deux moments-là sont reliés.</h2>
   <div class="mesure">
     <p>Pendant la saisie, l’application remonte les moments passés qui ressemblent à celui en cours.
       Les mêmes liens sont dessinés dans l’écran Tendances&nbsp;: un point par moment, la hauteur est
       l’intensité, un trait relie deux moments proches.</p>
-    <p>Le rapprochement n’est pas une distance vectorielle&nbsp;: c’est une addition, pour qu’un patient
-      puisse toujours demander <em>pourquoi ces deux-là</em> et obtenir une réponse en une phrase.</p>
+    <p>Le rapprochement est une addition, et le barème est ci-dessous. Ça veut dire que la question
+      <em>pourquoi ces deux-là&nbsp;?</em> a toujours une réponse en une phrase — même émotion, même palier,
+      et le mot « voisin » dans les deux. Vous pouvez la donner au patient, et il peut ne pas être d’accord&nbsp;:
+      le lien devient une question à poser, pas un résultat à accepter.</p>
+    <p>Rien n’est pondéré par un modèle, rien n’apprend du patient, et le barème ne changera pas dans son dos.</p>
   </div>
   <table class="bareme">
     <thead><tr><th>Ce qui rapproche deux moments</th><th>Points</th></tr></thead>
@@ -273,6 +289,10 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
       séance si le patient a posé le repère — en plus grand et plus aéré que le reste de l’application,
       parce que c’est le seul écran destiné à être lu par quelqu’un d’autre&nbsp;: le compte des moments,
       l’intensité moyenne, la répartition par famille, puis chaque fiche dans l’ordre.</p>
+    <p>Un moment peut être marqué <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal du patient et
+      n’apparaît jamais dans cet écran. L’application vous dit que la règle existe, jamais combien de
+      moments sont concernés. C’est la condition pour qu’il ose noter ce qu’il n’a pas encore envie de dire —
+      et ce qu’il finit par en dire reste une décision qui lui appartient.</p>
     <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. La lecture se fait devant vous,
       sur son appareil, et s’arrête quand il range son téléphone.</p>
   </div>
@@ -360,10 +380,6 @@ $('#d-ticks').innerHTML = '<i></i>'.repeat(11);
 $('#emotions').innerHTML = P.FAMILLES.map(f =>
   '<span style="--c:' + f.couleur + '"><i></i>' + ech(f.nom) + '</span>').join('');
 
-$('#accords').innerHTML = ['Affolée', 'Furieuse, hors de moi', 'Émue', 'Honteuse, coupable'].map(cle =>
-  '<tr><td>' + ech(P.motAffiche(cle, 'f')) + '</td><td>' + ech(P.motAffiche(cle, 'm'))
-  + '</td><td>' + ech(P.motAffiche(cle, 'n')) + '</td></tr>').join('');
-
 $('#seuil').textContent = String(P.SEUIL).replace('.', ',');
 
 function peindreDemo() {
@@ -377,7 +393,7 @@ function peindreDemo() {
   $('#d-merc').style.transform = 'scaleY(' + (d.i / 10) + ')';
   $('#d-bulbe').classList.toggle('plein', d.i > 0);
   $('#d-blocs').innerHTML = !f
-    ? '<div style="color:var(--ink2);font-size:14px">Choisissez une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
+    ? '<div style="color:var(--ink2);font-size:15px">Choisissez une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
     : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + ';--cp:' + cp + '">'
         + '<div class="lab">' + P.PALIERS[k] + '</div>'
         + mots.map(m => '<button class="qual" data-mot="' + ech(P.cle(m)) + '" aria-pressed="' + d.quals.includes(P.cle(m)) + '">'

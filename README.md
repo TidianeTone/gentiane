@@ -10,8 +10,12 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 - **Premier lancement** : l'appli ne demande pas une émotion, elle demande un
   prénom, un accord grammatical et des couleurs. Le patient choisit son monde
   avant d'écrire la moindre ligne.
-- **Une fiche par moment** : jour et heure, ce que je fais, l'émotion,
-  l'intensité, les qualificatifs, les sensations physiques.
+- **Une fiche par moment** : l'émotion et le thermomètre d'abord — un moment
+  se note en trois gestes sans faire défiler — puis ce que je fais, les
+  sensations physiques, l'heure (repliée, déjà remplie) et le marqueur privé.
+- **Gardé pour moi** : un moment marqué reste dans le journal et n'apparaît
+  jamais en mode séance. L'écran séance dit que la règle existe, jamais
+  combien de moments sont concernés.
 - **Le thermomètre est le curseur** : on le glisse de 0 à 10, il prend la
   couleur de l'émotion, et le palier (+ / ++ / +++ / ++++) qu'il atteint
   allume le bloc de vocabulaire correspondant. L'inverse marche aussi :
@@ -25,6 +29,7 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 - **Graphe des motifs** : un point par moment (x = le temps, y = l'intensité,
   la couleur = l'émotion), et un trait entre deux moments qui se ressemblent.
 - **Tendances** : 14 derniers jours, répartition, heures, mots qui reviennent.
+  Toucher un mot ouvre tous les moments où il a été posé.
 - **Séance** : une période bornée (7 jours, 30 jours, ou depuis le dernier
   rendez-vous), rendue en plus grand et plus aéré — c'est le seul écran fait
   pour être lu par quelqu'un d'autre que celui qui l'a écrit.
@@ -32,6 +37,9 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 ## Les thèmes
 
 Un thème ne décrit que le **sol** : fond, surfaces, encre, accent, rampe.
+La taille du texte est un quatrième réglage (`P.echelleTexte`, 0.9x à 1.35x) :
+tout est en `rem` sur `--t`, sauf le thermomètre et le graphe des motifs, qui
+sont des instruments dessinés et restent en pixels.
 Sept mondes (`P.THEMES`), chacun en clair et en sombre, plus deux réglages
 continus — chaleur et contraste.
 
@@ -102,9 +110,17 @@ Ouvrir l'URL, puis :
 ```
 node verif.js     # casse si le vocabulaire, les themes ou les calculs cassent
 ```
+```
+python qr.py      # regenere qr.svg, et refuse d'ecrire s'il ne se relit plus
+```
 Serveur local : config `gentiane` (port 8546). `gentiane.js` tient le
 vocabulaire, les thèmes et les calculs purs ; `index.html` et `psy.html` ne
 font que l'interface et partagent le même module.
+
+Typographie : **Fraunces** pour l'affiche, **Atkinson Hyperlegible Next** pour
+le texte, via Google Fonts. `vercel.json` ne porte qu'une réécriture
+`/psy` → `/psy.html` — surtout pas `cleanUrls`, qui redirigerait `/index.html`
+et ferait échouer le `cache.addAll()` du service worker.
 
 **Piège PWA** : `sw.js` est réseau-d'abord sur tout le même-origine (le cache
 n'est qu'un filet hors ligne). Bumper `CACHE` à chaque déploiement qui change

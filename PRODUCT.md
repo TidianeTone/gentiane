@@ -73,14 +73,25 @@ vectorielle.
 - Aucun exemple pré-rempli dans les champs libres.
 - Les sensations physiques déjà notées pour une famille à un palier sont
   reproposées en pastilles.
+- **Un moment peut être marqué « gardé pour moi »** : il reste dans le journal
+  et n'apparaît jamais en mode séance. L'écran séance énonce la règle, jamais
+  le nombre de moments concernés — le psy sait que le mécanisme existe, le
+  compte appartient au patient.
+- La saisie s'ouvre sur l'émotion et le thermomètre : un moment se note en
+  trois gestes sans faire défiler. Le contexte, les sensations, l'heure et le
+  marqueur privé sont en dessous et restent facultatifs.
 - Stack : HTML/CSS/JS statiques, zéro dépendance, `gentiane.js` (UMD pur,
   testé par `node verif.js`) tient le vocabulaire et les calculs ;
   `index.html` ne fait que l'interface. Déployé sur Vercel.
 
 ## Brand Commitments
 
-- Nom **Gentiane**. Typographie **Archivo** (compressé, 900, capitales
-  espacées) pour l'affiche, **Gabarito** pour le texte.
+- Nom **Gentiane**. Typographie **Fraunces** pour l'affiche (un caractère de
+  livre, axes SOFT/WONK adoucis — l'application vient d'un cahier) et
+  **Atkinson Hyperlegible Next** pour le texte (dessiné par le Braille
+  Institute : lettres impossibles à confondre). Remplace Archivo/Gabarito
+  le 13/09/2026 — l'affiche compressée en capitales sonnait sportive là où
+  il fallait de l'accueil.
 - Le thermomètre, la pilule d'action, les cartes arrondies : l'ossature
   visuelle est acquise et se conserve d'un thème à l'autre.
 - **Les cinq couleurs d'émotion sont invariantes** — peur violet, tristesse
@@ -115,6 +126,9 @@ destinée aux psychologues ni ailleurs.
 - **Accord grammatical choisi par le patient** au premier lancement — féminin,
   masculin, ou sans accord (tournures nominales). Le vocabulaire entier suit.
   Jamais de point médian.
+- **Réglage de la taille du texte** au premier lancement, à côté du thème :
+  0.9x à 1.35x. Seul le texte grandit — le thermomètre est un instrument
+  dessiné et reste en pixels.
 - **Thème clair et thème sombre au même niveau**, plus un réglage de contraste.
   Chaque combinaison thème × mode × contraste doit tenir le seuil WCAG AA
   (4.5:1 texte courant, 3:1 grand texte) — vérifié par calcul dans
