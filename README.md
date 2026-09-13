@@ -10,7 +10,7 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 - **Premier lancement** : l'appli ne demande pas une émotion, elle demande un
   prénom, un accord grammatical et des couleurs. Le patient choisit son monde
   avant d'écrire la moindre ligne.
-- **Comment ça marche** : après l'accueil, une page dit une fois ce que
+- **Comment ça marche** : après l'accueil, une page montre une fois ce que
   l'appli fait — noter, ce qui apparaît avec le temps, montrer si on veut, ce
   qu'elle ne fait pas — puis attend dans les réglages. Même ton que le reste :
   la personne est le sujet, le psy est un « si tu veux ».
@@ -137,7 +137,7 @@ qualificatifs qui existent, contient un moment privé, et produit au moins un
 
 Une ancre choisit l'écran d'ouverture : `#journal`, `#saisie`, `#echo`,
 `#tendances`, `#seance`, `#reglages`, `#manuel`. `?theme=` et `?sombre=` habillent la
-démonstration. C'est ainsi que `psy.html` embarque cinq écrans vivants et
+démonstration. C'est ainsi que `psy.html` embarque six écrans vivants et
 manipulables dans des `iframe` de 390px réduites — le praticien voit
 l'application, pas une capture qui vieillira.
 

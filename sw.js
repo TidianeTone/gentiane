@@ -3,7 +3,7 @@
 // d'abord, le cache ne sert que de filet quand il n'y a plus de reseau ;
 // seul ce qui vient d'ailleurs (les polices) est servi par le cache d'abord.
 // Le nouveau worker prend la main sans attendre.
-const CACHE = 'gentiane-v12';
+const CACHE = 'gentiane-v13';
 const SOCLE = ['./', 'index.html', 'gentiane.js', 'manifest.json', 'icone.svg',
   'verre-tube.png', 'verre-bulbe.png'];
 

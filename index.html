@@ -157,7 +157,10 @@ input[type=password]{text-align:center;font-size:1.5rem;letter-spacing:.35em}
 .thermo .lecture{height:52px;text-align:center}
 .thermo .val{font-size:34px;line-height:1;color:var(--c)}
 .thermo .pal{font-family:var(--texte);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--ink2)}
-.tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;
+/* Tout l'instrument est cantonne a .thermo. Les noms sont generiques et une
+   illustration ailleurs dans la page peut porter les memes : sans cantonnement,
+   la height:100% du mercure ecrasait la geometrie d'un <rect> SVG homonyme. */
+.thermo .tube{position:absolute;left:27px;top:52px;width:20px;height:230px;border-radius:99px;
   background:var(--surf);border:1px solid var(--trait);overflow:hidden}
 /* L'habillage de verre. Le verre n'a pas de couleur a lui : il ne montre que
    sa lumiere, et prend celle du mercure qui est dedans et du monde qui est
@@ -165,20 +168,20 @@ input[type=password]{text-align:center;font-size:1.5rem;letter-spacing:.35em}
    gris 128 est l'identite de soft-light — leur fond disparait de lui-meme,
    et le meme habillage tient sur les sept mondes, en clair comme en sombre.
    Fabriquees par verre.py. */
-.tube::after,.bulbe::after{content:'';position:absolute;inset:0;border-radius:inherit;
+.thermo .tube::after,.thermo .bulbe::after{content:'';position:absolute;inset:0;border-radius:inherit;
   background-size:100% 100%;mix-blend-mode:soft-light;pointer-events:none}
-.tube::after{background-image:url(verre-tube.png)}
-.bulbe::after{background-image:url(verre-bulbe.png)}
-.merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);
+.thermo .tube::after{background-image:url(verre-tube.png)}
+.thermo .bulbe::after{background-image:url(verre-bulbe.png)}
+.thermo .merc{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--c);
   transform-origin:bottom;transform:scaleY(0);transition:transform .22s var(--ease)}
-.bulbe{position:absolute;left:17px;bottom:0;width:40px;height:40px;border-radius:99px;
+.thermo .bulbe{position:absolute;left:17px;bottom:0;width:40px;height:40px;border-radius:99px;
   background:var(--surf);border:1px solid var(--trait);transition:background-color .22s var(--ease)}
-.bulbe.plein{background:var(--c);border-color:var(--c)}
-.ticks{position:absolute;left:51px;top:52px;height:230px;width:16px;
+.thermo .bulbe.plein{background:var(--c);border-color:var(--c)}
+.thermo .ticks{position:absolute;left:51px;top:52px;height:230px;width:16px;
   display:flex;flex-direction:column-reverse;justify-content:space-between;pointer-events:none}
-.ticks i{display:block;height:1px;width:5px;background:var(--trait)}
-.ticks i:nth-child(odd){background:var(--ink2);width:9px}
-.curseur{position:absolute;left:37px;top:167px;width:230px;height:56px;
+.thermo .ticks i{display:block;height:1px;width:5px;background:var(--trait)}
+.thermo .ticks i:nth-child(odd){background:var(--ink2);width:9px}
+.thermo .curseur{position:absolute;left:37px;top:167px;width:230px;height:56px;
   margin:-28px 0 0 -115px;transform:rotate(-90deg);opacity:0;cursor:ns-resize}
 
 /* -- echos --------------------------------------------------------------- */
@@ -297,10 +300,15 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 @keyframes puce-on{0%,18%{fill:var(--surf2);stroke:var(--trait)}30%,100%{fill:var(--f-colere-p);stroke:var(--f-colere-p)}}
 .illu .puce-txt{fill:var(--sur-plein);animation:puce-txt 6s var(--ease) infinite}
 @keyframes puce-txt{0%,18%{fill:var(--ink2)}30%,100%{fill:var(--sur-plein)}}
-.illu .merc{fill:var(--f-colere);transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.7);animation:merc 6s var(--ease) infinite}
+/* L'origine est donnee en coordonnees du viewBox, pas en pourcentage : sinon
+   elle se calcule sur la boite SVG entiere et le mercure deborde sous le
+   bulbe au lieu de monter depuis lui. 86 = le fond du tube. */
+.illu .merc{fill:var(--f-colere);transform-box:view-box;transform-origin:270px 86px;
+  transform:scaleY(.7);animation:merc 6s var(--ease) infinite}
 @keyframes merc{0%,34%{transform:scaleY(0)}60%,100%{transform:scaleY(.7)}}
 .illu .bulbe{fill:var(--f-colere);animation:bulbe 6s var(--ease) infinite}
 @keyframes bulbe{0%,34%{fill:var(--surf2)}44%,100%{fill:var(--f-colere)}}
+.illu .verre{mix-blend-mode:soft-light}   /* le meme verre que l'instrument */
 .illu .val{fill:var(--f-colere);animation:val 6s var(--ease) infinite}
 @keyframes val{0%,55%{opacity:0}70%,100%{opacity:1}}
 /* motifs : les points arrivent un a un, puis les traits entre ceux qui se ressemblent */
@@ -455,7 +463,9 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <rect x="18" y="86" width="96" height="10" rx="5" fill="var(--surf2)"/>
         <rect class="t" x="262" y="14" width="16" height="74" rx="8"/>
         <rect class="merc" x="264" y="16" width="12" height="70" rx="6"/>
+        <image class="verre" href="verre-tube.png" x="262" y="14" width="16" height="74" preserveAspectRatio="none"/>
         <circle class="bulbe" cx="270" cy="96" r="12"/>
+        <image class="verre" href="verre-bulbe.png" x="258" y="84" width="24" height="24"/>
         <text class="val aff" x="248" y="52" text-anchor="end" font-size="30">7</text>
       </svg>
       <h2>Noter un moment</h2>
