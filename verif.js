@@ -195,7 +195,7 @@ const matin = new Date(2026, 8, 13, 9, 0).getTime();
 eq(P.salut('Julie', [], matin).titre, 'Bonjour Julie', 'bonjour le matin');
 eq(P.salut('', [], matin).titre, 'Bonjour', 'sans prenom');
 eq(P.salut('Julie', [], new Date(2026, 8, 13, 21, 0).getTime()).titre, 'Bonsoir Julie', 'bonsoir le soir');
-eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonne nuit Julie', 'bonne nuit la nuit');
+eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonsoir Julie', 'la nuit aussi c est bonsoir : bonne nuit est un au revoir');
 eq(P.salut('Julie', j, T).souffle, 'Un moment noté aujourd’hui.', 'compte du jour');
 eq(P.salut('Julie', [j[1]], T).souffle, 'Ton dernier moment date d’hier.', 'dernier moment hier');
 vrai(!/f[ée]licit|bravo|continue comme/i.test(P.salut('Julie', j, T).souffle), 'aucune felicitation');

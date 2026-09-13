@@ -8,15 +8,17 @@ web
 
 ## Users
 
-**Utilisateur principal : le patient.** Quelqu'un qui suit une thérapie et à qui
-son psy propose de tenir un journal des émotions entre deux séances. Il note sur
-son téléphone, seul, souvent juste après le moment qui l'a remué — parfois
-debout dans la rue, parfois le soir au lit. Genre, âge et niveau d'aisance
-numérique inconnus : l'appli ne peut rien présupposer.
+**Utilisateur principal : la personne qui tient le journal, pour elle-même.**
+Elle note sur son téléphone, seule, souvent juste après le moment qui l'a
+remuée — parfois debout dans la rue, parfois le soir au lit. Elle peut être
+suivie par un psy, ou pas. Genre, âge et niveau d'aisance numérique
+inconnus : l'appli ne peut rien présupposer.
 
-**Utilisateur secondaire : le psychologue.** Il découvre l'outil, décide s'il
-peut le mettre entre les mains de ses patients, et le regarde avec eux en
-séance. Il ne l'installe pas, ne l'administre pas, ne reçoit aucune donnée.
+**Le psy est un bonus, jamais le centre** (recadrage du 13/09/2026). Il
+découvre l'outil parce que quelqu'un qu'il suit l'utilise, ou parce qu'il a
+envie de le faire connaître. Il n'installe rien, n'administre rien, ne
+reçoit rien. Ce qu'il voit un jour, si on le lui montre, est ce que la
+personne a choisi de montrer.
 
 Origine du besoin (fait rapporté, à conserver) : une enfant autiste à qui une
 psy réputée avait donné le tableau du livre sur une feuille blanche, sans
@@ -52,10 +54,13 @@ vectorielle.
 ## Operating Context
 
 - Saisie au téléphone, souvent une main, souvent hors ligne. PWA installable.
-- Le psy transmet l'URL ; il n'y a rien à configurer côté praticien.
-- En séance, le patient tend son téléphone : c'est le **mode séance**, qui
-  restitue une période (semaine, mois, ou depuis la dernière séance) mise en
-  page pour être lue par quelqu'un d'autre que celui qui l'a écrite.
+- Un psy peut faire connaître l'appli (un QR code suffit) ; il n'y a rien à
+  configurer de son côté.
+- **Montrer est une décision, jamais un défaut.** L'écran « Séance » restitue
+  une période (semaine, mois, ou depuis la dernière fois) mise en page pour
+  d'autres yeux — un psy, un proche, un médecin. Ce qu'on ne montre pas n'est
+  pas une information : l'outil doit rendre l'autocensure inutile à
+  l'écriture.
 
 ## Capabilities and Constraints
 
@@ -125,9 +130,12 @@ destinée aux psychologues ni ailleurs.
    interprétation, aucun conseil.
 4. **L'appareil est le seul dépositaire.** Chaque fonction doit tenir sans
    serveur, sans compte, sans réseau.
-5. **Rien n'est présupposé du patient.** Ni son genre, ni son prénom, ni son
-   goût, ni sa tolérance à la lumière : il le pose lui-même, au premier
-   lancement, avant d'écrire quoi que ce soit.
+5. **Rien n'est présupposé de la personne.** Ni son genre, ni son prénom, ni
+   son goût, ni sa tolérance à la lumière, ni le fait qu'elle voie un psy :
+   elle le pose elle-même, au premier lancement, avant d'écrire quoi que ce soit.
+6. **La voix ne fait jamais du psy le sujet et de la personne l'objet.** Pas
+   de « donnez-lui », « faites-lui installer », « le patient vous tend ». La
+   personne écrit, choisit, montre ; le psy reçoit ce qu'on lui montre.
 
 ## Accessibility & Inclusion
 

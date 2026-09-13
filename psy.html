@@ -1,8 +1,8 @@
 <meta charset="utf-8">
-<title>Gentiane — pour les psychologues</title>
+<title>Gentiane — pour les thérapeutes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#1a2c3c" id="meta-couleur">
-<meta name="description" content="Gentiane est un journal des émotions que vous pouvez proposer à un patient : rien à installer côté cabinet, rien qui sorte de son téléphone.">
+<meta name="description" content="Gentiane est un journal des émotions qu’on tient seul, pour soi. Ce qu’elle fait, ce qu’elle ne fera pas, et ce qui reste entre les mains de la personne qui l’utilise.">
 <link rel="icon" href="icone.svg">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&display=swap">
@@ -69,15 +69,13 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 @media(min-width:940px){.duo{grid-template-columns:minmax(0,1fr) auto}}
 .paire{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,34px)}
 figure.ecran{margin:0;width:350px;max-width:100%}
-/* Une lunette, pas un lisere : l ecran est un objet pose sur la page, et il
+/* Une lunette, pas un lisere : l'ecran est un objet pose sur la page, et il
    se detache par son cadre plutot que par un halo. */
 .ecran .cadre{--e:.846;width:350px;max-width:100%;height:calc(var(--h) * var(--e) + 20px);
   border:10px solid var(--surf);outline:1px solid var(--trait);outline-offset:0;
   border-radius:34px;overflow:hidden;background:var(--fond);
   box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
 .ecran iframe{display:block;width:390px;height:var(--h);border:0;transform:scale(var(--e));transform-origin:0 0}
-/* Un ecran de 390px reduit : sur un tres petit telephone, on reduit davantage
-   plutot que de laisser le cadre depasser sa colonne. */
 @media(max-width:420px){
   figure.ecran,.ecran .cadre{width:288px}
   .ecran .cadre{--e:.687}
@@ -86,13 +84,13 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 .ecran figcaption b{display:block;color:var(--ink);font-weight:700;font-size:16px;margin-bottom:2px}
 
 /* -- les refus, en tableau ----------------------------------------------- */
-.refus{width:100%;border-collapse:collapse;table-layout:fixed;margin-top:8px}
+.refus{width:100%;max-width:66ch;border-collapse:collapse;table-layout:fixed;margin-top:8px}
 .refus th{text-align:left;vertical-align:top;padding:0 24px 14px 0;border-bottom:1px solid var(--trait);
   font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
   font-weight:700;font-size:21px;line-height:1.15;color:var(--f-colere);letter-spacing:-.005em}
 .refus td{vertical-align:top;padding:18px 24px 0 0;color:var(--ink2);font-size:15.5px;line-height:1.55}
 .refus th:last-child,.refus td:last-child{padding-right:0}
-@media(max-width:800px){
+@media(max-width:720px){
   .refus,.refus tbody,.refus thead,.refus tr,.refus th,.refus td{display:block;width:auto}
   .refus thead{display:none}
   .refus td{padding:20px 0;border-top:1px solid var(--trait)}
@@ -123,18 +121,14 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 .proposer{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 @media(min-width:900px){.proposer{grid-template-columns:minmax(0,1fr) 264px}}
 .plaque{margin:0}
-@media(min-width:900px){.plaque{position:sticky;top:104px}}
 .plaque img{display:block;width:100%;max-width:264px;height:auto}
 .plaque figcaption{margin-top:14px;color:var(--ink2);font-size:15px;max-width:264px}
 .plaque b{display:block;color:var(--ink);font-weight:700;font-size:16px;margin-bottom:3px}
-.etapes{counter-reset:e;max-width:66ch}
-.etapes>div{counter-increment:e;padding:24px 0;border-top:1px solid var(--trait);display:flex;gap:22px;align-items:baseline}
-.etapes>div::before{content:counter(e);font-family:var(--affiche);font-optical-sizing:auto;
-  font-variation-settings:'SOFT' 45;font-weight:700;font-size:30px;line-height:1;color:var(--action);
-  font-variant-numeric:tabular-nums;flex:none;width:30px}
-.etapes b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
-  font-weight:700;font-size:20px;margin-bottom:3px}
-.etapes span{color:var(--ink2)}
+.deux{max-width:66ch}
+.deux>div{padding:24px 0;border-top:1px solid var(--trait)}
+.deux b{display:block;font-family:var(--affiche);font-optical-sizing:auto;font-variation-settings:'SOFT' 45,'WONK' 1;
+  font-weight:700;font-size:21px;margin-bottom:4px}
+.deux span{color:var(--ink2)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;scroll-behavior:auto}}
 </style>
@@ -151,10 +145,11 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </header>
 
 <div class="ouverture">
-  <h1>Le tableau des émotions, mais sur son téléphone.</h1>
+  <h1>Le tableau des émotions, mais dans la poche.</h1>
   <p class="lede">Gentiane tient les deux exercices du cahier — <b>« Identifiez vos émotions »</b> et
-    <b>« Graduez vos émotions »</b> — dans une application que vous pouvez donner à un patient en fin de séance.
-    Rien à installer de votre côté. Rien qui quitte son appareil.</p>
+    <b>« Graduez vos émotions »</b> — dans une application qu’on tient seul, pour soi.
+    Si quelqu’un que vous suivez l’utilise, cette page vous dit ce qu’elle fait, ce qu’elle ne fera pas,
+    et ce qui reste entre ses mains.</p>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>
     <a class="creuse" href="#limites">Ce que ça ne fait pas</a>
@@ -165,11 +160,11 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Le thermomètre n’illustre pas l’intensité. Il l’enregistre.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Sur le papier, le patient coche une case d’intensité, puis cherche le qualificatif dans la colonne
+      <p>Sur le papier, on coche une case d’intensité, puis on cherche le qualificatif dans la colonne
         correspondante. Les deux gestes sont séparés, et le second est souvent abandonné.</p>
       <p>Ici, c’est le même geste. On glisse le mercure, le palier atteint allume son bloc de vocabulaire.
         L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier —
-        utile pour quelqu’un qui sait nommer ce qu’il ressent mais pas le chiffrer.</p>
+        utile quand on sait nommer ce qu’on ressent mais pas le chiffrer.</p>
       <p class="aide">L’écran ci-contre est l’application elle-même, avec un journal fictif.
         Vous pouvez y toucher&nbsp;: choisissez une émotion, faites glisser le mercure.</p>
     </div>
@@ -187,30 +182,30 @@ figure.ecran{margin:0;width:350px;max-width:100%}
       <p>La saisie s’ouvre sur l’émotion et le thermomètre, pas sur un formulaire. Choisir, glisser,
         enregistrer&nbsp;: le moment est noté sans avoir rien eu à écrire, et sans avoir fait défiler l’écran.</p>
       <p>Le contexte, les sensations physiques et l’heure sont en dessous, et peuvent attendre — le soir,
-        ou la séance. C’est délibéré&nbsp;: le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
+        ou jamais. C’est délibéré&nbsp;: le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
         et c’est exactement celui où personne n’a envie de remplir cinq champs.</p>
       <p>Le journal se relit comme une suite de fiches, la plus récente en haut. La couleur est l’émotion,
-        le chiffre l’intensité, et la barre verticale à gauche de chaque fiche a la hauteur de cette
-        intensité — l’allure d’une semaine se lit sans lire un mot.</p>
+        le chiffre l’intensité, et la barre à gauche de chaque fiche a la hauteur de cette intensité —
+        l’allure d’une semaine se lit sans lire un mot.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:880px"><iframe data-ecran="journal" loading="lazy" title="Le journal de Gentiane"></iframe></div>
-      <figcaption><b>Le journal</b>Un moment marqué « gardé pour moi » reste ici et n’apparaît jamais en séance.</figcaption>
+      <figcaption><b>Le journal</b>Un moment marqué « gardé pour moi » reste ici, et n’apparaît jamais dans ce qu’on montre.</figcaption>
     </figure>
   </div>
 </section>
 
 <section id="liens">
-  <h2>Pendant qu’elle écrit, elle voit quand c’est déjà arrivé.</h2>
+  <h2>Pendant qu’on écrit, on voit quand c’est déjà arrivé.</h2>
   <div class="mesure">
     <p>Dès que l’émotion et l’intensité sont posées, l’application remonte les moments passés qui
       ressemblent à celui en cours, et dit pourquoi&nbsp;: même émotion, même palier, les mots partagés.
-      C’est le rapprochement le plus utile au moment le plus utile — pendant la saisie, pas trois semaines après.</p>
+      C’est le rapprochement le plus utile au moment le plus utile — pendant qu’on écrit, pas trois semaines après.</p>
     <p>Les mêmes liens sont dessinés dans Tendances&nbsp;: un point par moment, la hauteur est l’intensité,
       la couleur l’émotion, et un trait relie deux moments proches. Toucher un point donne le moment et
       tous ses échos. C’est une addition de points, pas un modèle&nbsp;: à la question
-      <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une phrase, et le patient peut
-      ne pas être d’accord avec elle.</p>
+      <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une phrase, et on a le droit
+      de ne pas être d’accord avec elle.</p>
   </div>
   <div class="paire">
     <figure class="ecran">
@@ -228,7 +223,7 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Un support qu’on n’a pas choisi peut faire barrage.</h2>
   <div class="mesure">
     <p>Une feuille blanche et un tableau sans couleur, c’est déjà une demande&nbsp;: remplis les cases.
-      Pour certains patients — enfants, adolescents, personnes autistes, personnes très anxieuses —
+      Pour certaines personnes — enfants, adolescents, personnes autistes, personnes très anxieuses —
       cette demande est le premier obstacle, avant même la question des émotions. Alors la première chose
       que l’application demande n’est pas une émotion, mais un prénom et des couleurs.</p>
   </div>
@@ -236,7 +231,7 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <p class="aide" id="souffle-monde" style="margin-bottom:34px"></p>
   <div class="mesure">
     <p><b>Les cinq couleurs d’émotion, elles, ne changent jamais</b> d’un monde à l’autre.
-      C’est le seul code à apprendre, et il reste le même entre son écran et le vôtre.</p>
+      C’est le seul code à apprendre, et il ne change pas si un jour l’écran passe de ses mains aux vôtres.</p>
   </div>
   <div class="emotions" id="emotions"></div>
 </section>
@@ -246,49 +241,48 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <table class="refus">
     <thead><tr>
       <th>Aucun diagnostic</th>
-      <th>Aucune IA</th>
       <th>Aucune collecte</th>
       <th>Aucune relance</th>
     </tr></thead>
     <tbody><tr>
-      <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres affichés sont des moyennes d’intensité que le patient a lui-même posées.</td>
-      <td data-nom="Aucune IA">Rien n’est interprété, résumé ou commenté automatiquement. C’est un choix de conception&nbsp;: l’interprétation vous appartient, et rien n’a besoin d’être envoyé à un service tiers.</td>
+      <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres affichés sont des moyennes d’intensité que la personne a elle-même posées.</td>
       <td data-nom="Aucune collecte">Pas de compte, pas de serveur, pas de statistiques d’usage, pas de traceur. L’application est un fichier que le navigateur télécharge une fois et qui fonctionne ensuite hors ligne.</td>
       <td data-nom="Aucune relance">Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations. Noter un moment ne rapporte rien.</td>
     </tr></tbody>
   </table>
   <p class="fait"><b>Ce qu’elle fait</b>Elle enregistre, trie, compte, et rapproche les moments qui se
-    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Rien d’autre.</p>
+    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Elle n’interprète
+    rien&nbsp;: l’interprétation, c’est ce qui se passe entre vous deux, pas dans l’application.</p>
 </section>
 
-<section id="seance">
-  <h2>Le patient vous tend son téléphone.</h2>
+<section id="montrer">
+  <h2>Ce qu’on choisit de montrer.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Un écran « Séance » restitue une période bornée — sept jours, trente jours, ou depuis la dernière
-        séance si le patient a posé le repère — en plus grand et plus aéré que le reste de l’application,
-        parce que c’est le seul écran destiné à être lu par quelqu’un d’autre.</p>
-      <p>Un moment peut être marqué <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal du patient et
-        n’apparaît jamais dans cet écran. L’application vous dit que la règle existe, jamais combien de
-        moments sont concernés. C’est la condition pour qu’il ose noter ce qu’il n’a pas encore envie de dire —
-        et ce qu’il finit par en dire reste une décision qui lui appartient.</p>
-      <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. La lecture se fait devant vous,
-        sur son appareil, et s’arrête quand il range son téléphone.</p>
+      <p>Le journal est fait pour être tenu seul. Mais il arrive qu’on ait envie d’en montrer une partie —
+        à vous, à un proche, à un médecin. Pour ça, un écran « Séance » rend une période bornée, sept jours,
+        trente jours ou depuis la dernière fois, en plus grand et plus aéré que le reste&nbsp;: c’est le seul
+        écran fait pour d’autres yeux.</p>
+      <p>Montrer est une décision, jamais un réglage par défaut. Un moment peut être marqué
+        <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal et n’apparaît jamais dans cet écran.
+        L’application dit que la règle existe, jamais combien de moments sont concernés. Ce que vous voyez
+        est ce qui a été choisi&nbsp;; ce que vous ne voyez pas n’est pas une information.</p>
+      <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. Si on vous montre le journal, c’est sur
+        l’appareil, en face, et ça s’arrête quand le téléphone retourne dans la poche.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:980px"><iframe data-ecran="seance" loading="lazy" title="L’écran Séance de Gentiane"></iframe></div>
-      <figcaption><b>Séance</b>Les trois fenêtres, le compte, la répartition, puis chaque fiche dans l’ordre.</figcaption>
+      <figcaption><b>Séance</b>Une période, le compte, la répartition, puis chaque fiche. Les moments gardés pour soi n’y sont pas.</figcaption>
     </figure>
   </div>
 </section>
 
 <section id="proposer">
-  <h2>Trois minutes, en fin de séance.</h2>
+  <h2>La faire connaître tient en un QR code.</h2>
   <div class="proposer">
-  <div class="etapes">
-    <div><div><b>Faites scanner le QR code</b><span>Il ouvre l’application, rien d’autre. Pas de compte à créer, pas de mail à valider, aucun code à recevoir.</span></div></div>
-    <div><div><b>Faites-le installer devant vous</b><span>Sur iPhone&nbsp;: Partager, puis « Sur l’écran d’accueil ». Sur Android&nbsp;: menu ⋮, puis « Installer l’application ». Ensuite ça s’ouvre comme n’importe quelle application, même sans réseau.</span></div></div>
-    <div><div><b>Laissez-le choisir ses couleurs</b><span>C’est le premier écran, et c’est le moment où l’outil devient le sien. Deux minutes bien employées.</span></div></div>
+  <div class="deux">
+    <div><b>Un QR code à faire scanner.</b><span>Il ouvre l’application, rien d’autre&nbsp;: pas de compte, pas de mail, pas de code à recevoir.</span></div>
+    <div><b>Elle s’ajoute à l’écran d’accueil.</b><span>Pour l’utiliser comme n’importe quelle application, même sans réseau.</span></div>
   </div>
   <figure class="plaque">
     <img src="qr.svg" alt="QR code ouvrant gentiane.vercel.app" width="264" height="264">
@@ -298,18 +292,17 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </section>
 
 <section id="donnees">
-  <h2>Elles vivent dans le téléphone, et nulle part ailleurs.</h2>
+  <h2>Tout vit dans le téléphone, et nulle part ailleurs.</h2>
   <div class="mesure">
-    <p>Tout est écrit dans le stockage local du navigateur, sur l’appareil du patient. Il n’existe
+    <p>Le journal est écrit dans le stockage local du navigateur, sur l’appareil de la personne. Il n’existe
       aucune copie&nbsp;: ni chez nous, ni chez un hébergeur, ni chez vous. Vous n’avez donc aucune
       donnée de santé à conserver, à sécuriser ou à effacer de votre côté.</p>
-    <p><b>La contrepartie est réelle et doit être dite au patient&nbsp;:</b> changer de téléphone,
-      désinstaller l’application ou vider les données du navigateur efface le journal, définitivement.
-      Il n’y a pas de sauvegarde, parce qu’une sauvegarde voudrait dire une copie quelque part.</p>
+    <p><b>La contrepartie est réelle, et vaut d’être dite&nbsp;:</b> changer de téléphone, désinstaller
+      l’application ou vider les données du navigateur efface le journal, définitivement. Il n’y a pas de
+      sauvegarde, parce qu’une sauvegarde voudrait dire une copie quelque part.</p>
     <p class="pied">Les écrans de cette page sont l’application servie avec un journal fictif&nbsp;;
-      ce mode ne lit ni n’écrit rien sur votre appareil. Gentiane est gratuit, sans compte et sans
-      publicité. C’est un outil de journal personnel, pas un dispositif médical, et il ne remplace
-      aucun suivi.</p>
+      ce mode ne lit ni n’écrit rien sur votre appareil. Gentiane est gratuite, sans compte et sans
+      publicité. C’est un journal personnel, pas un dispositif médical, et elle ne remplace aucun suivi.</p>
   </div>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>

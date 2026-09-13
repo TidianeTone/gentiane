@@ -269,7 +269,9 @@
   P.salut = (prenom, entrees, maintenant) => {
     const h = new Date(maintenant).getHours();
     const nom = (prenom || '').trim();
-    const titre = (h < 5 ? 'Bonne nuit' : h < 18 ? 'Bonjour' : 'Bonsoir') + (nom ? ' ' + nom : '');
+    // Pas de « Bonne nuit » : en francais c'est un au revoir, et a trois heures
+    // du matin quelqu'un qui ouvre ce journal n'a pas besoin qu'on le renvoie au lit.
+    const titre = (h >= 5 && h < 18 ? 'Bonjour' : 'Bonsoir') + (nom ? ' ' + nom : '');
     if (!entrees.length) return { titre, souffle: 'Rien n’est jugé ici, et rien ne sort de ce téléphone.' };
     const auj = P.iso(maintenant);
     const n = entrees.filter(e => P.iso(e.ts) === auj).length;
