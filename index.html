@@ -908,7 +908,7 @@ $('#b-quand').onclick = () => {
   const ouvert = $('#champ-quand').hidden;
   $('#champ-quand').hidden = !ouvert;
   $('#b-quand').setAttribute('aria-expanded', String(ouvert));
-  if (ouvert) $('#f-quand').focus();
+  if (ouvert) $('#f-quand').focus({ preventScroll: true });
 };
 $('#f-quand').addEventListener('input', () => {
   const v = $('#f-quand').value;
@@ -1226,7 +1226,9 @@ const ECRANS = {
   },
   '#echo': () => {
     ECRANS['#saisie']();
-    requestAnimationFrame(() => { const c = $('#champ-echos'); if (!c.hidden) c.scrollIntoView({ block: 'start' }); });
+    // scrollTo, pas scrollIntoView : depuis un iframe, scrollIntoView remonte
+    // la chaine des cadres et fait sauter la page hote (psy.html) avec lui.
+    addEventListener('load', () => { const c = $('#champ-echos'); if (!c.hidden) scrollTo(0, c.getBoundingClientRect().top + scrollY); });
   },
 };
 const DEPART = ECRANS[location.hash];
