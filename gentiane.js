@@ -304,7 +304,7 @@
   P.PERIODES = [
     { cle: 'semaine', nom: '7 jours' },
     { cle: 'mois', nom: '30 jours' },
-    { cle: 'seance', nom: 'Depuis ma séance' },
+    { cle: 'seance', nom: 'Depuis la dernière fois' },
   ];
 
   P.periode = (entrees, cle, maintenant, ancre) => {

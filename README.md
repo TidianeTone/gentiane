@@ -20,6 +20,9 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
   relecture, où chaque fiche peut être retirée pour cette fois (rien n'est
   enregistré), puis « Montrer » rend la version propre. À l'écriture, rien
   n'est jamais en jeu.
+- **« J'ai un psy »** est une option, jamais le défaut : sans elle, l'écran
+  s'appelle « Montrer », la période « Depuis la dernière fois », le repère
+  « Poser un repère ». Avec, les mots de la thérapie (« Séance », « mon psy »).
 - **Code d'ouverture facultatif**, proposé au premier lancement et dans les
   réglages. Haché en SHA-256 avant d'être rangé ; le journal, lui, reste en
   clair — c'est une porte, pas un coffre, et l'interface le dit avec ces mots.

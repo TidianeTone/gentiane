@@ -349,11 +349,16 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
       <h1 class="grand" id="a-fin">C’est prêt.</h1>
       <p class="intro">Cinq familles d’émotion, chacune avec sa couleur. Elles ne changent jamais, quel que soit le monde choisi&nbsp;: c’est le seul code à retenir.</p>
       <div class="legende" id="a-legende"></div>
-      <div class="champ" id="a-pin-champ" style="margin-top:30px">
+      <div class="champ" style="margin-top:26px">
+        <button class="garde" id="a-psy" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/><circle cx="12" cy="8" r="4"/></svg>
+          <span style="flex:1"><b>J’ai un psy</b><span>Les mots de l’appli parleront de séance.</span></span>
+        </button>
+      </div>
+      <div class="champ" id="a-pin-champ" style="margin-top:22px">
         <h2>Un code pour ouvrir l’appli&nbsp;?</h2>
         <input type="password" id="a-pin" inputmode="numeric" autocomplete="new-password" maxlength="6" aria-label="Code d’ouverture, facultatif">
-        <div class="souffle">Facultatif, quatre à six chiffres. C’est une porte, pas un coffre&nbsp;: le journal n’est pas
-          chiffré, mais personne ne l’ouvre en passant. Si tu l’oublies, la seule issue sera d’effacer le journal.</div>
+        <div class="souffle">Facultatif. Quatre à six chiffres.</div>
       </div>
       <div class="avis" style="margin-top:22px">
         <b>Où vont ces notes</b>
@@ -378,7 +383,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     <button class="rond" id="b-stats" aria-label="Mes tendances">
       <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
     </button>
-    <button class="rond" id="b-seance" aria-label="Montrer à mon psy">
+    <button class="rond" id="b-seance" aria-label="Montrer mon journal">
       <svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5zM14 3v5h5M9 13h6M9 17h4"/></svg>
     </button>
     <button class="rond" id="b-reglages" aria-label="Réglages">
@@ -447,7 +452,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <svg id="icone-garde" viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>
         <span style="flex:1">
           <b id="prive-titre">Je garde ce moment pour moi</b>
-          <span id="prive-dit">Il restera dans mon journal, mais pas dans ce que je montre en séance.</span>
+          <span id="prive-dit">Il restera dans mon journal, mais pas dans ce que je montre.</span>
         </span>
       </button>
     </div>
@@ -483,7 +488,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     <button class="rond" id="b-retour3" aria-label="Retour">
       <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <div class="titre">Séance</div>
+    <div class="titre" id="titre-seance">Montrer</div>
   </div>
   <div class="corps">
     <div class="segments" id="s-periodes" style="margin-top:4px"></div>
@@ -537,6 +542,12 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <input type="range" class="jauge-h" id="r-contraste" min="0" max="100" step="5" value="50">
       </div>
     </div>
+      <div class="champ" >
+        <button class="garde" id="r-psy" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/><circle cx="12" cy="8" r="4"/></svg>
+          <span style="flex:1"><b>J’ai un psy</b><span>Les mots de l’appli parleront de séance.</span></span>
+        </button>
+      </div>
     <div class="champ" id="r-pin-champ">
       <h2>Code d’ouverture</h2>
       <input type="password" id="r-pin" inputmode="numeric" autocomplete="new-password" maxlength="6" aria-label="Nouveau code">
@@ -628,6 +639,14 @@ const hacher = async pin => {
 };
 const PIN_FORME = /^[0-9]{4,6}$/;
 
+// Par defaut, personne ne presume qu'on voit un psy. Si on le dit, les mots
+// de l'ecran « Montrer » prennent ceux de la therapie.
+const MOTS = () => prefs.psy
+  ? { ecran: 'Séance', bouton: 'Montrer à mon psy', periode: 'Depuis ma séance', repere: 'J’ai vu mon psy aujourd’hui',
+      repereDit: 'La prochaine fois, « Depuis ma séance » commencera aujourd’hui.', ou: 'en séance' }
+  : { ecran: 'Montrer', bouton: 'Montrer mon journal', periode: 'Depuis la dernière fois', repere: 'Poser un repère aujourd’hui',
+      repereDit: 'La prochaine fois, « Depuis la dernière fois » commencera aujourd’hui.', ou: 'quand je le montre' };
+
 const CADENAS = '<svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>';
 
 /* == theme ================================================================
@@ -674,6 +693,7 @@ function peindreAccueil() {
     $('#a-' + k).value = Math.round(prefs[k] * 100);
     $('#a-' + k + '-v').textContent = mot(prefs[k] * 100);
   });
+  $('#a-psy').setAttribute('aria-pressed', String(!!prefs.psy));
   const nom = (prefs.prenom || '').trim();
   $('#a-fin').textContent = nom ? 'C’est prêt, ' + nom + '.' : 'C’est prêt.';
   $('#a-legende').innerHTML = P.FAMILLES.map(f => '<div style="--c:' + f.couleur + '"><i></i><b>' + ech(f.nom)
@@ -704,6 +724,7 @@ $('#a-mondes').addEventListener('click', ev => {
 ['texte', 'chaleur', 'contraste'].forEach(k => $('#a-' + k).addEventListener('input', ev => {
   prefs[k] = +ev.target.value / 100; peindreTheme(); peindreAccueil();
 }));
+$('#a-psy').onclick = () => { prefs.psy = !prefs.psy; peindreAccueil(); };
 $('#a-retour').onclick = () => allerVolet(volet - 1);
 $('#a-suite').onclick = async () => {
   if (volet < 2) { prefs.prenom = $('#a-prenom').value.trim(); garderPrefs(); peindreAccueil(); return allerVolet(volet + 1); }
@@ -840,8 +861,8 @@ function peindreSaisie() {
   $('#b-prive').setAttribute('aria-pressed', String(!!brouillon.prive));
   $('#prive-titre').textContent = brouillon.prive ? 'Ce moment est gardé pour moi' : 'Je garde ce moment pour moi';
   $('#prive-dit').textContent = brouillon.prive
-    ? 'Il est dans mon journal, mais il n’apparaîtra pas en séance.'
-    : 'Il restera dans mon journal, mais pas dans ce que je montre en séance.';
+    ? 'Il est dans mon journal, mais il n’apparaîtra pas ' + MOTS().ou + '.'
+    : 'Il restera dans mon journal, mais pas dans ce que je montre.';
 
   peindreEchos();
   $('#b-garder').disabled = !brouillon.fam;
@@ -954,9 +975,12 @@ function ficheSeance(e, preparer) {
 
 function peindreSeance() {
   const preparer = seanceMode === 'preparer';
+  const M = MOTS();
+  $('#titre-seance').textContent = M.ecran;
+  $('#b-seance').setAttribute('aria-label', M.bouton);
   $('#s-periodes').innerHTML = P.PERIODES.map(p => '<button type="button" data-p="' + p.cle + '" aria-pressed="'
     + (p.cle === periode) + '"' + (p.cle === 'seance' && !prefs.ancre ? ' disabled style="opacity:.4"' : '')
-    + '>' + ech(p.nom) + '</button>').join('');
+    + '>' + ech(p.cle === 'seance' ? M.periode : p.nom) + '</button>').join('');
   $('#s-periodes').hidden = !preparer;
 
   const pe = P.periode(entrees, periode, Date.now(), prefs.ancre);
@@ -972,8 +996,8 @@ function peindreSeance() {
       + (pe.liste.length
         ? pe.jours.map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>' + j.liste.map(e => ficheSeance(e, true)).join('')).join('')
         : '<div class="vide"><b>Rien sur cette période</b>Aucun moment noté entre le ' + ech(jourCourt(pe.debut)) + ' et aujourd’hui.</div>')
-      + '<button class="sobre" id="b-ancre" style="margin-top:28px">J’ai vu mon psy aujourd’hui</button>'
-      + '<div class="souffle" style="margin-top:8px">Pose un repère : la prochaine fois, « Depuis ma séance » commencera aujourd’hui.</div>';
+      + '<button class="sobre" id="b-ancre" style="margin-top:28px">' + ech(M.repere) + '</button>'
+      + '<div class="souffle" style="margin-top:8px">' + ech(M.repereDit) + '</div>';
     return;
   }
 
@@ -1030,13 +1054,12 @@ function peindreReglages() {
     $('#r-' + k).value = Math.round(prefs[k] * 100);
     $('#r-' + k + '-v').textContent = mot(prefs[k] * 100);
   });
+  $('#r-psy').setAttribute('aria-pressed', String(!!prefs.psy));
   $('#r-pin-champ').hidden = !PIN_OK;
   $('#r-pin').value = '';
   $('#r-pin-retirer').hidden = !prefs.pin;
   $('#r-pin-poser').textContent = prefs.pin ? 'Changer le code' : 'Poser ce code';
-  $('#r-pin-dit').textContent = prefs.pin
-    ? 'Un code est posé. C’est une porte, pas un coffre : le journal n’est pas chiffré.'
-    : 'Facultatif, quatre à six chiffres. Personne n’ouvre le journal en passant ; mais si tu l’oublies, la seule issue sera d’effacer le journal.';
+  $('#r-pin-dit').textContent = prefs.pin ? 'Un code est posé.' : 'Facultatif. Quatre à six chiffres.';
   $('#r-compte').textContent = entrees.length
     ? (entrees.length === 1 ? 'Un moment est enregistré.' : entrees.length + ' moments sont enregistrés.')
     : 'Aucun moment n’est enregistré pour l’instant.';
@@ -1062,6 +1085,7 @@ $('#r-mondes').addEventListener('click', ev => {
     vignettes($('#r-mondes'), prefs.theme);
   });
 });
+$('#r-psy').onclick = () => { prefs.psy = !prefs.psy; garderPrefs(); peindreReglages(); $('#b-seance').setAttribute('aria-label', MOTS().bouton); };
 $('#r-pin-poser').onclick = async () => {
   const pin = $('#r-pin').value.trim();
   if (!PIN_FORME.test(pin)) return alert('Le code, c’est quatre à six chiffres.');

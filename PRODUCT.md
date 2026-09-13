@@ -85,6 +85,8 @@ vectorielle.
 - **Relecture avant de montrer** : l'écran séance s'ouvre en relecture, où
   l'on retire ce qu'on veut pour cette fois ; rien de ce choix n'est
   enregistré. C'est ce qui rend l'autocensure inutile à l'écriture.
+- **« J'ai un psy » est une option, jamais le défaut** : par défaut l'écran
+  s'appelle « Montrer » et rien dans l'appli ne présume une thérapie.
 - **Code d'ouverture facultatif**, haché, présenté honnêtement comme une porte
   et pas un coffre (le journal n'est pas chiffré). Sans le code : effacer.
 - Le salut ne rappelle jamais depuis combien de temps on n'a pas noté.
