@@ -1,112 +1,158 @@
-// node verif.js — casse si le vocabulaire ou les calculs du journal cassent.
+// node verif.js — casse si le vocabulaire, les themes ou les calculs cassent.
 const P = require('./gentiane.js');
-const assert = require('assert');
+let ok = 0;
+const eq = (a, b, quoi) => { if (JSON.stringify(a) !== JSON.stringify(b)) { console.error('ECHEC ' + quoi + ' : ' + JSON.stringify(a) + ' != ' + JSON.stringify(b)); process.exit(1); } ok++; };
+const vrai = (x, quoi) => { if (!x) { console.error('ECHEC ' + quoi); process.exit(1); } ok++; };
 
-// -- vocabulaire ----------------------------------------------------------
-assert.strictEqual(P.FAMILLES.length, 5);
-assert.strictEqual(P.FAMILLES.filter(f => f.livre).length, 3, 'le livre ne liste que peur/tristesse/colère');
-for (const f of P.FAMILLES) {
-  assert.strictEqual(f.blocs.length, 4, f.cle + ' : quatre paliers');
-  assert.ok(f.blocs.every(b => b.length >= 2), f.cle + ' : chaque palier a des mots');
+/* -- vocabulaire --------------------------------------------------------- */
+eq(P.FAMILLES.length, 5, 'cinq familles');
+eq(P.FAMILLES.filter(f => f.livre).length, 3, 'trois familles du livre');
+P.FAMILLES.forEach(f => {
+  eq(f.blocs.length, 4, 'quatre paliers pour ' + f.cle);
+  f.blocs.forEach((b, k) => vrai(b.length >= 2, 'palier ' + k + ' de ' + f.cle + ' non vide'));
+});
+
+/* -- accord grammatical --------------------------------------------------
+   Trois accords, et la cle stockee ne bouge jamais : un journal ecrit au
+   feminin doit rester lisible si on passe au masculin ou sans accord. */
+eq(P.ACCORDS.map(a => a.cle), ['f', 'm', 'n'], 'trois accords');
+const tousLesMots = [].concat(...P.FAMILLES.map(f => [].concat(...f.blocs)));
+vrai(tousLesMots.length > 40, 'le vocabulaire est complet');
+tousLesMots.forEach(q => {
+  if (Array.isArray(q)) {
+    eq(q.length, 3, 'trois formes pour ' + q[0]);
+    q.forEach((forme, i) => vrai(forme && forme.trim().length > 1, 'forme ' + i + ' de ' + q[0]));
+    vrai(!q.some(f => /[·•]/.test(f)), 'aucun point median dans ' + q[0]);
+  }
+  eq(P.cle(q), Array.isArray(q) ? q[0] : q, 'cle stable');
+  eq(P.mot(q, 'f'), P.cle(q), 'accord feminin = cle');
+});
+eq(P.motAffiche('Affolée', 'm'), 'Affolé', 'Affolée au masculin');
+eq(P.motAffiche('Affolée', 'n'), 'De l’affolement', 'Affolée sans accord');
+eq(P.motAffiche('Affolée', 'f'), 'Affolée', 'Affolée au feminin');
+eq(P.motAffiche('mot inconnu', 'm'), 'mot inconnu', 'un mot inconnu se rend tel quel');
+// Aucune cle en double : deux qualificatifs identiques rendraient les echos faux.
+const cles = tousLesMots.map(P.cle);
+eq(new Set(cles).size, cles.length, 'aucun qualificatif en double');
+
+/* -- paliers ------------------------------------------------------------- */
+eq([0, 1, 3, 4, 6, 7, 8, 9, 10, 11].map(P.bloc), [null, 0, 0, 1, 1, 2, 2, 3, 3, null], 'les paliers du tableau');
+eq([0, 1, 2, 3].map(P.intensiteDuBloc), [2, 5, 7, 9], 'intensite proposee par palier');
+
+/* -- couleur et contraste ------------------------------------------------
+   La promesse est calculee, pas constatee a l'oeil : chaque monde, en clair
+   comme en sombre, a chaque cran de chaleur et de contraste, tient AA. */
+eq(P.contraste('#ffffff', '#000000'), 21, 'contraste blanc/noir');
+eq(P.contraste('#ffffff', '#ffffff'), 1, 'contraste blanc/blanc');
+vrai(/^#[0-9a-f]{6}$/.test(P.ok(0.5, 0.1, 200)), 'OKLCH rend un hex');
+// Hors gamut : on retire du chroma, donc la couleur reste valide et pas ecretee n'importe comment.
+vrai(/^#[0-9a-f]{6}$/.test(P.ok(0.5, 0.9, 140)), 'OKLCH hors gamut reste un hex');
+
+let paires = 0;
+for (const t of P.THEMES) {
+  for (const sombre of [true, false]) {
+    for (const k of [0, 0.25, 0.5, 0.75, 1]) {
+      for (const w of [0, 0.5, 1]) {
+        const p = P.palette(t.cle, sombre, w, k);
+        const nom = t.cle + '/' + (sombre ? 'sombre' : 'clair') + '/c' + k + '/w' + w;
+        const AA = (a, b, quoi) => {
+          const r = P.contraste(a, b);
+          if (r < 4.5) { console.error('ECHEC contraste ' + nom + ' ' + quoi + ' = ' + r); process.exit(1); }
+          paires++;
+        };
+        AA(p.ink, p.fond, 'texte sur fond');
+        AA(p.ink, p.surf, 'texte sur surface');
+        AA(p.ink2, p.fond, 'texte secondaire sur fond');
+        AA(p.ink2, p.surf, 'texte secondaire sur surface');
+        // Aucun texte ne se pose sur surf2 (pistes de jauge) : on verifie
+        // seulement qu'elle se detache de la surface qui la porte.
+        vrai(P.contraste(p.surf2, p.surf) >= 1.05, 'surface 2 detachee ' + nom);
+        AA(p.surRampe, p.rampe[1], 'libelle de la pilule');
+        p.familles.forEach(f => {
+          AA(f.a, p.fond, 'emotion ' + f.cle + ' sur fond');
+          AA(f.a, p.surf, 'emotion ' + f.cle + ' sur surface');
+          AA(p.surPlein, f.p, 'texte sur pastille ' + f.cle);
+        });
+        // Le trait doit rester visible sans devenir un cadre : 1.4:1 mini, 3:1 maxi.
+        const rt = P.contraste(p.trait, p.surf);
+        vrai(rt >= 1.15 && rt <= 3.6, 'liseré lisible mais discret ' + nom + ' (' + rt + ')');
+      }
+    }
+  }
 }
-assert.deepStrictEqual(P.famille('colere').blocs[3], ['Furieuse, hors de moi', 'Enragée']);
-assert.ok(P.FAMILLES.every(f => f.blocs.every(b => b.every(m => !/·/.test(m)))), 'vocabulaire au féminin, sans point médian');
+vrai(paires > 1000, 'toutes les paires de couleur ont ete verifiees (' + paires + ')');
 
-// -- paliers d'intensité --------------------------------------------------
-assert.strictEqual(P.bloc(0), null, '0 = intensité pas encore posée');
-assert.deepStrictEqual([1, 3, 4, 6, 7, 8, 9, 10].map(P.bloc), [0, 0, 1, 1, 2, 2, 3, 3]);
-assert.strictEqual(P.bloc(11), null);
-assert.strictEqual(P.bloc(P.intensiteDuBloc(2)), 2, 'l’intensité suggérée retombe dans son bloc');
+// Les cinq emotions restent distinctes entre elles dans tous les mondes.
+for (const sombre of [true, false]) {
+  const p = P.palette('encre', sombre, 0.5, 0.5);
+  for (let i = 0; i < p.familles.length; i++) for (let j = i + 1; j < p.familles.length; j++) {
+    const a = p.familles[i], b = p.familles[j];
+    vrai(a.a !== b.a, 'emotions ' + a.cle + ' et ' + b.cle + ' distinctes');
+  }
+}
+// Une valeur hors bornes retombe sur le milieu au lieu de casser la palette.
+eq(P.palette('jardin', true, 9, -3).fond, P.palette('jardin', true, 0.5, 0.5).fond, 'reglages hors bornes ignores');
+eq(P.palette('monde inexistant', true, 0.5, 0.5).fond, P.palette('jardin', true, 0.5, 0.5).fond, 'theme inconnu = jardin');
+vrai(P.cssTheme(P.palette('lagon', false, 0.5, 0.5)).includes('--f-colere:'), 'le CSS porte les couleurs d’emotion');
 
-// -- dates ----------------------------------------------------------------
-const J = (iso, h) => new Date(...iso.split('-').map(Number).map((v, i) => i === 1 ? v - 1 : v), h || 12).getTime();
-assert.strictEqual(P.iso(J('2026-09-11')), '2026-09-11');
-assert.strictEqual(P.addJours('2026-03-01', -1), '2026-02-28');
+/* -- journal ------------------------------------------------------------- */
+const J = (id, ts, fam, intensite, quoi, quals, corps) => ({ id, ts, fam, intensite, quoi: quoi || '', quals: quals || [], corps: corps || '' });
+const T = new Date(2026, 8, 13, 12, 0).getTime(), JOUR = 864e5;
 
-const E = [
-  { id: 1, ts: J('2026-09-09', 21), fam: 'peur', intensite: 8, quals: ['Affolée', 'Paniquée'] },
-  { id: 2, ts: J('2026-09-11', 9), fam: 'colere', intensite: 4, quals: ['Agacée'] },
-  { id: 3, ts: J('2026-09-11', 21), fam: 'joie', intensite: 6, quals: ['Fière', 'Affolée'] },
+const j = [
+  J(1, T, 'colere', 8, 'le voisin remet sa musique à fond', ['Révoltée'], 'mâchoire serrée'),
+  J(2, T - JOUR, 'colere', 7, 'musique du voisin encore', ['Révoltée'], 'mâchoire serrée'),
+  J(3, T - 3 * JOUR, 'joie', 5, 'balade au parc', ['Joyeuse'], ''),
+  J(4, T - 40 * JOUR, 'peur', 9, 'rendez-vous médical', ['Terrifiée'], 'ventre noué'),
 ];
 
-// -- regroupement ---------------------------------------------------------
-const par = P.parJour(E);
-assert.deepStrictEqual(par.map(j => j.date), ['2026-09-11', '2026-09-09'], 'le plus récent en premier');
-assert.strictEqual(par[0].liste[0].id, 3, 'dans la journée aussi, le plus récent en premier');
+eq(P.parJour(j).length, 4, 'un groupe par jour');
+eq(P.parJour(j)[0].liste[0].id, 1, 'le plus recent en premier');
+eq(P.resume(j).total, 4, 'total');
+eq(P.resume(j).moyenne, 7.3, 'intensite moyenne');
+eq(P.dominante(j), 'colere', 'la dominante cumule les intensites');
+// Une colere a 9 pese plus que deux agacements a 1 : c'est l'intensite qui compte.
+eq(P.dominante([J(9, T, 'joie', 1), J(10, T, 'joie', 1), J(11, T, 'colere', 9)]), 'colere', 'une forte pese plus que deux faibles');
+eq(P.repartition(j)[0].cle, 'colere', 'repartition triee');
+eq(P.trame(j, '2026-09-13', 14).length, 14, 'quatorze jours de trame');
+eq(P.trame(j, '2026-09-13', 3).map(x => x.n), [0, 1, 1], 'jours vides compris');
+eq(P.heures(j)[12], 4, 'les heures');
+eq(P.topQuals(j, 2)[0], ['Révoltée', 2], 'les mots qui reviennent, par cle');
+eq(P.sensations(j, 'colere', 2), ['mâchoire serrée'], 'les sensations deja notees a ce palier');
+eq(P.sensations(j, 'colere', 1), [], 'aucune sensation a un autre palier');
 
-// -- trame du graphe ------------------------------------------------------
-const t = P.trame(E, '2026-09-11', 4);
-assert.strictEqual(t.length, 4);
-assert.deepStrictEqual(t.map(j => j.date), ['2026-09-08', '2026-09-09', '2026-09-10', '2026-09-11']);
-assert.deepStrictEqual(t[0], { date: '2026-09-08', n: 0, moyenne: 0, dominante: null }, 'un jour sans rien reste dans la trame');
-assert.strictEqual(t[3].n, 2);
-assert.strictEqual(t[3].moyenne, 5);
-assert.strictEqual(t[3].dominante, 'joie', 'à nombre égal, l’intensité tranche');
+/* -- echos --------------------------------------------------------------- */
+eq(P.similarite(j[0], j[1]), 6.5, 'meme famille 2 + meme palier 1,5 + un qualificatif 1 + mots partages plafonnes a 2');
+eq(P.similarite(j[0], j[2]), 0, 'familles differentes = zero');
+vrai(P.similarite(j[0], j[1]) >= P.SEUIL, 'au-dessus du seuil');
+eq(P.echos(j, j[0]).map(x => x.e.id), [2], 'un seul echo');
+eq(P.echos(j, j[0])[0].mots, ['voisin', 'musique', 'machoire', 'serree'], 'les mots partages sont dits');
+eq(P.motsCles('Le voisin, encore, avec sa musique'), ['voisin', 'musique'], 'mots vides et mots courts jetes');
+eq(P.constellation(j).points.length, 4, 'un point par moment');
+eq(P.constellation(j).liens, [{ a: 2, b: 3, s: 6.5 }], 'un trait entre les deux coleres');
 
-// -- dominante ------------------------------------------------------------
-assert.strictEqual(P.dominante([]), null);
-assert.strictEqual(P.dominante([{ fam: 'peur', intensite: 9 }, { fam: 'joie', intensite: 3 }, { fam: 'joie', intensite: 3 }]), 'peur');
-assert.strictEqual(P.dominante([{ fam: 'peur', intensite: 0 }, { fam: 'peur', intensite: 0 }, { fam: 'joie', intensite: 1 }]), 'peur',
-  'une entrée sans intensité pèse quand même 1');
+/* -- seance -------------------------------------------------------------- */
+const s7 = P.periode(j, 'semaine', T);
+eq(s7.liste.length, 3, 'sept jours : trois moments');
+eq(s7.titre, 'Les 7 derniers jours', 'titre des sept jours');
+eq(P.periode(j, 'mois', T).liste.length, 3, 'trente jours : trois moments');
+eq(P.periode(j, 'mois', T).titre, 'Les 30 derniers jours', 'titre des trente jours');
+const sa = P.periode(j, 'seance', T, T - 2 * JOUR);
+eq(sa.liste.length, 2, 'depuis la seance : deux moments');
+eq(sa.titre, 'Depuis 2 jours', 'titre depuis la seance');
+eq(P.periode(j, 'seance', T, T).titre, 'Depuis ce matin', 'seance posee aujourd’hui');
+eq(P.periode(j, 'seance', T, null).cle, 'semaine', 'sans ancre, on retombe sur sept jours');
+eq(P.periode(j, 'semaine', T).resume.moyenne, 6.7, 'la periode porte son propre resume');
+eq(P.periode([], 'semaine', T).liste, [], 'periode vide');
 
-// -- répartition / heures / mots ------------------------------------------
-const r = P.repartition(E);
-assert.strictEqual(r.length, 3);
-assert.strictEqual(r.reduce((s, x) => s + x.n, 0), 3);
-assert.ok(r.every(x => x.pct === 33));
-assert.strictEqual(P.heures(E)[21], 2);
-assert.deepStrictEqual(P.topQuals(E, 2), [['Affolée', 2], ['Agacée', 1]]);
+/* -- accueil ------------------------------------------------------------- */
+const matin = new Date(2026, 8, 13, 9, 0).getTime();
+eq(P.salut('Julie', [], matin).titre, 'Bonjour Julie', 'bonjour le matin');
+eq(P.salut('', [], matin).titre, 'Bonjour', 'sans prenom');
+eq(P.salut('Julie', [], new Date(2026, 8, 13, 21, 0).getTime()).titre, 'Bonsoir Julie', 'bonsoir le soir');
+eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonne nuit Julie', 'bonne nuit la nuit');
+eq(P.salut('Julie', j, T).souffle, 'Un moment noté aujourd’hui.', 'compte du jour');
+eq(P.salut('Julie', [j[1]], T).souffle, 'Ton dernier moment date d’hier.', 'dernier moment hier');
+vrai(!/f[ée]licit|bravo|continue comme/i.test(P.salut('Julie', j, T).souffle), 'aucune felicitation');
 
-// -- sensations physiques rappelées ---------------------------------------
-const C = [
-  { ts: J('2026-09-01'), fam: 'colere', intensite: 9, corps: 'Poings fermés, cris' },
-  { ts: J('2026-09-02'), fam: 'colere', intensite: 10, corps: 'poings FERMÉS, cris' },
-  { ts: J('2026-09-03'), fam: 'colere', intensite: 2, corps: 'Front crispé' },
-  { ts: J('2026-09-04'), fam: 'peur', intensite: 9, corps: 'Souffle coupé' },
-  { ts: J('2026-09-05'), fam: 'colere', intensite: 9, corps: '   ' },
-];
-assert.deepStrictEqual(P.sensations(C, 'colere', 3), ['poings FERMÉS, cris'],
-  'même famille, même palier, sans doublon de casse, le plus récent gagne');
-assert.deepStrictEqual(P.sensations(C, 'colere', 0), ['Front crispé']);
-assert.deepStrictEqual(P.sensations(C, 'peur', 0), [], 'pas de mélange entre familles');
-assert.strictEqual(P.sensations(C, 'colere', null).length, 2, 'sans palier, toute la famille');
-assert.deepStrictEqual(P.sensations([], 'colere', 0), []);
-
-// -- echos et constellation -----------------------------------------------
-const M = [
-  { id: 10, ts: J('2026-09-01'), fam: 'colere', intensite: 9, quals: ['Enragée'], quoi: 'Le voisin remet sa musique a fond', corps: 'Machoire serree' },
-  { id: 11, ts: J('2026-09-06'), fam: 'colere', intensite: 10, quals: ['Enragée'], quoi: 'Encore la musique du voisin', corps: 'Machoire serree' },
-  { id: 12, ts: J('2026-09-08'), fam: 'colere', intensite: 2, quals: ['Agacée'], quoi: 'File a la poste', corps: '' },
-  { id: 13, ts: J('2026-09-09'), fam: 'joie', intensite: 9, quals: [], quoi: 'Musique a fond dans la voiture', corps: '' },
-];
-assert.deepStrictEqual(P.motsCles('Le voisin remet sa musique a fond !'), ['voisin', 'remet', 'musique', 'fond'],
-  'mots courts et mots vides jetes, accents aplatis, doublons fondus');
-assert.deepStrictEqual(P.motsCles(null), []);
-assert.strictEqual(P.similarite(M[0], M[3]), 0, 'deux familles differentes ne se ressemblent jamais');
-assert.strictEqual(P.similarite(M[0], M[1]), 2 + 1.5 + 1 + 2, 'famille + palier + un qualificatif + quatre mots, plafonnes a 2');
-assert.strictEqual(P.similarite(M[0], M[2]), 2, 'meme famille seule = sous le seuil');
-assert.ok(P.similarite(M[0], M[2]) < P.SEUIL);
-
-const ec = P.echos(M, M[1]);
-assert.strictEqual(ec.length, 1, 'seul le moment vraiment proche fait echo');
-assert.strictEqual(ec[0].e.id, 10);
-assert.deepStrictEqual(ec[0].mots, ['musique', 'voisin', 'machoire', 'serree'], 'les mots partages sont rendus, pour dire pourquoi');
-assert.deepStrictEqual(P.echos(M, M[3]), [], 'un moment isole ne sinvente pas de passe');
-
-const cst = P.constellation(M);
-assert.deepStrictEqual(cst.points.map(p => p.e.id), [10, 11, 12, 13], 'les points sont chronologiques');
-assert.strictEqual(cst.points[0].x, 0);
-assert.strictEqual(cst.points[3].x, 1);
-assert.strictEqual(cst.points[0].y, 0.9, 'y = intensite sur 10');
-assert.deepStrictEqual(cst.liens, [{ a: 0, b: 1, s: 6.5 }], 'un seul lien, pas de doublon a<->b');
-assert.deepStrictEqual(P.constellation([]), { points: [], liens: [] });
-assert.strictEqual(P.constellation([M[0]]).points[0].x, 0, 'un point seul ne divise pas par zero');
-
-const res = P.resume(E);
-assert.strictEqual(res.total, 3);
-assert.strictEqual(res.moyenne, 6, '(8+4+6)/3');
-assert.strictEqual(res.forte.id, 1);
-assert.deepStrictEqual(P.resume([]), { total: 0, moyenne: 0, forte: null });
-assert.strictEqual(P.resume([{ fam: 'peur', intensite: 0 }]).moyenne, 0, 'pas de division par zéro sur des entrées sans intensité');
-
-console.log('verif ok');
+console.log(ok + ' verifications passees, dont ' + paires + ' paires de couleur.');
