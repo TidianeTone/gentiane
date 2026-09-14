@@ -1,7 +1,7 @@
 {
   "name": "Gentiane — journal des émotions",
   "short_name": "Gentiane",
-  "description": "Identifier, graduer et relire ses émotions. Tout reste sur le téléphone.",
+  "description": "Identifier, graduer et relire ses émotions.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
