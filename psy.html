@@ -38,6 +38,12 @@ em{font-style:italic}
 section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 .pied{color:var(--ink2);font-size:15px}
 .aide{color:var(--ink2);font-size:15px;margin-top:16px}
+/* Un moment tel qu'il est ecrit : un exemple vaut le paragraphe qu'il remplace. */
+.cas{max-width:66ch;margin:22px 0 0;padding:15px 18px;border-radius:18px;background:var(--surf);
+  border:1px solid var(--trait);font-size:16px;line-height:1.5}
+.cas b{color:var(--f-colere);font-weight:700}
+.cas i{font-style:italic;color:var(--ink2)}
+.cas span{display:block;color:var(--ink2);font-size:14px;margin-top:4px}
 
 /* -- barre --------------------------------------------------------------- */
 .barre{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:14px;
@@ -146,10 +152,9 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 
 <div class="ouverture">
   <h1>Le tableau des émotions, mais dans la poche.</h1>
-  <p class="lede">Gentiane tient les deux exercices du cahier — <b>« Identifiez vos émotions »</b> et
+  <p class="lede">Les deux exercices du cahier — <b>« Identifiez vos émotions »</b> et
     <b>« Graduez vos émotions »</b> — dans une application qu’on tient seul, pour soi.
-    Si quelqu’un que vous suivez l’utilise, cette page vous dit ce qu’elle fait, ce qu’elle ne fera pas,
-    et ce qui reste entre ses mains.</p>
+    Tous les écrans de cette page sont l’application elle-même. Vous pouvez y toucher.</p>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>
     <a class="creuse" href="#limites">Ce que ça ne fait pas</a>
@@ -160,13 +165,11 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Le thermomètre n’illustre pas l’intensité. Il l’enregistre.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Sur le papier, on coche une case d’intensité, puis on cherche le qualificatif dans la colonne
-        correspondante. Les deux gestes sont séparés, et le second est souvent abandonné.</p>
-      <p>Ici, c’est le même geste. On glisse le mercure, le palier atteint allume son bloc de vocabulaire.
-        L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier —
-        utile quand on sait nommer ce qu’on ressent mais pas le chiffrer.</p>
-      <p class="aide">L’écran ci-contre est l’application elle-même, avec un journal fictif.
-        Vous pouvez y toucher&nbsp;: choisissez une émotion, faites glisser le mercure.</p>
+      <p>Sur le papier, on coche une intensité, puis on cherche le mot dans la bonne colonne.
+        Le second geste est souvent abandonné.</p>
+      <p>Ici, c’est un seul geste. On glisse le mercure, le palier atteint allume son bloc de mots.
+        L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier.</p>
+      <p class="aide">Essayez&nbsp;: choisissez une émotion, faites glisser le mercure.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:900px"><iframe data-ecran="saisie" title="L’écran de saisie de Gentiane"></iframe></div>
@@ -179,13 +182,13 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Trois gestes, debout dans la rue.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>La saisie s’ouvre sur l’émotion et le thermomètre, pas sur un formulaire. Choisir, glisser,
-        enregistrer&nbsp;: le moment est noté sans avoir rien eu à écrire, et sans avoir fait défiler l’écran.</p>
-      <p>Le contexte, les sensations physiques et l’heure sont en dessous, et peuvent attendre — le soir,
-        ou jamais. C’est délibéré&nbsp;: le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
-        et c’est exactement celui où personne n’a envie de remplir cinq champs.</p>
-      <p>Le journal se relit comme une suite de fiches, la plus récente en haut. La couleur est l’émotion,
-        le chiffre l’intensité, et la barre à gauche de chaque fiche a la hauteur de cette intensité —
+      <p>Choisir, glisser, enregistrer. Le moment est noté sans rien écrire et sans faire défiler l’écran.</p>
+      <p>Le reste — ce qu’on faisait, les sensations, l’heure — est en dessous et porte la mention
+        <em>facultatif</em>. Le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
+        et c’est celui où personne n’a envie de remplir cinq champs.</p>
+      <p class="cas">19h12 &middot; <b>Colère 8</b> &middot; « le voisin remet sa musique à fond »
+        <span><i>agacée, exaspérée</i> &middot; mâchoire serrée</span></p>
+      <p class="aide">La barre à gauche de chaque fiche a la hauteur de l’intensité&nbsp;:
         l’allure d’une semaine se lit sans lire un mot.</p>
     </div>
     <figure class="ecran">
@@ -199,13 +202,13 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Pendant qu’on écrit, on voit quand c’est déjà arrivé.</h2>
   <div class="mesure">
     <p>Dès que l’émotion et l’intensité sont posées, l’application remonte les moments passés qui
-      ressemblent à celui en cours, et dit pourquoi&nbsp;: même émotion, même palier, les mots partagés.
-      C’est le rapprochement le plus utile au moment le plus utile — pendant qu’on écrit, pas trois semaines après.</p>
+      ressemblent à celui en cours. Pendant qu’on écrit, pas trois semaines après.</p>
+    <p class="cas">Déjà vécu &middot; <b>il y a 2 semaines</b> &middot; « le voisin remet sa musique à fond »
+      <span>intensité 8 &middot; musique, voisin</span></p>
     <p>Les mêmes liens sont dessinés dans Tendances&nbsp;: un point par moment, la hauteur est l’intensité,
-      la couleur l’émotion, et un trait relie deux moments proches. Toucher un point donne le moment et
-      tous ses échos. C’est une addition de points, pas un modèle&nbsp;: à la question
-      <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une phrase, et on a le droit
-      de ne pas être d’accord avec elle.</p>
+      la couleur l’émotion, un trait relie deux moments proches. C’est une addition de points, pas un
+      modèle&nbsp;: à la question <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une
+      phrase, et on a le droit de ne pas être d’accord avec elle.</p>
   </div>
   <div class="paire">
     <figure class="ecran">
@@ -223,15 +226,14 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Un support qu’on n’a pas choisi peut faire barrage.</h2>
   <div class="mesure">
     <p>Une feuille blanche et un tableau sans couleur, c’est déjà une demande&nbsp;: remplis les cases.
-      Pour certaines personnes — enfants, adolescents, personnes autistes, personnes très anxieuses —
-      cette demande est le premier obstacle, avant même la question des émotions. Alors la première chose
-      que l’application demande n’est pas une émotion, mais un prénom et des couleurs.</p>
+      Pour un enfant, un adolescent, quelqu’un d’autiste ou de très anxieux, c’est le premier obstacle —
+      avant même la question des émotions. Alors la première chose que l’application demande n’est pas une
+      émotion, mais un prénom et des couleurs.</p>
   </div>
-  <div class="mondes" id="mondes"></div>
-  <p class="aide" id="souffle-monde" style="margin-bottom:34px"></p>
+  <div class="mondes" id="mondes" style="margin-bottom:34px"></div>
   <div class="mesure">
-    <p><b>Les cinq couleurs d’émotion, elles, ne changent jamais</b> d’un monde à l’autre.
-      C’est le seul code à apprendre, et il ne change pas si un jour l’écran passe de ses mains aux vôtres.</p>
+    <p><b>Les cinq couleurs d’émotion ne changent jamais</b> d’un monde à l’autre. C’est le seul code
+      à apprendre, et il tient si l’écran passe un jour de ses mains aux vôtres.</p>
   </div>
   <div class="emotions" id="emotions"></div>
 </section>
@@ -241,36 +243,32 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <table class="refus">
     <thead><tr>
       <th>Aucun diagnostic</th>
-      <th>Aucune collecte</th>
+      <th>Aucune interprétation</th>
       <th>Aucune relance</th>
     </tr></thead>
     <tbody><tr>
-      <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres affichés sont des moyennes d’intensité que la personne a elle-même posées.</td>
-      <td data-nom="Aucune collecte">Pas de compte, pas de serveur, pas de statistiques d’usage, pas de traceur. L’application est un fichier que le navigateur télécharge une fois et qui fonctionne ensuite hors ligne.</td>
+      <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres sont des intensités que la personne a posées elle-même.</td>
+      <td data-nom="Aucune interprétation">Pas d’IA, pas de résumé automatique, pas de commentaire. Personne ne lit ces phrases avant vous.</td>
       <td data-nom="Aucune relance">Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations. Noter un moment ne rapporte rien.</td>
     </tr></tbody>
   </table>
   <p class="fait"><b>Ce qu’elle fait</b>Elle enregistre, trie, compte, et rapproche les moments qui se
-    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Elle n’interprète
-    rien&nbsp;: l’interprétation, c’est ce qui se passe entre vous deux, pas dans l’application.</p>
+    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Ce que ça veut
+    dire se discute entre vous deux.</p>
 </section>
 
 <section id="montrer">
   <h2>Ce qu’on choisit de montrer.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Le journal est fait pour être tenu seul, et c’est son état par défaut&nbsp;: tant que la personne
-        n’a pas dit qu’elle voyait quelqu’un, il n’y a rien à montrer, juste un historique à relire. Le jour
-        où elle le dit, un écran « Séance » apparaît et rend une période bornée — sept jours, trente jours,
-        ou depuis la dernière séance — en plus grand et plus aéré que le reste. C’est le seul écran fait
-        pour d’autres yeux, et il n’existe que parce qu’elle l’a demandé.</p>
-      <p>Montrer est une décision, jamais un réglage par défaut. Un moment peut être marqué
-        <em>« gardé pour moi »</em>&nbsp;: il reste dans le journal et n’apparaît jamais dans cet écran.
-        L’écran le rappelle en une ligne — <em>ce qui est montré ici a été choisi</em> — et ne dit jamais
-        combien de moments sont concernés. Ce que vous voyez est ce qui a été choisi&nbsp;; ce que vous ne
-        voyez pas n’est pas une information.</p>
-      <p>Il n’y a pas d’export, pas de PDF, pas d’envoi par mail. Si on vous montre le journal, c’est sur
-        l’appareil, en face, et ça s’arrête quand le téléphone retourne dans la poche.</p>
+      <p>Par défaut, il n’y a rien à montrer. Tant que la personne n’a pas dit qu’elle voyait quelqu’un,
+        l’écran « Séance » n’existe pas dans son application&nbsp;: elle a un historique, ça suffit.</p>
+      <p>Le jour où elle le dit, cet écran rend une période bornée — sept jours, trente jours, ou depuis
+        la dernière séance. Elle la relit d’abord et retire ce qu’elle veut. Un moment peut aussi être
+        gardé pour elle dès l’écriture.</p>
+      <p>L’écran le rappelle en une ligne, <em>ce qui est montré ici a été choisi</em>, et ne dit jamais
+        combien manque. Ce que vous ne voyez pas n’est pas une information. Il n’y a pas d’export&nbsp;:
+        si on vous le montre, c’est sur l’appareil, en face.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:980px"><iframe data-ecran="seance" loading="lazy" title="L’écran Montrer de Gentiane"></iframe></div>
@@ -283,16 +281,10 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>Personne n’a besoin de l’expliquer.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Au premier lancement, juste après les couleurs, l’application dit elle-même ce qu’elle fait&nbsp;:
-        noter un moment, ce qui apparaît avec le temps, ce qu’on choisit de montrer, et ce qu’elle ne fera
-        jamais. Quatre scènes dessinées plutôt qu’un mode d’emploi&nbsp;— chacune rejoue le geste qu’elle
-        décrit, et prend les couleurs du monde choisi.</p>
-      <p>Elle le dit une fois, puis la page attend dans les réglages&nbsp;: rien n’y renvoie, rien n’oblige
-        à la relire. L’étape qui vous concerne y porte la mention <em>optionnel</em>, et c’est exact&nbsp;:
-        tant que la personne n’a pas dit qu’elle avait un suivi, l’écran qui prépare une séance n’existe
-        pas dans son application.</p>
-      <p class="aide">Concrètement&nbsp;: rien à installer, rien à paramétrer et rien à expliquer avant
-        d’en parler à quelqu’un.</p>
+      <p>Au premier lancement, l’application se présente elle-même&nbsp;: trois étapes, une scène animée
+        chacune, pas un mode d’emploi. Elle le dit une fois, puis la page attend dans les réglages.</p>
+      <p>L’étape qui vous concerne porte la mention <em>optionnel</em>, et c’est exact.</p>
+      <p class="aide">Rien à installer, rien à paramétrer, rien à expliquer avant d’en parler à quelqu’un.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:1240px"><iframe data-ecran="manuel" loading="lazy" title="L’écran « Comment ça marche » de Gentiane"></iframe></div>
@@ -305,8 +297,8 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <h2>La faire connaître tient en un QR code.</h2>
   <div class="proposer">
   <div class="deux">
-    <div><b>Un QR code à faire scanner.</b><span>Il ouvre l’application, rien d’autre&nbsp;: pas de compte, pas de mail, pas de code à recevoir.</span></div>
-    <div><b>Elle s’ajoute à l’écran d’accueil.</b><span>Pour l’utiliser comme n’importe quelle application, même sans réseau.</span></div>
+    <div><b>Un QR code à faire scanner.</b><span>Il ouvre l’application. Rien à créer, rien à recevoir.</span></div>
+    <div><b>Elle s’ajoute à l’écran d’accueil.</b><span>L’application le propose elle-même, et c’est ce qui garde le journal sur la durée.</span></div>
   </div>
   <figure class="plaque">
     <img src="qr.svg" alt="QR code ouvrant gentiane.vercel.app" width="264" height="264">
@@ -316,17 +308,16 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </section>
 
 <section id="donnees">
-  <h2>Tout vit dans le téléphone, et nulle part ailleurs.</h2>
+  <h2>Ce qui reste à savoir.</h2>
   <div class="mesure">
-    <p>Le journal est écrit dans le stockage local du navigateur, sur l’appareil de la personne. Il n’existe
-      aucune copie&nbsp;: ni chez nous, ni chez un hébergeur, ni chez vous. Vous n’avez donc aucune
-      donnée de santé à conserver, à sécuriser ou à effacer de votre côté.</p>
-    <p><b>La contrepartie est réelle, et vaut d’être dite&nbsp;:</b> changer de téléphone, désinstaller
-      l’application ou vider les données du navigateur efface le journal, définitivement. Il n’y a pas de
-      sauvegarde, parce qu’une sauvegarde voudrait dire une copie quelque part.</p>
-    <p class="pied">Les écrans de cette page sont l’application servie avec un journal fictif&nbsp;;
-      ce mode ne lit ni n’écrit rien sur votre appareil. Gentiane est gratuite, sans compte et sans
-      publicité. C’est un journal personnel, pas un dispositif médical, et elle ne remplace aucun suivi.</p>
+    <p>Le journal est écrit dans le téléphone, sans compte ni serveur&nbsp;: vous n’avez aucune donnée
+      de santé à conserver de votre côté.</p>
+    <p><b>La contrepartie compte&nbsp;:</b> il n’existe aucune sauvegarde. Changer de téléphone ou vider
+      le navigateur efface le journal. C’est pour ça que l’application demande à être ajoutée à l’écran
+      d’accueil, et c’est la seule chose qui mérite d’être répétée à quelqu’un qui commence.</p>
+    <p class="pied">Les écrans de cette page sont l’application avec un journal fictif&nbsp;; ce mode
+      n’écrit rien sur votre appareil. Gentiane est gratuite, sans publicité. C’est un journal personnel,
+      pas un dispositif médical, et elle ne remplace aucun suivi.</p>
     <p class="pied">Par Tidiane — <a href="https://www.instagram.com/tidianetone" target="_blank" rel="me noopener">@tidianetone</a> sur Instagram.</p>
   </div>
   <div class="ancres">
@@ -369,7 +360,6 @@ function peindreMondes() {
       + '<span class="ciel"><u></u><i></i></span>'
       + '<span class="nom" style="color:' + p.ink + '">' + ech(t.nom) + '</span></button>';
   }).join('');
-  $('#souffle-monde').textContent = P.theme(theme).souffle;
 }
 
 $('#mode').addEventListener('click', ev => {
