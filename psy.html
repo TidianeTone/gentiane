@@ -71,10 +71,15 @@ section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--trait)}
 /* -- les ecrans ----------------------------------------------------------
    Ce ne sont pas des captures : c'est l'application elle-meme, servie en
    mode demonstration avec un journal fictif, et manipulable. */
-.duo{display:grid;gap:clamp(30px,4vw,56px);align-items:start}
+.duo{display:grid;gap:clamp(30px,4vw,56px);align-items:center}
+.duo .mesure{font-size:clamp(18px,1.6vw,21px);line-height:1.65}
+.duo .mesure p{margin-bottom:22px}
 @media(min-width:940px){.duo{grid-template-columns:minmax(0,1fr) auto}}
 .paire{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,34px)}
-figure.ecran{margin:0;width:350px;max-width:100%}
+figure.ecran{margin:0;width:350px;max-width:100%;position:relative}
+.badge{position:absolute;top:-14px;right:-6px;z-index:1;padding:7px 15px;border-radius:99px;
+  background:var(--rampe);color:var(--sur-rampe);font-family:var(--affiche);font-weight:700;font-size:15px;
+  transform:rotate(6deg);box-shadow:0 8px 18px -10px rgba(0,0,0,.5)}
 /* Une lunette, pas un lisere : l'ecran est un objet pose sur la page, et il
    se detache par son cadre plutot que par un halo. */
 .ecran .cadre{--e:.846;width:350px;max-width:100%;height:calc(var(--h) * var(--e) + 20px);
@@ -151,27 +156,23 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </header>
 
 <div class="ouverture">
-  <h1>Le tableau des émotions, mais dans la poche.</h1>
-  <p class="lede">Les deux exercices du cahier — <b>« Identifiez vos émotions »</b> et
-    <b>« Graduez vos émotions »</b> — dans une application qu’on tient seul, pour soi.
-    Tous les écrans de cette page sont l’application elle-même. Vous pouvez y toucher.</p>
+  <h1>Le journal des émotions, sans frictions.</h1>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>
-    <a class="creuse" href="#limites">Ce que ça ne fait pas</a>
   </div>
 </div>
 
 <section id="exercice">
-  <h2>Le thermomètre n’illustre pas l’intensité. Il l’enregistre.</h2>
+  <h2>Suivre ses émotions demande un effort. Gentiane le réduit.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Sur le papier, on coche une intensité, puis on cherche le mot dans la bonne colonne.
-        Le second geste est souvent abandonné.</p>
-      <p>Ici, c’est un seul geste. On glisse le mercure, le palier atteint allume son bloc de mots.
-        L’inverse marche aussi&nbsp;: choisir un mot repose le thermomètre au milieu de son palier.</p>
-      <p class="aide">Essayez&nbsp;: choisissez une émotion, faites glisser le mercure.</p>
+      <p>Peu de gens ont l’habitude de suivre leurs émotions, et s’y mettre demande un effort
+        sincère&nbsp;: s’arrêter, nommer, mesurer. C’est cet effort qui fait abandonner.</p>
+      <p>Le but de l’application est de réduire cette tension jusqu’à en faire une habitude, avec une
+        interface intuitive. Avec le temps, on prend du recul sur ses cycles et ses déclencheurs.</p>
     </div>
     <figure class="ecran">
+      <span class="badge">Essayez-le&nbsp;!</span>
       <div class="cadre" style="--h:900px"><iframe data-ecran="saisie" title="L’écran de saisie de Gentiane"></iframe></div>
       <figcaption><b>Noter un moment</b>L’émotion, puis le thermomètre. Le palier atteint allume son bloc de mots.</figcaption>
     </figure>
@@ -179,17 +180,14 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </section>
 
 <section id="journal">
-  <h2>Trois gestes, debout dans la rue.</h2>
+  <h2>Des saisies en trois gestes, facilement, n’importe où.</h2>
   <div class="duo">
     <div class="mesure">
-      <p>Choisir, glisser, enregistrer. Le moment est noté sans rien écrire et sans faire défiler l’écran.</p>
-      <p>Le reste — ce qu’on faisait, les sensations, l’heure — est en dessous et porte la mention
-        <em>facultatif</em>. Le moment qui vaut le plus est celui qu’on note pendant qu’il dure,
-        et c’est celui où personne n’a envie de remplir cinq champs.</p>
+      <p>Choisir, glisser, enregistrer. Le moment est noté sans rien écrire.</p>
+      <p>On peut préciser les sensations et l’activité qui a déclenché le moment. Si on a saisi à la
+        volée, on revient plus tard sur l’entrée pour la compléter.</p>
       <p class="cas">19h12 &middot; <b>Colère 8</b> &middot; « le voisin remet sa musique à fond »
         <span><i>agacée, exaspérée</i> &middot; mâchoire serrée</span></p>
-      <p class="aide">La barre à gauche de chaque fiche a la hauteur de l’intensité&nbsp;:
-        l’allure d’une semaine se lit sans lire un mot.</p>
     </div>
     <figure class="ecran">
       <div class="cadre" style="--h:880px"><iframe data-ecran="journal" loading="lazy" title="Le journal de Gentiane"></iframe></div>
@@ -199,16 +197,12 @@ figure.ecran{margin:0;width:350px;max-width:100%}
 </section>
 
 <section id="liens">
-  <h2>Pendant qu’on écrit, on voit quand c’est déjà arrivé.</h2>
+  <h2>Visibilité.</h2>
   <div class="mesure">
     <p>Dès que l’émotion et l’intensité sont posées, l’application remonte les moments passés qui
-      ressemblent à celui en cours. Pendant qu’on écrit, pas trois semaines après.</p>
+      ressemblent à celui en cours.</p>
     <p class="cas">Déjà vécu &middot; <b>il y a 2 semaines</b> &middot; « le voisin remet sa musique à fond »
       <span>intensité 8 &middot; musique, voisin</span></p>
-    <p>Les mêmes liens sont dessinés dans Tendances&nbsp;: un point par moment, la hauteur est l’intensité,
-      la couleur l’émotion, un trait relie deux moments proches. C’est une addition de points, pas un
-      modèle&nbsp;: à la question <em>pourquoi ces deux-là&nbsp;?</em> il y a toujours une réponse en une
-      phrase, et on a le droit de ne pas être d’accord avec elle.</p>
   </div>
   <div class="paire">
     <figure class="ecran">
@@ -227,19 +221,17 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   <div class="mesure">
     <p>Une feuille blanche et un tableau sans couleur, c’est déjà une demande&nbsp;: remplis les cases.
       Pour un enfant, un adolescent, quelqu’un d’autiste ou de très anxieux, c’est le premier obstacle —
-      avant même la question des émotions. Alors la première chose que l’application demande n’est pas une
-      émotion, mais un prénom et des couleurs.</p>
+      avant même la question des émotions. Et puis, c’est juste fun de personnaliser sa page.</p>
   </div>
   <div class="mondes" id="mondes" style="margin-bottom:34px"></div>
   <div class="mesure">
-    <p><b>Les cinq couleurs d’émotion ne changent jamais</b> d’un monde à l’autre. C’est le seul code
-      à apprendre, et il tient si l’écran passe un jour de ses mains aux vôtres.</p>
+    <p><b>Les pastilles d’émotions ne changent pas, elles.</b> On remerciera <em>Vice-Versa</em> de Disney.</p>
   </div>
   <div class="emotions" id="emotions"></div>
 </section>
 
 <section id="limites">
-  <h2>Ce que Gentiane ne fait pas, et ne fera pas.</h2>
+  <h2>Bref&nbsp;!</h2>
   <table class="refus">
     <thead><tr>
       <th>Aucun diagnostic</th>
@@ -248,42 +240,16 @@ figure.ecran{margin:0;width:350px;max-width:100%}
     </tr></thead>
     <tbody><tr>
       <td data-nom="Aucun diagnostic">Pas de score clinique, pas de seuil, pas d’alerte, aucune catégorie nosographique. Les chiffres sont des intensités que la personne a posées elle-même.</td>
-      <td data-nom="Aucune interprétation">Pas d’IA, pas de résumé automatique, pas de commentaire. Personne ne lit ces phrases avant vous.</td>
-      <td data-nom="Aucune relance">Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations. Noter un moment ne rapporte rien.</td>
+      <td data-nom="Aucune interprétation">Pas d’IA, pas de résumé automatique, pas de commentaire.</td>
+      <td data-nom="Aucune relance">Pas de notification, pas de série à ne pas rompre, pas de badge, pas de félicitations.</td>
     </tr></tbody>
   </table>
   <p class="fait"><b>Ce qu’elle fait</b>Elle enregistre, trie, compte, et rapproche les moments qui se
-    ressemblent selon un barème fixe, écrit dans le code et le même pour tout le monde. Ce que ça veut
-    dire se discute entre vous deux.</p>
-</section>
-
-<section id="montrer">
-  <h2>Ce qu’on choisit de montrer.</h2>
-  <div class="duo">
-    <div class="mesure">
-      <p>Par défaut, il n’y a rien à montrer. Tant que la personne n’a pas dit qu’elle voyait quelqu’un,
-        l’écran « Séance » n’existe pas dans son application&nbsp;: elle a un historique, ça suffit.</p>
-      <p>Le jour où elle le dit, cet écran rend une période bornée — sept jours, trente jours, ou depuis
-        la dernière séance. Elle la relit d’abord et retire ce qu’elle veut. Un moment peut aussi être
-        gardé pour elle dès l’écriture.</p>
-      <p>L’écran le rappelle en une ligne, <em>ce qui est montré ici a été choisi</em>, et ne dit jamais
-        combien manque. Ce que vous ne voyez pas n’est pas une information. Il n’y a pas d’export&nbsp;:
-        si on vous le montre, c’est sur l’appareil, en face.</p>
-    </div>
-    <figure class="ecran">
-      <div class="cadre" style="--h:980px"><iframe data-ecran="seance" loading="lazy" title="L’écran Montrer de Gentiane"></iframe></div>
-      <figcaption><b>Montrer</b>Une période, le compte, la répartition, puis chaque fiche. Les moments gardés pour soi n’y sont pas.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section id="expliquer">
-  <h2>Personne n’a besoin de l’expliquer.</h2>
-  <div class="duo">
+    ressemblent selon un barème fixe. Ce que ça veut dire se discute entre vous deux.</p>
+  <div class="duo" style="margin-top:34px">
     <div class="mesure">
       <p>Au premier lancement, l’application se présente elle-même&nbsp;: trois étapes, une scène animée
         chacune, pas un mode d’emploi. Elle le dit une fois, puis la page attend dans les réglages.</p>
-      <p>L’étape qui vous concerne porte la mention <em>optionnel</em>, et c’est exact.</p>
       <p class="aide">Rien à installer, rien à paramétrer, rien à expliquer avant d’en parler à quelqu’un.</p>
     </div>
     <figure class="ecran">
@@ -293,8 +259,26 @@ figure.ecran{margin:0;width:350px;max-width:100%}
   </div>
 </section>
 
+<section id="montrer">
+  <h2>Un mode « suivi » proposé pour la séance.</h2>
+  <div class="duo">
+    <div class="mesure">
+      <p>Si la personne est suivie, l’application lui propose d’activer le mode suivi. Il ajoute un écran
+        « Séance » qui rassemble une période — sept jours, trente jours, ou depuis la dernière séance —
+        dans un format lisible en face à face&nbsp;: le compte, la répartition des émotions, puis chaque
+        moment, fiche par fiche.</p>
+      <p>La personne relit avant de montrer et retire ce qu’elle veut&nbsp;; un moment peut aussi être
+        gardé pour soi dès l’écriture. Le reste se lit sur l’appareil, en séance.</p>
+    </div>
+    <figure class="ecran">
+      <div class="cadre" style="--h:980px"><iframe data-ecran="seance" loading="lazy" title="L’écran Montrer de Gentiane"></iframe></div>
+      <figcaption><b>Montrer</b>Une période, le compte, la répartition, puis chaque fiche. Les moments gardés pour soi n’y sont pas.</figcaption>
+    </figure>
+  </div>
+</section>
+
 <section id="proposer">
-  <h2>La faire connaître tient en un QR code.</h2>
+  <h2>Envie d’essayer, ou de la partager&nbsp;?</h2>
   <div class="proposer">
   <div class="deux">
     <div><b>Un QR code à faire scanner.</b><span>Il ouvre l’application. Rien à créer, rien à recevoir.</span></div>
@@ -318,7 +302,10 @@ figure.ecran{margin:0;width:350px;max-width:100%}
     <p class="pied">Les écrans de cette page sont l’application avec un journal fictif&nbsp;; ce mode
       n’écrit rien sur votre appareil. Gentiane est gratuite, sans publicité. C’est un journal personnel,
       pas un dispositif médical, et elle ne remplace aucun suivi.</p>
-    <p class="pied">Par Tidiane — <a href="https://www.instagram.com/tidianetone" target="_blank" rel="me noopener">@tidianetone</a> sur Instagram.</p>
+    <p class="pied">Je pense sincèrement que tout le monde peut bénéficier de tenir un journal, et j’aimerais
+      rendre la pratique plus accessible. Pourquoi Gentiane&nbsp;? J’aimais bien l’idée de « gentil + Tidiane ». Ça n’a
+      rien à voir avec la fleur. Je ne suis pas mégalo.</p>
+    <p class="pied">Par Tidiane — <a href="https://www.instagram.com/tidianetone" target="_blank" rel="me noopener">@tidianetone</a></p>
   </div>
   <div class="ancres">
     <a class="pleine" href="./" target="_blank" rel="noopener">Ouvrir l’application</a>
