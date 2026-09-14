@@ -1,5 +1,7 @@
 node_modules
 .vercel
 
-.vercel
 rendu
+
+# Les rendus et les videos restent locaux : ce depot est public.
+*.mp4

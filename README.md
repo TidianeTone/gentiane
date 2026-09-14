@@ -10,23 +10,43 @@ patient — `psy.html` est la page qui s'adresse aux praticiens.
 - **Premier lancement** : l'appli ne demande pas une émotion, elle demande un
   prénom, un accord grammatical et des couleurs. Le patient choisit son monde
   avant d'écrire la moindre ligne.
-- **Comment ça marche** : après l'accueil, une page montre une fois ce que
-  l'appli fait — noter, ce qui apparaît avec le temps, montrer si on veut, ce
-  qu'elle ne fait pas — puis attend dans les réglages. Même ton que le reste :
-  la personne est le sujet, le psy est un « si tu veux ».
+- **Comment ça marche** : après l'accueil, trois étapes numérotées montrent ce
+  que l'appli fait, chacune avec une scène animée plutôt qu'un paragraphe. La
+  troisième — le suivi psy — porte un badge **optionnel**. Les étapes montent
+  une à une en entrant dans l'écran (`IntersectionObserver`, et tout est
+  visible d'emblée sans lui ou en mouvement réduit). La page se termine par le
+  bouton d'installation, et reste dans les réglages.
+- **« Montrer » demande un suivi** : l'écran séance, le repère de rendez-vous
+  et le marqueur « gardé pour moi » n'apparaissent que si la personne a dit
+  qu'elle voyait quelqu'un. Sans suivi, l'historique suffit, et trois notions
+  de moins pèsent sur l'interface.
+- **Vingt et une ouvertures** (`P.SALUTS`) au lieu d'une seule, tirées à
+  l'heure. Tant que rien n'est noté, on s'en tient à « Bonjour » : on ne peut
+  pas dire « te revoilà » à quelqu'un qui arrive. Aucun accord de genre, aucun
+  au revoir déguisé, rien qui réclame.
+- **Quatre polices** (`P.POLICES`) : Cahier (Fraunces + Atkinson), Lisible
+  (Lexend), Machine (IBM Plex Mono + Sans), Ronde (Baloo 2 + Nunito). Une
+  seule est chargée à la fois — `#polices` change de `href`, et `--affiche` /
+  `--texte` sont injectées dans `#theme` avec la palette.
+- **Aperçu d'exemple** : quand rien n'est noté, Tendances propose « Voir à
+  quoi ça ressemble » et sert le journal fictif de la démonstration, avec sa
+  sortie. Comme le mode démo, il **n'écrit jamais** — `fige()` coupe
+  `garder()` et `garderPrefs()`.
+- **Installation** : un bouton en fin de manuel. Sur Chrome il déclenche la
+  vraie invite (`beforeinstallprompt`) ; iOS n'expose aucune API, donc il y
+  montre le chemin. `navigator.storage.persist()` est demandé au démarrage.
+  C'est la seule parade aux sept jours de Safari.
 - **Une fiche par moment** : l'émotion et le thermomètre d'abord — un moment
   se note en trois gestes sans faire défiler — puis ce que je fais, les
   sensations physiques, l'heure (repliée, déjà remplie) et le marqueur privé.
 - **Gardé pour moi** : un moment marqué reste dans le journal et n'apparaît
-  jamais en mode séance. L'écran séance dit que la règle existe, jamais
-  combien de moments sont concernés.
+  jamais en mode séance. L'écran séance le rappelle en une ligne — « ce qui
+  est montré ici a été choisi » — et jamais le nombre. Sans cette ligne on
+  s'autocensure à l'écriture, et c'est là qu'on perd la donnée la plus utile.
 - **Relecture avant de montrer** : l'écran séance s'ouvre d'abord en
   relecture, où chaque fiche peut être retirée pour cette fois (rien n'est
   enregistré), puis « Montrer » rend la version propre. À l'écriture, rien
   n'est jamais en jeu.
-- **« J'ai un psy »** est une option, jamais le défaut : sans elle, l'écran
-  s'appelle « Montrer », la période « Depuis la dernière fois », le repère
-  « Poser un repère ». Avec, les mots de la thérapie (« Séance », « mon psy »).
 - **Code d'ouverture facultatif**, proposé au premier lancement et dans les
   réglages. Haché en SHA-256 avant d'être rangé ; le journal, lui, reste en
   clair — c'est une porte, pas un coffre, et l'interface le dit avec ces mots.
@@ -134,6 +154,12 @@ téléphone de quelqu'un qui utilise vraiment l'application ne doit rien
 écraser. `verif.js` vérifie que le journal fictif n'utilise que des
 qualificatifs qui existent, contient un moment privé, et produit au moins un
 écho et un trait dans le graphe.
+
+**Ce que l'appli ne dit plus** : les descriptions de monde, le pavé « Où vont
+ces notes » de l'accueil, celui des réglages, celui de fin de séance, et
+l'invite du vocabulaire. Le retour le plus fréquent était qu'il y avait trop
+de réassurance sur le fait que rien ne sort du téléphone. Le seul avertissement
+gardé est celui de l'effacement, qui dit qu'il n'existe aucune sauvegarde.
 
 Une ancre choisit l'écran d'ouverture : `#journal`, `#saisie`, `#echo`,
 `#tendances`, `#seance`, `#reglages`, `#manuel`. `?theme=` et `?sombre=` habillent la
