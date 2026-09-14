@@ -296,6 +296,8 @@
   /* == l'accueil ============================================================
      Une vingtaine d'ouvertures, pour que l'application n'ait pas l'air de
      reciter. Entre crochets : ce qui tombe quand il n'y a pas de prenom.
+     Quelques-unes sont interrogatives, sur le modele d'une porte qu'on tient
+     ouverte : « On y va ? » invite, et se laisse ignorer sans consequence.
      Rien qui reclame, rien qui felicite, et aucun au revoir deguise — « bonne
      nuit » en est un, et a trois heures du matin ce n'est pas ce qu'on veut
      lire ici. Aucun accord non plus : ces phrases valent pour tout le monde. */
@@ -330,16 +332,16 @@
     'Comme tu le sens[, {n}].',
     'Comme tu veux[, {n}].',
     'Quand ça te dit[, {n}].',
-    'Doucement[, {n}].',
+    'On y va[, {n}] ?',
     'Un moment pour toi[, {n}].',
     'Toujours là[, {n}].',
     'Ici, c’est calme[, {n}].',
     'Prends la place qu’il te faut[, {n}].',
-    'Reprends où tu veux[, {n}].',
+    'On reprend[, {n}] ?',
     'Rien à préparer[, {n}].',
-    'Fais à ton idée[, {n}].',
+    'On s’y met[, {n}] ?',
     'On ne compte rien ici[, {n}].',
-    'Tu peux souffler[, {n}].',
+    'On souffle[, {n}] ?',
   ];
 
   /* Entre minuit et cinq heures, ces ouvertures s'ajoutent aux autres. Elles
