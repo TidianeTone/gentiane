@@ -201,9 +201,10 @@ eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonsoir J
   'la nuit aussi c est bonsoir : bonne nuit est un au revoir');
 
 vrai(P.SALUTS.length >= 20, 'au moins une vingtaine d ouvertures');
-eq(new Set(P.SALUTS).size, P.SALUTS.length, 'aucune ouverture en double');
+const tousSaluts = P.SALUTS.concat(P.SALUTS_NUIT);
+eq(new Set(tousSaluts).size, tousSaluts.length, 'aucune ouverture en double, nuit comprise');
 // Chaque patron doit se lire avec ET sans prenom.
-P.SALUTS.forEach(patron => {
+tousSaluts.forEach(patron => {
   vrai(patron.includes('{n}'), 'l ouverture ' + JSON.stringify(patron) + ' a une place pour le prenom');
   vrai(/\[[^\]]*\{n\}[^\]]*\]/.test(patron), 'l ouverture ' + JSON.stringify(patron) + ' sait tomber sans prenom');
 });
@@ -214,6 +215,19 @@ for (let g = 0; g < 200; g++) {
   sansNom.add(P.salut('', j, matin, g).titre);
 }
 eq(vus.size, P.SALUTS.length + 1, 'le tirage atteint toutes les ouvertures');
+
+// La nuit ajoute ses ouvertures, et elles ne debordent jamais sur la journee.
+const nuit = new Date(2026, 8, 13, 3, 0).getTime();
+const vusNuit = new Set();
+for (let g = 0; g < 400; g++) vusNuit.add(P.salut('Julie', j, nuit, g).titre);
+eq(vusNuit.size, P.SALUTS.length + P.SALUTS_NUIT.length + 1, 'la nuit tire aussi ses ouvertures');
+P.SALUTS_NUIT.forEach(patron => {
+  const t = patron.replace(/[\[\]]/g, '').replace('{n}', 'Julie');
+  vrai(vusNuit.has(t), 'la nuit atteint ' + JSON.stringify(t));
+  vrai(!vus.has(t), JSON.stringify(t) + ' ne sort pas en pleine journee');
+});
+[...vusNuit].forEach(t => vrai(!/bonne nuit|dors|au lit|encore debout|devrais/i.test(t),
+  JSON.stringify(t) + ' ne commente pas l heure qu il est'));
 [...vus].forEach(t => {
   vrai(t.includes('Julie'), 'avec un prenom, ' + JSON.stringify(t) + ' le pose');
   vrai(!/[\[\]{}]/.test(t), JSON.stringify(t) + ' ne laisse aucune marque de patron');
@@ -223,13 +237,13 @@ eq(vus.size, P.SALUTS.length + 1, 'le tirage atteint toutes les ouvertures');
   vrai(!/,\s*\.|\s,|\s\./.test(t), JSON.stringify(t) + ' sans prenom n a ni virgule ni espace orphelin');
 });
 // Un au revoir deguise a l'ouverture, c'est la faute payee une fois avec « bonne nuit ».
-[...vus].forEach(t => vrai(!/bonne (nuit|journ[ée]e|soir[ée]e)|à bient[ôo]t|au revoir/i.test(t),
+[...vus, ...vusNuit].forEach(t => vrai(!/bonne (nuit|journ[ée]e|soir[ée]e)|à bient[ôo]t|au revoir/i.test(t),
   JSON.stringify(t) + ' n est pas un au revoir'));
 // Aucun accord : ces phrases valent pour tout le monde, quel que soit le reglage.
 [...vus].forEach(t => vrai(!/(content|ravi|heureu|pr[êe]t|seul)e?s?/i.test(t),
   JSON.stringify(t) + ' ne porte aucun accord de genre'));
 // Rien qui reclame, rien qui felicite.
-[...vus].forEach(t => vrai(!/f[ée]licit|bravo|continue|alors\s*\?|enfin|encore toi/i.test(t),
+[...vus, ...vusNuit].forEach(t => vrai(!/f[ée]licit|bravo|continue|alors\s*\?|enfin|encore toi/i.test(t),
   JSON.stringify(t) + ' ne reclame rien et ne felicite personne'));
 
 eq(P.salut('Julie', j, T).souffle, 'Un moment noté aujourd’hui.', 'compte du jour');

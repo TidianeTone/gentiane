@@ -320,6 +320,38 @@
     'Tranquille[, {n}].',
     'Pose-toi[, {n}].',
     'À l’aise[, {n}].',
+    'T’es là[, {n}].',
+    'Bienvenue[, {n}].',
+    'Installe-toi[, {n}].',
+    'Entre[, {n}].',
+    'Pousse la porte[, {n}].',
+    'Sans pression[, {n}].',
+    'Rien d’urgent[, {n}].',
+    'Comme tu le sens[, {n}].',
+    'Comme tu veux[, {n}].',
+    'Quand ça te dit[, {n}].',
+    'Doucement[, {n}].',
+    'Un moment pour toi[, {n}].',
+    'Toujours là[, {n}].',
+    'Ici, c’est calme[, {n}].',
+    'Prends la place qu’il te faut[, {n}].',
+    'Reprends où tu veux[, {n}].',
+    'Rien à préparer[, {n}].',
+    'Fais à ton idée[, {n}].',
+    'On ne compte rien ici[, {n}].',
+    'Tu peux souffler[, {n}].',
+  ];
+
+  /* Entre minuit et cinq heures, ces ouvertures s'ajoutent aux autres. Elles
+     constatent l'heure sans la commenter : pas de « encore debout », qui est
+     un reproche, et surtout pas de « bonne nuit », qui est un au revoir. */
+  P.SALUTS_NUIT = [
+    'Il est tard[, {n}].',
+    'La nuit est calme[, {n}].',
+    'Ici aussi, c’est la nuit[, {n}].',
+    'On ne compte pas les heures[, {n}].',
+    'Rien ne ferme[, {n}].',
+    'À cette heure-ci[, {n}].',
   ];
 
   const poser = (patron, nom) => nom
@@ -332,7 +364,7 @@
     const heure = (h >= 5 && h < 18 ? 'Bonjour' : 'Bonsoir') + '[ {n}].';
     // Tant que rien n'est noté, on ne peut pas dire « te revoilà » : on s'en
     // tient à l'heure. L'accueil ne se met à varier qu'une fois le journal ouvert.
-    const pool = entrees.length ? [heure].concat(P.SALUTS) : [heure];
+    const pool = entrees.length ? [heure].concat(P.SALUTS, h < 5 ? P.SALUTS_NUIT : []) : [heure];
     const i = typeof graine === 'number' ? graine : Math.floor(maintenant / 36e5);
     const titre = poser(pool[((i % pool.length) + pool.length) % pool.length], nom);
     const auj = P.iso(maintenant);
