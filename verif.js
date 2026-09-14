@@ -192,12 +192,63 @@ eq(P.echelleTexte(9), 1, 'une valeur hors bornes aussi');
 
 /* -- accueil ------------------------------------------------------------- */
 const matin = new Date(2026, 8, 13, 9, 0).getTime();
-eq(P.salut('Julie', [], matin).titre, 'Bonjour Julie', 'bonjour le matin');
-eq(P.salut('', [], matin).titre, 'Bonjour', 'sans prenom');
-eq(P.salut('Julie', [], new Date(2026, 8, 13, 21, 0).getTime()).titre, 'Bonsoir Julie', 'bonsoir le soir');
-eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonsoir Julie', 'la nuit aussi c est bonsoir : bonne nuit est un au revoir');
+const soir = new Date(2026, 8, 13, 21, 0).getTime();
+// Journal vide : on ne peut pas dire « te revoila », l'accueil s'en tient a l'heure.
+eq(P.salut('Julie', [], matin).titre, 'Bonjour Julie.', 'bonjour le matin');
+eq(P.salut('', [], matin).titre, 'Bonjour.', 'sans prenom');
+eq(P.salut('Julie', [], soir).titre, 'Bonsoir Julie.', 'bonsoir le soir');
+eq(P.salut('Julie', [], new Date(2026, 8, 13, 3, 0).getTime()).titre, 'Bonsoir Julie.',
+  'la nuit aussi c est bonsoir : bonne nuit est un au revoir');
+
+vrai(P.SALUTS.length >= 20, 'au moins une vingtaine d ouvertures');
+eq(new Set(P.SALUTS).size, P.SALUTS.length, 'aucune ouverture en double');
+// Chaque patron doit se lire avec ET sans prenom.
+P.SALUTS.forEach(patron => {
+  vrai(patron.includes('{n}'), 'l ouverture ' + JSON.stringify(patron) + ' a une place pour le prenom');
+  vrai(/\[[^\]]*\{n\}[^\]]*\]/.test(patron), 'l ouverture ' + JSON.stringify(patron) + ' sait tomber sans prenom');
+});
+// Le tirage parcourt bien tout le pool, et rend des phrases propres des deux cotes.
+const vus = new Set(), sansNom = new Set();
+for (let g = 0; g < 200; g++) {
+  vus.add(P.salut('Julie', j, matin, g).titre);
+  sansNom.add(P.salut('', j, matin, g).titre);
+}
+eq(vus.size, P.SALUTS.length + 1, 'le tirage atteint toutes les ouvertures');
+[...vus].forEach(t => {
+  vrai(t.includes('Julie'), 'avec un prenom, ' + JSON.stringify(t) + ' le pose');
+  vrai(!/[\[\]{}]/.test(t), JSON.stringify(t) + ' ne laisse aucune marque de patron');
+});
+[...sansNom].forEach(t => {
+  vrai(!/[\[\]{}]/.test(t), JSON.stringify(t) + ' sans prenom ne laisse aucune marque');
+  vrai(!/,\s*\.|\s,|\s\./.test(t), JSON.stringify(t) + ' sans prenom n a ni virgule ni espace orphelin');
+});
+// Un au revoir deguise a l'ouverture, c'est la faute payee une fois avec « bonne nuit ».
+[...vus].forEach(t => vrai(!/bonne (nuit|journ[ée]e|soir[ée]e)|à bient[ôo]t|au revoir/i.test(t),
+  JSON.stringify(t) + ' n est pas un au revoir'));
+// Aucun accord : ces phrases valent pour tout le monde, quel que soit le reglage.
+[...vus].forEach(t => vrai(!/(content|ravi|heureu|pr[êe]t|seul)e?s?/i.test(t),
+  JSON.stringify(t) + ' ne porte aucun accord de genre'));
+// Rien qui reclame, rien qui felicite.
+[...vus].forEach(t => vrai(!/f[ée]licit|bravo|continue|alors\s*\?|enfin|encore toi/i.test(t),
+  JSON.stringify(t) + ' ne reclame rien et ne felicite personne'));
+
 eq(P.salut('Julie', j, T).souffle, 'Un moment noté aujourd’hui.', 'compte du jour');
-vrai(!/dernier moment|il y a/.test(P.salut('Julie', [j[1]], T).souffle), 'aucun rappel du temps passe depuis la derniere note : ca marcherait comme un reproche');
-vrai(!/f[ée]licit|bravo|continue comme/i.test(P.salut('Julie', j, T).souffle), 'aucune felicitation');
+eq(P.salut('Julie', [j[1]], T).souffle, '', 'rien a dire quand rien n a ete note aujourd hui');
+vrai(!/dernier moment|il y a/.test(P.salut('Julie', [j[1]], T).souffle),
+  'aucun rappel du temps passe depuis la derniere note : ca marcherait comme un reproche');
+
+/* -- polices --------------------------------------------------------------- */
+eq(P.POLICES.length, 4, 'quatre polices embarquees');
+eq(P.police('cahier').cle, 'cahier', 'la police se retrouve par sa cle');
+eq(P.police('nimporte').cle, 'cahier', 'une police inconnue retombe sur celle du cahier');
+eq(P.DEFAUTS.police, 'cahier', 'le defaut ne change pas pour ceux qui ecrivent deja');
+P.POLICES.forEach(f => {
+  vrai(/^https:\/\/fonts\.googleapis\.com\/css2\?family=/.test(P.feuillePolice(f.cle)),
+    f.nom + ' : une feuille Google Fonts bien formee');
+  vrai(/display=swap/.test(P.feuillePolice(f.cle)), f.nom + ' : le texte s affiche avant la police');
+  // Une pile sans repli, c'est un ecran blanc le temps du reseau.
+  vrai(/,/.test(f.affiche) && /,/.test(f.texte), f.nom + ' : affiche et texte ont un repli systeme');
+});
+eq(new Set(P.POLICES.map(f => f.texte)).size, 4, 'quatre textes vraiment differents');
 
 console.log(ok + ' verifications passees, dont ' + paires + ' paires de couleur.');

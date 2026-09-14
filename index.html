@@ -9,13 +9,16 @@
 <link rel="icon" href="icone.svg">
 <link rel="apple-touch-icon" href="icone.svg">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&display=swap">
+<link rel="stylesheet" id="polices" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&display=swap">
 <style>
 /* Les couleurs ne sont jamais ecrites ici : elles sont calculees par
    P.palette() et injectees dans #theme. Ce fichier ne connait que des noms.
    Les tailles de texte sont en rem, et --t est l'echelle choisie par la
    personne : seul le texte grandit, les instruments dessines restent en px. */
 html{font-size:calc(16px * var(--t,1))}
+/* Les deux piles ci-dessous sont celles du depart : P.police() les remplace
+   dans #theme des que quelqu'un choisit une autre police. Elles restent ici
+   pour que le premier rendu soit juste avant que le script tourne. */
 :root{
   --affiche:Fraunces,Georgia,'Times New Roman',serif;
   --texte:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,sans-serif;
@@ -73,6 +76,21 @@ h2,.etiq{font-family:var(--texte);font-weight:700;font-size:.76rem;letter-spacin
 .sobre:hover{background:var(--surf2)}
 .sobre svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .souffle{font-size:.8rem;color:var(--ink2);margin-top:2px}
+/* Ce qui n'est pas obligatoire le dit, au lieu de se faire deviner. */
+.opt{display:inline-block;margin-left:8px;padding:2px 8px;border:1px solid var(--trait);border-radius:99px;
+  font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink2);vertical-align:middle}
+/* Un journal vide ne dit pas quoi ressentir : il montre ou appuyer. */
+.pointeur{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px;
+  font-weight:700;font-size:.92rem;color:var(--ink2)}
+.pointeur svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round;animation:pointe 1.7s var(--ease) infinite}
+@keyframes pointe{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
+/* L'exemple remplace la barre du bas : ce journal-la n'est pas le sien, on n'y ecrit pas. */
+#app.exemple .vue>.bas{display:none}
+#bandeau{position:fixed;left:0;right:0;bottom:0;z-index:9;max-width:460px;margin:0 auto;
+  padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,var(--fond) 38%)}
+#bandeau .souffle{text-align:center;margin-top:8px}
 
 /* -- salut --------------------------------------------------------------- */
 .salut{padding:2px 18px 20px}
@@ -282,19 +300,29 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 .danger{color:var(--f-colere);border-color:var(--f-colere)}
 
 /* -- manuel ------------------------------------------------------------- */
-/* Une page qui montre ce que l'appli fait, une fois, puis attend dans les
-   reglages. Chaque bloc est une petite scene qui rejoue le geste en boucle ;
-   l'etat de repos de chaque element est la fin de la scene, pour que sans
-   animation (mouvement reduit) l'image reste juste. */
-.pas{margin-bottom:30px}
-.pas h2{margin:12px 0 4px}
-.pas p{margin:0;color:var(--ink2);font-size:.9rem}
+/* Trois etapes, montrees plutot que racontees. Chaque scene rejoue en boucle
+   le geste qu'elle decrit ; l'etat de repos de chaque element est la FIN de la
+   scene, pour que sans animation l'image reste juste. */
+ol.pas{list-style:none;margin:0;padding:0;counter-reset:pas}
+ol.pas li{counter-increment:pas;margin-bottom:34px}
+.pas-tete{display:flex;align-items:center;gap:10px;margin:15px 0 5px}
+.pas-tete::before{content:counter(pas);flex:none;width:30px;height:30px;border-radius:99px;
+  background:var(--ink);color:var(--fond);display:flex;align-items:center;justify-content:center;
+  font-family:var(--affiche);font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums}
+ol.pas p{margin:0;font-size:.98rem}
+/* Les etapes montent une a une : l'application doit se sentir fluide des la
+   premiere page, et c'est celle-la qu'on lit le plus. */
+.surgit{opacity:0;transform:translateY(16px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.surgit.vu{opacity:1;transform:none}
+
 .illu{display:block;width:100%;height:auto;border-radius:var(--r);background:var(--surf);border:1px solid var(--trait)}
 .illu text{font-family:var(--texte);font-size:11px;fill:var(--ink2)}
 .illu .aff{font-family:var(--affiche);font-weight:700}
 .illu .t{stroke:var(--trait);fill:none}
 .illu .l{stroke:var(--ink2);stroke-width:3;stroke-linecap:round;opacity:.45}
-/* noter : la famille s'allume, le mercure monte, le chiffre suit */
+.illu .verre{mix-blend-mode:soft-light}   /* le meme verre que l'instrument */
+/* 1. la famille s'allume, le mercure monte, le chiffre suit */
 .illu .puce{fill:var(--surf2);stroke:var(--trait)}
 .illu .puce.on{fill:var(--f-colere-p);stroke:var(--f-colere-p);animation:puce-on 6s var(--ease) infinite}
 @keyframes puce-on{0%,18%{fill:var(--surf2);stroke:var(--trait)}30%,100%{fill:var(--f-colere-p);stroke:var(--f-colere-p)}}
@@ -302,38 +330,40 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
 @keyframes puce-txt{0%,18%{fill:var(--ink2)}30%,100%{fill:var(--sur-plein)}}
 /* L'origine est donnee en coordonnees du viewBox, pas en pourcentage : sinon
    elle se calcule sur la boite SVG entiere et le mercure deborde sous le
-   bulbe au lieu de monter depuis lui. 86 = le fond du tube. */
+   bulbe. 86 = le fond du tube. */
 .illu .merc{fill:var(--f-colere);transform-box:view-box;transform-origin:270px 86px;
   transform:scaleY(.7);animation:merc 6s var(--ease) infinite}
 @keyframes merc{0%,34%{transform:scaleY(0)}60%,100%{transform:scaleY(.7)}}
 .illu .bulbe{fill:var(--f-colere);animation:bulbe 6s var(--ease) infinite}
 @keyframes bulbe{0%,34%{fill:var(--surf2)}44%,100%{fill:var(--f-colere)}}
-.illu .verre{mix-blend-mode:soft-light}   /* le meme verre que l'instrument */
 .illu .val{fill:var(--f-colere);animation:val 6s var(--ease) infinite}
 @keyframes val{0%,55%{opacity:0}70%,100%{opacity:1}}
-/* motifs : les points arrivent un a un, puis les traits entre ceux qui se ressemblent */
+/* 2. les moments arrivent, puis le trait part du dernier vers celui qui lui
+   ressemble, et la date de ce dernier se pose. */
 .illu .pt{animation:pt 7s var(--ease) infinite}
-.illu .pt:nth-child(2){animation-delay:.5s}.illu .pt:nth-child(3){animation-delay:1s}
-.illu .pt:nth-child(4){animation-delay:1.5s}.illu .pt:nth-child(5){animation-delay:2s}.illu .pt:nth-child(6){animation-delay:2.5s}
+.illu .pt:nth-child(2){animation-delay:.45s}.illu .pt:nth-child(3){animation-delay:.9s}
+.illu .pt:nth-child(4){animation-delay:1.35s}.illu .pt:nth-child(5){animation-delay:1.8s}
+.illu .pt:nth-child(6){animation-delay:2.25s}
 @keyframes pt{0%{opacity:0;transform:translateY(6px)}5%,100%{opacity:1;transform:none}}
-.illu .lien{fill:none;stroke-width:2.5;stroke-linecap:round;opacity:.55;stroke-dasharray:200;animation:lien 7s var(--ease) infinite}
-.illu .lien+.lien{animation-delay:.6s}
-@keyframes lien{0%,45%{stroke-dashoffset:200}70%,100%{stroke-dashoffset:0}}
-/* montrer : trois fiches, on en retire une, le cadre se referme sur les autres */
+.illu .lien{fill:none;stroke-width:2.5;stroke-linecap:round;opacity:.55;stroke-dasharray:200;
+  animation:lien 7s var(--ease) infinite}
+.illu .lien+.lien{animation-delay:.5s}
+@keyframes lien{0%,42%{stroke-dashoffset:200}64%,100%{stroke-dashoffset:0}}
+.illu .quand{fill:var(--f-colere);font-weight:700;animation:quand 7s var(--ease) infinite}
+@keyframes quand{0%,66%{opacity:0}80%,100%{opacity:1}}
+/* 3. trois fiches, on en retire une, le cadre se referme sur les autres */
 .illu .fiche2{opacity:.18;animation:fiche2 7s var(--ease) infinite}
 @keyframes fiche2{0%,30%{opacity:1}42%,100%{opacity:.18}}
 .illu .fiche3{transform:translateY(-34px);animation:fiche3 7s var(--ease) infinite}
 @keyframes fiche3{0%,50%{transform:none}64%,100%{transform:translateY(-34px)}}
-.illu .cadre{fill:none;stroke:var(--action);stroke-width:2;stroke-dasharray:6 5;animation:cadre 7s var(--ease) infinite}
+.illu .cadre{fill:none;stroke:var(--action);stroke-width:2;stroke-dasharray:6 5;
+  animation:cadre 7s var(--ease) infinite}
 @keyframes cadre{0%,66%{opacity:0}80%,100%{opacity:1}}
-/* rien ne sort : un point essaie de quitter le telephone, et revient */
-.illu .sort{fill:var(--f-tendresse);animation:sort 5s var(--ease) infinite}
-@keyframes sort{0%,20%{transform:none}55%{transform:translateX(42px)}80%,100%{transform:none}}
-.illu .cloche{stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .illu *{animation:none!important}  /* les scenes du manuel restent sur leur image finale */
+  .surgit{opacity:1;transform:none}  /* et les etapes sont la d'emblee */
 }
 </style>
 <style id="theme"></style>
@@ -386,9 +416,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         </div>
       </div>
 
-      <div class="champ"><div class="mondes" id="a-mondes"></div>
-        <div class="souffle" id="a-souffle"></div>
-      </div>
+      <div class="champ"><div class="mondes" id="a-mondes"></div></div>
 
       <div class="champ">
         <h2>Réglage fin</h2>
@@ -422,11 +450,6 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <input type="password" id="a-pin" inputmode="numeric" autocomplete="new-password" maxlength="6" aria-label="Code d’ouverture, facultatif">
         <div class="souffle">Facultatif. Quatre à six chiffres.</div>
       </div>
-      <div class="avis" style="margin-top:22px">
-        <b>Où vont ces notes</b>
-        Nulle part. Tout est écrit dans la mémoire de ce téléphone, il n’y a ni compte, ni serveur, ni envoi.
-        En contrepartie&nbsp;: vider les données du navigateur ou changer d’appareil efface le journal.
-      </div>
     </div>
 
   </div>
@@ -438,88 +461,83 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
   </div>
 </section>
 
-<!-- manuel : ce que l'appli fait, dit une fois, relisible depuis les reglages -->
+<!-- manuel : trois etapes, montrees une a une, puis relisibles depuis les reglages -->
 <section class="vue" id="v-manuel">
   <div class="entete" id="m-entete">
     <button class="rond" id="b-retour6" aria-label="Retour">
       <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <div class="titre">Gentiane</div>
+    <div class="titre">Comment ça marche</div>
   </div>
   <div class="corps" id="m-corps">
-    <h1 class="grand">Comment ça marche.</h1>
-    <p class="intro">Un journal des émotions. Il ne demande rien, il garde ce que tu lui confies. Voilà ce qu’il y a dedans.</p>
-    <div class="souffle" style="margin:-18px 0 22px">Si tu vois un psy, tu peux le dire dans les réglages&nbsp;: les mots de l’appli parleront de séance.</div>
+    <h1 class="grand surgit">Comment ça marche.</h1>
 
-    <div class="pas">
-      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
-        <rect class="puce" x="18" y="24" width="60" height="30" rx="15"/>
-        <text x="48" y="43" text-anchor="middle">Peur</text>
-        <rect class="puce on" x="86" y="24" width="72" height="30" rx="15"/>
-        <text class="puce-txt" x="122" y="43" text-anchor="middle">Colère</text>
-        <rect class="puce" x="166" y="24" width="56" height="30" rx="15"/>
-        <text x="194" y="43" text-anchor="middle">Joie</text>
-        <rect x="18" y="66" width="140" height="10" rx="5" fill="var(--surf2)"/>
-        <rect x="18" y="86" width="96" height="10" rx="5" fill="var(--surf2)"/>
-        <rect class="t" x="262" y="14" width="16" height="74" rx="8"/>
-        <rect class="merc" x="264" y="16" width="12" height="70" rx="6"/>
-        <image class="verre" href="verre-tube.png" x="262" y="14" width="16" height="74" preserveAspectRatio="none"/>
-        <circle class="bulbe" cx="270" cy="96" r="12"/>
-        <image class="verre" href="verre-bulbe.png" x="258" y="84" width="24" height="24"/>
-        <text class="val aff" x="248" y="52" text-anchor="end" font-size="30">7</text>
-      </svg>
-      <h2>Noter un moment</h2>
-      <p>Une émotion, un thermomètre, et c’est enregistré. Le reste, si tu veux, et aussi court que tu veux.</p>
-    </div>
+    <ol class="pas">
+      <li class="surgit">
+        <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+          <rect class="puce" x="18" y="24" width="60" height="30" rx="15"/>
+          <text x="48" y="43" text-anchor="middle">Peur</text>
+          <rect class="puce on" x="86" y="24" width="72" height="30" rx="15"/>
+          <text class="puce-txt" x="122" y="43" text-anchor="middle">Colère</text>
+          <rect class="puce" x="166" y="24" width="56" height="30" rx="15"/>
+          <text x="194" y="43" text-anchor="middle">Joie</text>
+          <rect x="18" y="66" width="140" height="10" rx="5" fill="var(--surf2)"/>
+          <rect x="18" y="86" width="96" height="10" rx="5" fill="var(--surf2)"/>
+          <rect class="t" x="262" y="14" width="16" height="74" rx="8"/>
+          <rect class="merc" x="264" y="16" width="12" height="70" rx="6"/>
+          <image class="verre" href="verre-tube.png" x="262" y="14" width="16" height="74" preserveAspectRatio="none"/>
+          <circle class="bulbe" cx="270" cy="96" r="12"/>
+          <image class="verre" href="verre-bulbe.png" x="258" y="84" width="24" height="24"/>
+          <text class="val aff" x="248" y="52" text-anchor="end" font-size="30">7</text>
+        </svg>
+        <div class="pas-tete"></div>
+        <p>C’est un journal. Tu choisis l’émotion que tu ressens, et à quelle intensité.</p>
+      </li>
 
-    <div class="pas">
-      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
-        <line class="t" x1="24" y1="100" x2="300" y2="100"/>
-        <path class="lien" d="M48 74 L128 42" stroke="var(--f-colere)"/>
-        <path class="lien" d="M128 42 L262 52" stroke="var(--f-colere)"/>
-        <g>
-          <circle class="pt" cx="48" cy="74" r="6" fill="var(--f-colere)"/>
-          <circle class="pt" cx="88" cy="88" r="6" fill="var(--f-tristesse)"/>
-          <circle class="pt" cx="128" cy="42" r="6" fill="var(--f-colere)"/>
-          <circle class="pt" cx="176" cy="66" r="6" fill="var(--f-joie)"/>
-          <circle class="pt" cx="218" cy="82" r="6" fill="var(--f-peur)"/>
-          <circle class="pt" cx="262" cy="52" r="6" fill="var(--f-colere)"/>
-        </g>
-      </svg>
-      <h2>Ce qui apparaît avec le temps</h2>
-      <p>Dès le deuxième moment, des traits relient ceux qui se ressemblent. L’appli trie et compte, c’est tout&nbsp;: ce que ça veut dire, c’est toi qui le sais.</p>
-    </div>
+      <li class="surgit">
+        <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+          <line class="t" x1="24" y1="102" x2="300" y2="102"/>
+          <path class="lien" d="M262 52 L128 42" stroke="var(--f-colere)"/>
+          <path class="lien" d="M128 42 L48 74" stroke="var(--f-colere)"/>
+          <text class="quand" x="52" y="60" text-anchor="middle">il y a 2 semaines</text>
+          <g>
+            <circle class="pt" cx="48" cy="74" r="6" fill="var(--f-colere)"/>
+            <circle class="pt" cx="88" cy="88" r="6" fill="var(--f-tristesse)"/>
+            <circle class="pt" cx="128" cy="42" r="6" fill="var(--f-colere)"/>
+            <circle class="pt" cx="176" cy="66" r="6" fill="var(--f-joie)"/>
+            <circle class="pt" cx="218" cy="82" r="6" fill="var(--f-peur)"/>
+            <circle class="pt" cx="262" cy="52" r="6" fill="var(--f-colere)"/>
+          </g>
+        </svg>
+        <div class="pas-tete"></div>
+        <p>Quand tu entreras une émotion similaire, tu verras de quand datait la dernière fois
+          que tu as vécu la même chose.</p>
+      </li>
 
-    <div class="pas">
-      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
-        <rect class="cadre" x="42" y="8" width="236" height="72" rx="14"/>
-        <g class="fiche1">
-          <circle cx="62" cy="24" r="5" fill="var(--f-tristesse)"/><line class="l" x1="76" y1="24" x2="200" y2="24"/>
-        </g>
-        <g class="fiche2">
-          <circle cx="62" cy="58" r="5" fill="var(--f-colere)"/><line class="l" x1="76" y1="58" x2="236" y2="58"/>
-        </g>
-        <g class="fiche3">
-          <circle cx="62" cy="92" r="5" fill="var(--f-joie)"/><line class="l" x1="76" y1="92" x2="170" y2="92"/>
-        </g>
-      </svg>
-      <h2>Montrer, si tu veux</h2>
-      <p>À un psy, à un proche, à un médecin. Tu relis, tu retires ce que tu veux, et seulement ensuite l’écran s’affiche. Ce qui n’est pas montré ne se compte pas.</p>
-    </div>
+      <li class="surgit">
+        <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
+          <rect class="cadre" x="42" y="8" width="236" height="72" rx="14"/>
+          <g class="fiche1">
+            <circle cx="62" cy="24" r="5" fill="var(--f-tristesse)"/><line class="l" x1="76" y1="24" x2="200" y2="24"/>
+          </g>
+          <g class="fiche2">
+            <circle cx="62" cy="58" r="5" fill="var(--f-colere)"/><line class="l" x1="76" y1="58" x2="236" y2="58"/>
+          </g>
+          <g class="fiche3">
+            <circle cx="62" cy="92" r="5" fill="var(--f-joie)"/><line class="l" x1="76" y1="92" x2="170" y2="92"/>
+          </g>
+        </svg>
+        <div class="pas-tete"><span class="opt">optionnel</span></div>
+        <p>T’as un suivi psy&nbsp;? Tu peux lui montrer l’historique&nbsp;!</p>
+      </li>
+    </ol>
 
-    <div class="pas">
-      <svg class="illu" viewBox="0 0 320 120" aria-hidden="true">
-        <rect class="t" x="110" y="10" width="100" height="100" rx="14" stroke-width="2"/>
-        <line class="l" x1="130" y1="34" x2="190" y2="34"/>
-        <line class="l" x1="130" y1="54" x2="176" y2="54"/>
-        <line class="l" x1="130" y1="74" x2="184" y2="74"/>
-        <circle class="sort" cx="160" cy="94" r="6"/>
-        <g class="cloche" transform="translate(252 44)">
-          <path d="M-8 6a8 8 0 0 1 16 0v6l3 4H-11l3-4zM-3 18h6"/><line x1="-13" y1="-6" x2="13" y2="22"/>
-        </g>
-      </svg>
-      <h2>Ce qu’elle ne fait pas</h2>
-      <p>Rien ne sort de ce téléphone, et rien ne te relance. Tu ouvres quand tu veux, et quand tu n’ouvres pas, il ne se passe rien.</p>
+    <div class="champ surgit" id="m-install" hidden>
+      <button class="sobre" id="b-install">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></svg>
+        Ajouter à l’écran d’accueil
+      </button>
+      <div class="souffle" id="m-install-dit" hidden></div>
     </div>
 
     <div class="souffle" id="m-rappel">Cette page reste dans les réglages, si tu veux la relire.</div>
@@ -544,7 +562,12 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
   <div class="salut" id="salut"></div>
   <div id="avert" hidden style="padding:0 18px 18px"></div>
   <div class="corps" id="liste"></div>
-  <div class="bas"><button class="pilule" id="b-nouveau">Noter un moment</button></div>
+  <div class="bas">
+    <div class="pointeur" id="j-pointeur" hidden>Commence par ici&nbsp;!
+      <svg viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+    </div>
+    <button class="pilule" id="b-nouveau">Noter un moment</button>
+  </div>
 </section>
 
 <!-- saisie : l'emotion et le thermometre d'abord, le reste si on veut -->
@@ -577,11 +600,11 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
       </div>
     </div>
     <div class="champ">
-      <h2>Ce que je fais</h2>
+      <h2>Ce que je fais<span class="opt">facultatif</span></h2>
       <textarea id="f-quoi" rows="3"></textarea>
     </div>
     <div class="champ">
-      <h2>Mes sensations physiques</h2>
+      <h2>Mes sensations physiques<span class="opt">facultatif</span></h2>
       <textarea id="f-corps" rows="2"></textarea>
       <div class="rappels" id="f-rappels"></div>
     </div>
@@ -598,7 +621,7 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
         <input type="datetime-local" id="f-quand">
       </div>
     </div>
-    <div class="champ">
+    <div class="champ" id="champ-prive">
       <button class="garde" id="b-prive" aria-pressed="false">
         <svg id="icone-garde" viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>
         <span style="flex:1">
@@ -676,7 +699,10 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     <div class="champ">
       <h2>Monde</h2>
       <div class="mondes" id="r-mondes"></div>
-      <div class="souffle" id="r-souffle"></div>
+    </div>
+    <div class="champ">
+      <h2>Police</h2>
+      <div class="segments" id="r-police"></div>
     </div>
     <div class="champ">
       <h2>Réglage fin</h2>
@@ -716,15 +742,16 @@ input[type=range].jauge-h::-moz-range-thumb{width:26px;height:26px;border-radius
     </div>
     <div class="champ">
       <h2>Le journal</h2>
-      <div class="avis" style="margin-top:0">
-        <b>Rien ne sort d’ici</b>
-        <span id="r-compte"></span> Tout est écrit dans la mémoire de ce téléphone&nbsp;: pas de compte, pas de serveur,
-        pas d’envoi. Il n’y a pas non plus d’export&nbsp;: changer d’appareil ou vider le navigateur efface tout.
-      </div>
-      <button class="sobre danger" id="r-vider" style="margin-top:12px">Effacer tout le journal</button>
+      <div class="souffle" id="r-compte" style="margin-bottom:12px"></div>
+      <button class="sobre danger" id="r-vider">Effacer tout le journal</button>
     </div>
   </div>
 </section>
+
+<div id="bandeau" hidden>
+  <button class="pilule" id="b-quitter-exemple">Quitter l’exemple</button>
+  <div class="souffle">Un journal d’exemple. Rien n’est enregistré ici.</div>
+</div>
 
 </div>
 
@@ -745,7 +772,7 @@ let prefs = Object.assign({ prenom: '', accord: 'f', ancre: null, vu: false }, P
 
 if (DEMO) {
   entrees = P.DEMO(Date.now());
-  Object.assign(prefs, { prenom: 'Julie', vu: true, ancre: Date.now() - 9 * 864e5 });
+  Object.assign(prefs, { prenom: 'Julie', vu: true, psy: true, ancre: Date.now() - 9 * 864e5 });
   if (REQ.get('theme')) prefs.theme = REQ.get('theme');
   if (REQ.get('sombre')) prefs.sombre = REQ.get('sombre') === '1';
 } else {
@@ -753,11 +780,20 @@ if (DEMO) {
   try { Object.assign(prefs, JSON.parse(localStorage.getItem(CLE_P)) || {}); } catch (e) {}
 }
 
-const garder = DEMO ? () => {} : () => {
+/* L'apercu d'exemple sert le journal fictif de la demonstration pour montrer
+   ou l'on va quand on n'a encore rien note. Comme le mode demo, il n'ecrit
+   jamais : feuilleter un journal fictif ne doit pas toucher a un vrai. */
+let exemple = false, vraies = null;
+const fige = () => DEMO || exemple;
+const garder = () => {
+  if (fige()) return;
   try { localStorage.setItem(CLE, JSON.stringify(entrees)); }
   catch (e) { alert("Impossible d'enregistrer : la mémoire du navigateur est pleine ou bloquée."); }
 };
-const garderPrefs = DEMO ? () => {} : () => { try { localStorage.setItem(CLE_P, JSON.stringify(prefs)); } catch (e) {} };
+const garderPrefs = () => {
+  if (fige()) return;
+  try { localStorage.setItem(CLE_P, JSON.stringify(prefs)); } catch (e) {}
+};
 
 let brouillon = null;
 
@@ -796,13 +832,11 @@ const hacher = async pin => {
 };
 const PIN_FORME = /^[0-9]{4,6}$/;
 
-// Par defaut, personne ne presume qu'on voit un psy. Si on le dit, les mots
-// de l'ecran « Montrer » prennent ceux de la therapie.
-const MOTS = () => prefs.psy
-  ? { ecran: 'Séance', bouton: 'Montrer à mon psy', periode: 'Depuis ma séance', repere: 'J’ai vu mon psy aujourd’hui',
-      repereDit: 'La prochaine fois, « Depuis ma séance » commencera aujourd’hui.', ou: 'en séance' }
-  : { ecran: 'Montrer', bouton: 'Montrer mon journal', periode: 'Depuis la dernière fois', repere: 'Poser un repère aujourd’hui',
-      repereDit: 'La prochaine fois, « Depuis la dernière fois » commencera aujourd’hui.', ou: 'quand je le montre' };
+/* Montrer un extrait borne n'a de sens que si quelqu'un le lit : sans suivi,
+   l'historique suffit, et tout ce qui va avec — l'ecran seance, le repere de
+   rendez-vous, le moment garde pour soi — disparait au lieu de peser. */
+const MOTS = { ecran: 'Séance', bouton: 'Montrer à mon psy', repere: 'J’ai vu mon psy aujourd’hui',
+  repereDit: 'La prochaine fois, « Depuis ma séance » commencera aujourd’hui.', ou: 'en séance' };
 
 const CADENAS = '<svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><rect x="4" y="11" width="16" height="10" rx="3"/></svg>';
 
@@ -811,7 +845,12 @@ const CADENAS = '<svg viewBox="0 0 24 24"><path d="M6 11V8a6 6 0 0 1 12 0v3"/><r
    variables CSS, et l'echelle du texte avec elle. */
 function peindreTheme() {
   const p = P.palette(prefs.theme, prefs.sombre, prefs.chaleur, prefs.contraste);
-  $('#theme').textContent = ':root{' + P.cssTheme(p) + ';--t:' + P.echelleTexte(prefs.texte) + '}';
+  const f = P.police(prefs.police);
+  // On ne charge que la police choisie ; le service worker garde ce qui a servi.
+  const lien = $('#polices'), url = P.feuillePolice(f.cle);
+  if (lien.getAttribute('href') !== url) lien.setAttribute('href', url);
+  $('#theme').textContent = ':root{' + P.cssTheme(p) + ';--t:' + P.echelleTexte(prefs.texte)
+    + ';--affiche:' + f.affiche + ';--texte:' + f.texte + '}';
   $('#meta-couleur').setAttribute('content', p.fond);
   document.documentElement.style.colorScheme = prefs.sombre ? 'dark' : 'light';
 }
@@ -845,7 +884,6 @@ function peindreAccueil() {
   peindreAccord($('#a-accord'), $('#a-exemple'));
   $('#a-mode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.sombre === '1') === !!prefs.sombre));
   vignettes($('#a-mondes'), prefs.theme);
-  $('#a-souffle').textContent = P.theme(prefs.theme).souffle;
   [['texte', TAILLE], ['chaleur', NIVEAU], ['contraste', NIVEAU]].forEach(([k, mot]) => {
     $('#a-' + k).value = Math.round(prefs[k] * 100);
     $('#a-' + k + '-v').textContent = mot(prefs[k] * 100);
@@ -899,8 +937,65 @@ function manuel(premiere) {
   $('#m-bas').hidden = !premiere;
   $('#m-rappel').hidden = !premiere;
   $('#m-corps').style.paddingTop = premiere ? '64px' : '';
+  peindreInstall();
   vue('v-manuel');
+  monter();
 }
+
+/* Les etapes montent une a une en entrant dans l'ecran. Sans
+   IntersectionObserver, elles sont simplement toutes la : une animation
+   absente ne doit jamais cacher le contenu. */
+let oeil = null;
+function monter() {
+  const pas = [].slice.call(document.querySelectorAll('#v-manuel .surgit'));
+  pas.forEach(e => e.classList.remove('vu'));
+  if (!('IntersectionObserver' in window)) return pas.forEach(e => e.classList.add('vu'));
+  if (oeil) oeil.disconnect();
+  oeil = new IntersectionObserver((vus, o) => {
+    vus.forEach(v => { if (v.isIntersecting) { v.target.classList.add('vu'); o.unobserve(v.target); } });
+  }, { rootMargin: '0px 0px -10% 0px' });
+  pas.forEach((e, i) => { e.style.transitionDelay = Math.min(i, 3) * 110 + 'ms'; oeil.observe(e); });
+}
+
+/* L'installation sur l'ecran d'accueil. Ce n'est pas un confort : sur iPhone,
+   Safari efface le stockage d'un site apres sept jours sans visite, sauf s'il
+   est installe. Chrome donne une vraie invite ; iOS n'expose aucune API, donc
+   le bouton y montre le chemin — c'est tout ce qui existe. */
+let invite = null;
+const estInstalle = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+const surIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent);
+addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); invite = ev; peindreInstall(); });
+addEventListener('appinstalled', () => { invite = null; peindreInstall(); peindreAvert(); });
+function peindreInstall() { $('#m-install').hidden = DEMO || estInstalle(); }
+$('#b-install').onclick = async () => {
+  if (invite) { invite.prompt(); await invite.userChoice; invite = null; peindreInstall(); return; }
+  const dit = $('#m-install-dit');
+  dit.hidden = false;
+  dit.textContent = surIOS()
+    ? 'Bouton Partager, en bas de Safari, puis « Sur l’écran d’accueil ».'
+    : 'Menu du navigateur, puis « Installer l’application ».';
+};
+
+/* L'apercu d'exemple : quand on n'a rien note, les tendances ne peuvent rien
+   montrer, et une phrase ne remplace pas un graphe. On sert le journal fictif
+   de la demonstration, avec sa sortie, et sans jamais rien enregistrer. */
+function entrerExemple() {
+  if (exemple) return;
+  vraies = entrees;
+  exemple = true;
+  entrees = P.DEMO(Date.now());
+  $('#app').classList.add('exemple');
+  $('#bandeau').hidden = false;
+  peindreStats(); vue('v-stats');
+}
+function sortirExemple() {
+  if (!exemple) return;
+  entrees = vraies; vraies = null; exemple = false;
+  $('#app').classList.remove('exemple');
+  $('#bandeau').hidden = true;
+  peindreStats(); vue('v-stats');
+}
+$('#b-quitter-exemple').onclick = sortirExemple;
 $('#b-premier').onclick = () => ouvrir(null);
 $('#b-retour6').onclick = () => { peindreReglages(); vue('v-reglages'); };
 $('#a-pin-champ').hidden = !PIN_OK;
@@ -908,7 +1003,9 @@ $('#a-pin-champ').hidden = !PIN_OK;
 /* == journal ============================================================== */
 function peindreSalut() {
   const s = P.salut(prefs.prenom, entrees, Date.now());
-  $('#salut').innerHTML = '<b>' + ech(s.titre) + '</b><span>' + ech(s.souffle) + '</span>';
+  // Pas de ligne vide quand il n'y a rien a dire : le souffle ne s'affiche
+  // que s'il porte quelque chose.
+  $('#salut').innerHTML = '<b>' + ech(s.titre) + '</b>' + (s.souffle ? '<span>' + ech(s.souffle) + '</span>' : '');
 }
 
 // La carte d'un moment dans une liste : journal, ou tous les moments d'un mot.
@@ -923,7 +1020,7 @@ function carteMoment(e) {
     + (e.quoi ? '<div class="txt">' + ech(e.quoi) + '</div>' : '')
     + (e.corps ? '<div class="sens">' + ech(e.corps) + '</div>' : '')
     + (e.quals && e.quals.length ? '<div class="mots">' + e.quals.map(q => '<span class="mot">' + ech(affiche(q)) + '</span>').join('') + '</div>' : '')
-    + (e.prive ? '<span class="cadenas">' + CADENAS + 'Gardé pour moi</span>' : '')
+    + (e.prive && prefs.psy ? '<span class="cadenas">' + CADENAS + 'Gardé pour moi</span>' : '')
     + '</div></button>';
 }
 
@@ -949,9 +1046,12 @@ $('#avert').addEventListener('click', ev => {
 function peindreJournal() {
   peindreSalut();
   peindreAvert();
+  $('#b-seance').hidden = !prefs.psy;
   const l = $('#liste');
+  // Un journal vide ne demande pas d'ecrire : il montre ou appuyer.
+  $('#j-pointeur').hidden = !!entrees.length;
   if (!entrees.length) {
-    l.innerHTML = '<div class="vide"><b>Rien de noté</b>Au prochain moment qui remue quelque chose, pose-le ici. Même court.</div>';
+    l.innerHTML = '<div class="vide"><b>Rien de noté</b></div>';
     return;
   }
   l.innerHTML = P.parJour(entrees).map(j => '<div class="jour">' + ech(jourLong(j.date)) + '</div>'
@@ -1015,9 +1115,7 @@ function peindreSaisie() {
   $('#f-merc').style.transform = 'scaleY(' + (i / 10) + ')';
   $('#f-bulbe').classList.toggle('plein', i > 0);
 
-  $('#f-blocs').innerHTML = !f
-    ? '<div style="color:var(--ink2);font-size:.85rem">Choisis d’abord une émotion&nbsp;: le vocabulaire du livre s’affiche ici, et le thermomètre prend sa couleur.</div>'
-    : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + ';--cp:' + cp + '">'
+  $('#f-blocs').innerHTML = !f ? '' : f.blocs.map((mots, k) => '<div class="bloc' + (k === b ? ' actif' : '') + '" data-bloc="' + k + '" style="--c:' + c + ';--cp:' + cp + '">'
         + '<div class="lab">' + P.PALIERS[k] + '</div>'
         + mots.map(m => '<button class="qual" data-mot="' + ech(P.cle(m)) + '" aria-pressed="' + brouillon.quals.includes(P.cle(m)) + '">'
           + ech(P.mot(m, prefs.accord)) + '</button>').join('')
@@ -1027,10 +1125,11 @@ function peindreSaisie() {
   $('#f-rappels').innerHTML = rappels.map(s => '<button class="rappel" data-sens="' + ech(s) + '">' + ech(s) + '</button>').join('');
 
   $('#quand-lu').innerHTML = '<b>' + ech(jourLong(P.iso(brouillon.ts))) + '</b> à ' + ech(heure(brouillon.ts));
+  $('#champ-prive').hidden = !prefs.psy;
   $('#b-prive').setAttribute('aria-pressed', String(!!brouillon.prive));
   $('#prive-titre').textContent = brouillon.prive ? 'Ce moment est gardé pour moi' : 'Je garde ce moment pour moi';
   $('#prive-dit').textContent = brouillon.prive
-    ? 'Il est dans mon journal, mais il n’apparaîtra pas ' + MOTS().ou + '.'
+    ? 'Il est dans mon journal, mais il n’apparaîtra pas ' + MOTS.ou + '.'
     : 'Il restera dans mon journal, mais pas dans ce que je montre.';
 
   peindreEchos();
@@ -1144,12 +1243,12 @@ function ficheSeance(e, preparer) {
 
 function peindreSeance() {
   const preparer = seanceMode === 'preparer';
-  const M = MOTS();
+  const M = MOTS;
   $('#titre-seance').textContent = M.ecran;
   $('#b-seance').setAttribute('aria-label', M.bouton);
   $('#s-periodes').innerHTML = P.PERIODES.map(p => '<button type="button" data-p="' + p.cle + '" aria-pressed="'
     + (p.cle === periode) + '"' + (p.cle === 'seance' && !prefs.ancre ? ' disabled style="opacity:.4"' : '')
-    + '>' + ech(p.cle === 'seance' ? M.periode : p.nom) + '</button>').join('');
+    + '>' + ech(p.nom) + '</button>').join('');
   $('#s-periodes').hidden = !preparer;
 
   const pe = P.periode(entrees, periode, Date.now(), prefs.ancre);
@@ -1176,13 +1275,10 @@ function peindreSeance() {
   const jours = P.parJour(liste), resume = P.resume(liste), repartition = P.repartition(liste);
   const pluriel = liste.length > 1 ? 's' : '';
 
-  // Le rappel de la regle, jamais le compte : qui lit sait qu'il existe des
-  // moments gardes, pas combien. Ce qu'on ne voit pas n'est pas une information.
-  const garde = '<div class="avis"><b>Ce que cette page n’est pas</b>'
-    + 'Tout ce qui est écrit ici a été saisi ' + (nom ? 'par ' + ech(nom) : 'à la main') + '. '
-    + 'L’application ne fait que trier et compter&nbsp;: aucune analyse automatique, aucune interprétation, '
-    + 'aucun score clinique, et rien n’a été envoyé nulle part. '
-    + 'Les moments gardés pour soi ne sont pas affichés ici.</div>';
+  // La regle, jamais le compte : qui lit sait que des moments peuvent manquer,
+  // pas combien. Sans cette ligne, on s'autocensure a l'ecriture, et c'est la
+  // qu'on perd la donnee la plus utile. Une phrase suffit a la tenir.
+  const garde = '<div class="souffle" style="margin-top:26px">Ce qui est montré ici a été choisi.</div>';
 
   s.innerHTML = '<div class="seance-tete"><b>' + ech(pe.titre) + '</b><span>Du ' + ech(jourCourt(pe.debut))
     + ' à aujourd’hui &middot; ' + liste.length + ' moment' + pluriel + ' noté' + pluriel + '</span></div>'
@@ -1218,11 +1314,12 @@ function peindreReglages() {
   peindreAccord($('#r-accord'), $('#r-exemple'));
   $('#r-mode').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.sombre === '1') === !!prefs.sombre));
   vignettes($('#r-mondes'), prefs.theme);
-  $('#r-souffle').textContent = P.theme(prefs.theme).souffle;
   [['texte', TAILLE], ['chaleur', NIVEAU], ['contraste', NIVEAU]].forEach(([k, mot]) => {
     $('#r-' + k).value = Math.round(prefs[k] * 100);
     $('#r-' + k + '-v').textContent = mot(prefs[k] * 100);
   });
+  $('#r-police').innerHTML = P.POLICES.map(f => '<button type="button" data-police="' + f.cle
+    + '" aria-pressed="' + (f.cle === prefs.police) + '">' + ech(f.nom) + '</button>').join('');
   $('#r-psy').setAttribute('aria-pressed', String(!!prefs.psy));
   $('#r-pin-champ').hidden = !PIN_OK;
   $('#r-pin').value = '';
@@ -1230,8 +1327,9 @@ function peindreReglages() {
   $('#r-pin-poser').textContent = prefs.pin ? 'Changer le code' : 'Poser ce code';
   $('#r-pin-dit').textContent = prefs.pin ? 'Un code est posé.' : 'Facultatif. Quatre à six chiffres.';
   $('#r-compte').textContent = entrees.length
-    ? (entrees.length === 1 ? 'Un moment est enregistré.' : entrees.length + ' moments sont enregistrés.')
-    : 'Aucun moment n’est enregistré pour l’instant.';
+    ? (entrees.length === 1 ? 'Un moment enregistré. Il n’en existe aucune copie ailleurs.'
+       : entrees.length + ' moments enregistrés. Il n’en existe aucune copie ailleurs.')
+    : 'Aucun moment enregistré pour l’instant.';
 }
 
 $('#r-prenom').addEventListener('input', () => { prefs.prenom = $('#r-prenom').value.trim(); garderPrefs(); });
@@ -1242,6 +1340,10 @@ $('#r-accord').addEventListener('click', ev => {
 $('#r-mode').addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b) return;
   prefs.sombre = b.dataset.sombre === '1'; garderPrefs(); peindreTheme(); peindreReglages();
+});
+$('#r-police').addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  prefs.police = b.dataset.police; garderPrefs(); peindreTheme(); peindreReglages();
 });
 $('#r-mondes').addEventListener('click', ev => {
   const b = ev.target.closest('.monde'); if (!b) return;
@@ -1255,7 +1357,7 @@ $('#r-mondes').addEventListener('click', ev => {
   });
 });
 $('#r-manuel').onclick = () => manuel(false);
-$('#r-psy').onclick = () => { prefs.psy = !prefs.psy; garderPrefs(); peindreReglages(); $('#b-seance').setAttribute('aria-label', MOTS().bouton); };
+$('#r-psy').onclick = () => { prefs.psy = !prefs.psy; garderPrefs(); peindreReglages(); };
 $('#r-pin-poser').onclick = async () => {
   const pin = $('#r-pin').value.trim();
   if (!PIN_FORME.test(pin)) return alert('Le code, c’est quatre à six chiffres.');
@@ -1316,6 +1418,7 @@ function svgMotifs() {
 // Toucher un point : le moment, et tout ce qui lui fait echo.
 // Toucher un mot : tous les moments ou il a ete pose.
 $('#stats').addEventListener('click', ev => {
+  if (ev.target.closest('#b-exemple')) return entrerExemple();
   const mot = ev.target.closest('button.barre');
   if (mot) return peindreMot(mot.dataset.mot);
   const c = ev.target.closest('circle[data-i]');
@@ -1331,7 +1434,11 @@ $('#stats').addEventListener('click', ev => {
 
 function peindreStats() {
   const s = $('#stats');
-  if (!entrees.length) { s.innerHTML = '<div class="vide"><b>Pas encore de trame</b>Quelques moments notés, et les motifs apparaissent.</div>'; return; }
+  if (!entrees.length) {
+    s.innerHTML = '<div class="vide"><b>Y a rien pour l’instant 🙂</b>Reviens quand tu auras noté deux ou trois moments.'
+      + '<button class="sobre" id="b-exemple" style="margin-top:22px">Voir à quoi ça ressemble</button></div>';
+    return;
+  }
   const r = P.resume(entrees), trame = P.trame(entrees, P.iso(Date.now()), 14);
   const maxJ = Math.max(1, ...trame.map(j => j.moyenne));
   const h = P.heures(entrees), maxH = Math.max(1, ...h);
@@ -1428,6 +1535,10 @@ if (!DEMO && prefs.pin && PIN_OK) {
   };
   setTimeout(() => $('#v-code').focus(), 60);
 } else demarrer();
+
+// Demander que ce stockage ne soit pas recycle. Sur Android ca suffit souvent ;
+// sur iPhone, seule l'installation sur l'ecran d'accueil compte vraiment.
+if (!DEMO && navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
 // Un seul service worker : les ecrans embarques n'en enregistrent pas.
 if (!DEMO && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');

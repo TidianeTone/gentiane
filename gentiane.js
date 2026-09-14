@@ -181,7 +181,34 @@
     { cle: 'tendresse', h: 168, k: 1.00 },
   ];
 
-  P.DEFAUTS = { theme: 'jardin', sombre: true, chaleur: 0.5, contraste: 0.5, texte: 0.5 };
+  P.DEFAUTS = { theme: 'jardin', sombre: true, chaleur: 0.5, contraste: 0.5, texte: 0.5, police: 'cahier' };
+
+  /* == polices ==============================================================
+     Quatre caracteres, jamais quatre degres de lisibilite : Lexend est dessine
+     pour reduire l'effort de lecture, Atkinson par le Braille Institute. On ne
+     charge que celle qui est choisie — la feuille Google Fonts est refaite a
+     chaque changement, et le service worker garde ce qui a servi. */
+  P.POLICES = [
+    { cle: 'cahier', nom: 'Cahier',
+      google: 'Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1',
+      affiche: "Fraunces,Georgia,'Times New Roman',serif",
+      texte: "'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,sans-serif" },
+    { cle: 'lisible', nom: 'Lisible',
+      google: 'Lexend:wght@300..800',
+      affiche: 'Lexend,system-ui,sans-serif',
+      texte: 'Lexend,system-ui,sans-serif' },
+    { cle: 'machine', nom: 'Machine',
+      google: 'IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700',
+      affiche: "'IBM Plex Mono',ui-monospace,SFMono-Regular,monospace",
+      texte: "'IBM Plex Sans',system-ui,sans-serif" },
+    { cle: 'ronde', nom: 'Ronde',
+      google: 'Baloo+2:wght@400..800&family=Nunito:wght@300..900',
+      affiche: "'Baloo 2',system-ui,sans-serif",
+      texte: 'Nunito,system-ui,sans-serif' },
+  ];
+  P.police = cle => P.POLICES.find(x => x.cle === cle) || P.POLICES[0];
+  P.feuillePolice = cle =>
+    'https://fonts.googleapis.com/css2?family=' + P.police(cle).google + '&display=swap';
 
   // L'echelle du texte : 0.5 est la taille dessinee, en dessous on resserre un
   // peu, au-dessus on va franchement plus loin — c'est le cote qui sert.
@@ -266,19 +293,53 @@
 
   // Ce que l'appli dit en ouvrant le journal. Des faits et un prénom, jamais
   // une félicitation : rien ici ne récompense le fait d'avoir noté.
-  P.salut = (prenom, entrees, maintenant) => {
+  /* == l'accueil ============================================================
+     Une vingtaine d'ouvertures, pour que l'application n'ait pas l'air de
+     reciter. Entre crochets : ce qui tombe quand il n'y a pas de prenom.
+     Rien qui reclame, rien qui felicite, et aucun au revoir deguise — « bonne
+     nuit » en est un, et a trois heures du matin ce n'est pas ce qu'on veut
+     lire ici. Aucun accord non plus : ces phrases valent pour tout le monde. */
+  P.SALUTS = [
+    'Te revoilà[, {n}].',
+    'Salut[ {n}].',
+    'Coucou[ {n}].',
+    'Hey[, {n}].',
+    'Hello[ {n}].',
+    'Re[, {n}].',
+    'Tiens[, {n}].',
+    'Te voilà[, {n}].',
+    'De retour[, {n}].',
+    'Bien le bonjour[, {n}].',
+    'Quand tu veux[, {n}].',
+    'Rien ne presse[, {n}].',
+    'À ton rythme[, {n}].',
+    'Prends ton temps[, {n}].',
+    'C’est ouvert[, {n}].',
+    'Fais comme chez toi[, {n}].',
+    'Tu es chez toi[, {n}].',
+    'Tranquille[, {n}].',
+    'Pose-toi[, {n}].',
+    'À l’aise[, {n}].',
+  ];
+
+  const poser = (patron, nom) => nom
+    ? patron.replace(/[\[\]]/g, '').replace('{n}', nom)
+    : patron.replace(/\[[^\]]*\]/g, '');
+
+  P.salut = (prenom, entrees, maintenant, graine) => {
     const h = new Date(maintenant).getHours();
     const nom = (prenom || '').trim();
-    // Pas de « Bonne nuit » : en francais c'est un au revoir, et a trois heures
-    // du matin quelqu'un qui ouvre ce journal n'a pas besoin qu'on le renvoie au lit.
-    const titre = (h >= 5 && h < 18 ? 'Bonjour' : 'Bonsoir') + (nom ? ' ' + nom : '');
-    if (!entrees.length) return { titre, souffle: 'Rien n’est jugé ici, et rien ne sort de ce téléphone.' };
+    const heure = (h >= 5 && h < 18 ? 'Bonjour' : 'Bonsoir') + '[ {n}].';
+    // Tant que rien n'est noté, on ne peut pas dire « te revoilà » : on s'en
+    // tient à l'heure. L'accueil ne se met à varier qu'une fois le journal ouvert.
+    const pool = entrees.length ? [heure].concat(P.SALUTS) : [heure];
+    const i = typeof graine === 'number' ? graine : Math.floor(maintenant / 36e5);
+    const titre = poser(pool[((i % pool.length) + pool.length) % pool.length], nom);
     const auj = P.iso(maintenant);
     const n = entrees.filter(e => P.iso(e.ts) === auj).length;
-    if (n) return { titre, souffle: n === 1 ? 'Un moment noté aujourd’hui.' : n + ' moments notés aujourd’hui.' };
     // Surtout pas « ton dernier moment date d'il y a six jours » : c'est un
     // fait, et ca marche comme un reproche. Rien ici ne relance.
-    return { titre, souffle: 'Rien n’est jugé ici, et rien ne sort de ce téléphone.' };
+    return { titre, souffle: n ? (n === 1 ? 'Un moment noté aujourd’hui.' : n + ' moments notés aujourd’hui.') : '' };
   };
 
   P.iso = ts => { const d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -304,7 +365,7 @@
   P.PERIODES = [
     { cle: 'semaine', nom: '7 jours' },
     { cle: 'mois', nom: '30 jours' },
-    { cle: 'seance', nom: 'Depuis la dernière fois' },
+    { cle: 'seance', nom: 'Depuis ma séance' },
   ];
 
   P.periode = (entrees, cle, maintenant, ancre) => {
